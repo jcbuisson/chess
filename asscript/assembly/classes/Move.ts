@@ -19,7 +19,7 @@ export class Move {
       public locatedPiece: LocatedPiece,
       public to: Square,
       public promotion: Nullable<Piece>,
-      public result: Chess,
+      public resultingChess: Chess,
    ) {
    }
 

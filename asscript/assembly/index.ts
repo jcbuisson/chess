@@ -1,6 +1,7 @@
 // The entry file of your WebAssembly module.
 
 import { PieceType, Piece } from './classes/Piece'
+import { Square } from './classes/Square'
 import { Move } from './classes/Move'
 import { LocatedPiece } from './classes/LocatedPiece'
 import { Chess } from './classes/Chess'
@@ -53,27 +54,8 @@ export function alphaBeta(
 }
 
 
-function createInitialBoard(): Chess {
-   return new Chess(
-      [
-         [new Piece(PieceType.ROOK, false),  new Piece(PieceType.KNIGHT, false),  new Piece(PieceType.BISHOP, false),  new Piece(PieceType.QUEEN, false),  new Piece(PieceType.KING, false),  new Piece(PieceType.BISHOP, false),  new Piece(PieceType.KNIGHT, false),  new Piece(PieceType.ROOK, false)],
-         [new Piece(PieceType.PAWN, false),  new Piece(PieceType.PAWN, false),    new Piece(PieceType.PAWN, false),    new Piece(PieceType.PAWN, false),   new Piece(PieceType.PAWN, false),  new Piece(PieceType.PAWN, false),    new Piece(PieceType.PAWN, false),    new Piece(PieceType.PAWN, false)],
-         [null,                              null,                                null,                                null,                               null,                              null,                                null,                                null],
-         [null,                              null,                                null,                                null,                               null,                              null,                                null,                                null],
-         [null,                              null,                                null,                                null,                               null,                              null,                                null,                                null],
-         [null,                              null,                                null,                                null,                               null,                              null,                                null,                                null],
-         [new Piece(PieceType.PAWN, true),   new Piece(PieceType.PAWN, true),     new Piece(PieceType.PAWN, true),     new Piece(PieceType.PAWN, true),    new Piece(PieceType.PAWN, true),   new Piece(PieceType.PAWN, true),     new Piece(PieceType.PAWN, true),     new Piece(PieceType.PAWN, true)],
-         [new Piece(PieceType.ROOK, true),   new Piece(PieceType.KNIGHT, true),   new Piece(PieceType.BISHOP, true),   new Piece(PieceType.QUEEN, true),   new Piece(PieceType.KING, false),  new Piece(PieceType.BISHOP, true),   new Piece(PieceType.KNIGHT, true),   new Piece(PieceType.ROOK, true)],
-      ],
-      true, // white to move
-      true, // king castling possible
-      true, // queen castling possible
-   )
-}
-
-
 // global state
-const currentChess: Chess = createInitialBoard()
+const currentChess: Chess = Chess.createInitialBoard()
 
 export function testChessToAscii(): string {
    return currentChess.toAscii()
@@ -86,5 +68,11 @@ export function testLocatedPieces(): string {
 
 export function testMoves(): string {
    const moves: Move[] = currentChess.possibleMoves()
-   return moves.reduce((accu, move) => `${accu}, ${move.toString()}`, '')
+   // return moves.reduce((accu, move) => `${accu}, ${move.toString()}`, '')
+   let accu = ''
+   for (let i = 0; i < moves.length; i++) {
+      const move = moves[i]
+      accu += move.toString() + '\n' + move.resultingChess.toAscii() + '\n'
+   }
+   return accu
 }
