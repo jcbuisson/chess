@@ -35,7 +35,7 @@ export class Piece {
    }
 
    toString(): string {
-      let s = "pnbrqk".charAt(this.type)
+      let s = "prnbqk".charAt(this.type)
       return this.isWhite ? s.toUpperCase() : s
    }
 }

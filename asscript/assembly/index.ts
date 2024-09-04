@@ -62,7 +62,7 @@ export function testChessToAscii(): string {
 }
 
 export function testLocatedPieces(): string {
-   const lpieces: LocatedPiece[] = currentChess.locatedPieces()
+   const lpieces: LocatedPiece[] = currentChess.toMoveLocatedPieces()
    return lpieces.reduce((accu, lpiece) => `${accu}, ${lpiece.toString()}`, '')
 }
 

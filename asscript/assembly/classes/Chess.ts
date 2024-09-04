@@ -11,9 +11,11 @@ function row2ascii(row: Array<Nullable<Piece>>): string {
    return row.reduce((accu, piece) => `${accu} ${piece ? piece.toString(): '.'} `, '')
 }
 
+// rnbkqbnrpppppppp..............................PPPPPPPPRNBQKBNR
+// r00n01b02k03
+// liste de LocatedPiece
 export class Chess {
    constructor(
-      // public rows: Array<Array<Nullable<Piece>>>,
       public rows: Nullable<Piece>[][],
       public isWhiteToMove: boolean,
       public isKingCastlingPossible: boolean,
@@ -38,14 +40,14 @@ export class Chess {
    static createInitialBoard(): Chess {
       return new Chess(
          [
-            [new Piece(PieceType.ROOK, false),  new Piece(PieceType.KNIGHT, false),  new Piece(PieceType.BISHOP, false),  new Piece(PieceType.QUEEN, false),  new Piece(PieceType.KING, false),  new Piece(PieceType.BISHOP, false),  new Piece(PieceType.KNIGHT, false),  new Piece(PieceType.ROOK, false)],
+            [new Piece(PieceType.ROOK, false),  new Piece(PieceType.KNIGHT, false),  new Piece(PieceType.BISHOP, false),  new Piece(PieceType.QUEEN, false),  new Piece(PieceType.KING, false),  null,  new Piece(PieceType.KNIGHT, false),  new Piece(PieceType.ROOK, false)],
             [new Piece(PieceType.PAWN, false),  new Piece(PieceType.PAWN, false),    new Piece(PieceType.PAWN, false),    new Piece(PieceType.PAWN, false),   new Piece(PieceType.PAWN, false),  new Piece(PieceType.PAWN, false),    new Piece(PieceType.PAWN, false),    new Piece(PieceType.PAWN, false)],
             [null,                              null,                                null,                                null,                               null,                              null,                                null,                                null],
             [null,                              null,                                null,                                null,                               null,                              null,                                null,                                null],
-            [null,                              null,                                null,                                null,                               null,                              null,                                null,                                null],
+            [null,                              null,                                null,                                null,                               null,                              null,                                null,                                new Piece(PieceType.BISHOP, false)],
             [null,                              null,                                null,                                null,                               null,                              null,                                null,                                null],
             [new Piece(PieceType.PAWN, true),   new Piece(PieceType.PAWN, true),     new Piece(PieceType.PAWN, true),     new Piece(PieceType.PAWN, true),    new Piece(PieceType.PAWN, true),   new Piece(PieceType.PAWN, true),     new Piece(PieceType.PAWN, true),     new Piece(PieceType.PAWN, true)],
-            [new Piece(PieceType.ROOK, true),   new Piece(PieceType.KNIGHT, true),   new Piece(PieceType.BISHOP, true),   new Piece(PieceType.QUEEN, true),   new Piece(PieceType.KING, false),  new Piece(PieceType.BISHOP, true),   new Piece(PieceType.KNIGHT, true),   new Piece(PieceType.ROOK, true)],
+            [new Piece(PieceType.ROOK, true),   new Piece(PieceType.KNIGHT, true),   new Piece(PieceType.BISHOP, true),   new Piece(PieceType.QUEEN, true),   new Piece(PieceType.KING, true),  new Piece(PieceType.BISHOP, true),   new Piece(PieceType.KNIGHT, true),   new Piece(PieceType.ROOK, true)],
          ],
          true, // white to move
          true, // king castling possible
@@ -75,61 +77,110 @@ export class Chess {
       return this.rows[row][col]
    }
 
+   attacks(sourcePiece: LocatedPiece, targetPiece: LocatedPiece): bool {
+      if (sourcePiece.piece.isBishop()) {
+         const srow = sourcePiece.square.rowIndex
+         const scol = sourcePiece.square.colIndex
+         const trow = targetPiece.square.rowIndex
+         const tcol = targetPiece.square.colIndex
+         const drow = srow > trow ? srow-trow : trow-srow
+         const dcol = scol > tcol ? scol-tcol : tcol-scol
+         if (drow !== dcol) return false
+         let row = srow > trow ? srow-1 : srow+1
+         let col = scol > tcol ? scol-1 : scol+1
+         while (row !== trow) {
+            if (!this.isSquareEmpty(row, col)) return false
+            row = srow > trow ? row-1 : row+1
+            col = scol > tcol ? col-1 : col+1
+         }
+         return true
+      }
+      return false
+   }
+
    setPieceAt(square: Square, piece: Nullable<Piece>) : Chess {
       this.rows[square.rowIndex][square.colIndex] = piece
       return this
    }
 
-   isSquareEmpty(row: u8, col: u8): boolean {
+   isSquareEmpty(row: u8, col: u8): bool {
       return this.rows[row][col] === null
    }
 
-   locatedPieces(): LocatedPiece[] {
+   toMoveLocatedPieces(): LocatedPiece[] {
       const accu: LocatedPiece[] = []
       for (let row: u8 = 0; row < 8; row++) {
          for (let col: u8 = 0; col < 8; col++) {
             const piece = this.pieceAt(row, col)
-            if (piece) accu.push(new LocatedPiece(piece, new Square(row, col)))
+            if (piece && piece.isWhite === this.isWhiteToMove) accu.push(new LocatedPiece(piece, new Square(row, col)))
          }
       }
       return accu
    }
 
-   // indicates if the side to move is in check
-   inCheck(): boolean {
+   opponentLocatedPieces(): LocatedPiece[] {
+      const accu: LocatedPiece[] = []
+      for (let row: u8 = 0; row < 8; row++) {
+         for (let col: u8 = 0; col < 8; col++) {
+            const piece = this.pieceAt(row, col)
+            if (piece && piece.isWhite !== this.isWhiteToMove) accu.push(new LocatedPiece(piece, new Square(row, col)))
+         }
+      }
+      return accu
+   }
 
+   toMoveLocatedKing(): LocatedPiece {
+      const toMoveLPieces = this.toMoveLocatedPieces()
+      for (let i = 0; i < toMoveLPieces.length; i++) {
+         const lpiece = toMoveLPieces[i]
+         if (lpiece.piece.type === PieceType.KING && lpiece.piece.isWhite === this.isWhiteToMove) return lpiece
+      }
+      return LocatedPiece.dummy // should never happen
+   }
+
+
+   // indicates if the side to move is in check
+   inCheck(king: LocatedPiece): bool {
+      const opponentLPieces = this.opponentLocatedPieces()
+      for (let i = 0; i < opponentLPieces.length; i++) {
+         const lpiece = opponentLPieces[i]
+         if (this.attacks(lpiece, king)) return true
+      }
       return false
    }
 
    possibleMoves(): Move[] {
       const accu: Move[] = []
-      const lpieces = this.locatedPieces()
+      const lpieces = this.toMoveLocatedPieces()
+      const king = this.toMoveLocatedKing()
+      console.log(`king ${king.toString()}`)
       for (let i = 0; i < lpieces.length; i++) {
          const locatedPiece = lpieces.at(i)
          // console.log(`${locatedPiece.toString()}`)
          if (locatedPiece.piece.isPawn()) {
             const targetRow: u8 = locatedPiece.piece.isWhite ? locatedPiece.square.rowIndex - 1 : locatedPiece.square.rowIndex + 1
-            // console.log(`checking ${targetRow} ${locatedPiece.square.colIndex}`)
             if (targetRow >= 0 && targetRow <= 7 && this.isSquareEmpty(targetRow, locatedPiece.square.colIndex)) {
                // console.log(`empty ${targetRow} ${locatedPiece.square.colIndex}`)
                const targetSquare = new Square(targetRow, locatedPiece.square.colIndex)
                const resultingChess = this.clone().setPieceAt(targetSquare, locatedPiece.piece).setPieceAt(locatedPiece.square, null)
-               accu.push(new Move(MoveType.MOVE, locatedPiece, targetSquare, null, resultingChess))
+               const move = new Move(MoveType.MOVE, locatedPiece, targetSquare, null, resultingChess)
+               // console.log(`move ${move.toString()} ${resultingChess.inCheck(king)}`)
+               if (!resultingChess.inCheck(king)) accu.push(move)
             }
             const hasNotMoved: boolean = locatedPiece.piece.isWhite ? locatedPiece.square.rowIndex === 6 : locatedPiece.square.rowIndex === 1
             if (hasNotMoved) {
                const targetRow = locatedPiece.piece.isWhite ? locatedPiece.square.rowIndex - 2 : locatedPiece.square.rowIndex + 2
                // console.log(`checking ${targetRow} ${locatedPiece.square.colIndex}`)
                if (targetRow >= 0 && targetRow <= 7 && this.isSquareEmpty(targetRow, locatedPiece.square.colIndex)) {
-                  // console.log(`empty ${targetRow} ${locatedPiece.square.colIndex}`)
                   const targetSquare = new Square(targetRow, locatedPiece.square.colIndex)
                   const resultingChess = this.clone().setPieceAt(targetSquare, locatedPiece.piece).setPieceAt(locatedPiece.square, null)
-                  accu.push(new Move(MoveType.MOVE, locatedPiece, targetSquare, null, resultingChess))
+                  const move = new Move(MoveType.MOVE, locatedPiece, targetSquare, null, resultingChess)
+                  // console.log(`move ${move.toString()} ${resultingChess.inCheck(king)}`)
+                  if (!resultingChess.inCheck(king)) accu.push(move)
                }
             }
          }
       }
-      // remove moves from `accu` where resulting position is in check for the side to move
-      return accu.filter(move => !move.resultingChess.inCheck())
+      return accu
    }
 }
