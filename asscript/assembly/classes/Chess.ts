@@ -2,6 +2,7 @@
 import { PieceType, Piece } from './Piece'
 import { Square } from './Square'
 import { LocatedPiece } from './LocatedPiece'
+import { LocatedBishop } from './LocatedBishop'
 import { MoveType, Move } from './Move'
 
 type Nullable<T> = T | null
@@ -17,7 +18,7 @@ function row2ascii(row: Array<Nullable<Piece>>): string {
 export class Chess {
    constructor(
       public rows: Nullable<Piece>[][],
-      public isWhiteToMove: boolean,
+      public isWhiteplayer: boolean,
       public isKingCastlingPossible: boolean,
       public isQueenCastlingPossible: boolean,
    ) {
@@ -67,7 +68,7 @@ export class Chess {
             [this.rows[6][0], this.rows[6][1], this.rows[6][2], this.rows[6][3], this.rows[6][4], this.rows[6][5], this.rows[6][6], this.rows[6][7], ],
             [this.rows[7][0], this.rows[7][1], this.rows[7][2], this.rows[7][3], this.rows[7][4], this.rows[7][5], this.rows[7][6], this.rows[7][7], ],
          ],
-         this.isWhiteToMove,
+         this.isWhiteplayer,
          this.isKingCastlingPossible,
          this.isQueenCastlingPossible
       )
@@ -77,42 +78,49 @@ export class Chess {
       return this.rows[row][col]
    }
 
-   attacks(sourcePiece: LocatedPiece, targetPiece: LocatedPiece): bool {
-      if (sourcePiece.piece.isBishop()) {
-         const srow = sourcePiece.square.rowIndex
-         const scol = sourcePiece.square.colIndex
-         const trow = targetPiece.square.rowIndex
-         const tcol = targetPiece.square.colIndex
-         const drow = srow > trow ? srow-trow : trow-srow
-         const dcol = scol > tcol ? scol-tcol : tcol-scol
-         if (drow !== dcol) return false
-         let row = srow > trow ? srow-1 : srow+1
-         let col = scol > tcol ? scol-1 : scol+1
-         while (row !== trow) {
-            if (!this.isSquareEmpty(row, col)) return false
-            row = srow > trow ? row-1 : row+1
-            col = scol > tcol ? col-1 : col+1
-         }
-         return true
-      }
-      return false
-   }
-
    setPieceAt(square: Square, piece: Nullable<Piece>) : Chess {
       this.rows[square.rowIndex][square.colIndex] = piece
       return this
    }
 
+   // attacks(sourcePiece: LocatedPiece, targetPiece: LocatedPiece): bool {
+   //    if (sourcePiece.piece.isBishop()) {
+   //       const srow = sourcePiece.square.rowIndex
+   //       const scol = sourcePiece.square.colIndex
+   //       const trow = targetPiece.square.rowIndex
+   //       const tcol = targetPiece.square.colIndex
+   //       const drow = srow > trow ? srow-trow : trow-srow
+   //       const dcol = scol > tcol ? scol-tcol : tcol-scol
+   //       if (drow !== dcol) return false
+   //       let row = srow > trow ? srow-1 : srow+1
+   //       let col = scol > tcol ? scol-1 : scol+1
+   //       while (row !== trow) {
+   //          if (!this.isSquareEmpty(row, col)) return false
+   //          row = srow > trow ? row-1 : row+1
+   //          col = scol > tcol ? col-1 : col+1
+   //       }
+   //       return true
+   //    }
+   //    return false
+   // }
+
    isSquareEmpty(row: u8, col: u8): bool {
       return this.rows[row][col] === null
    }
 
-   toMoveLocatedPieces(): LocatedPiece[] {
+   playerLocatedPieces(): LocatedPiece[] {
       const accu: LocatedPiece[] = []
       for (let row: u8 = 0; row < 8; row++) {
          for (let col: u8 = 0; col < 8; col++) {
             const piece = this.pieceAt(row, col)
-            if (piece && piece.isWhite === this.isWhiteToMove) accu.push(new LocatedPiece(piece, new Square(row, col)))
+            if (piece && piece.isWhite === this.isWhiteplayer) {
+               // accu.push(new LocatedPiece(piece, new Square(row, col)))
+               if (piece.type === PieceType.BISHOP) {
+                  accu.push(new LocatedBishop(new Square(row, col)))
+               } else {
+                  accu.push(new LocatedPiece(piece, new Square(row, col)))
+               }
+            }
          }
       }
       return accu
@@ -123,17 +131,24 @@ export class Chess {
       for (let row: u8 = 0; row < 8; row++) {
          for (let col: u8 = 0; col < 8; col++) {
             const piece = this.pieceAt(row, col)
-            if (piece && piece.isWhite !== this.isWhiteToMove) accu.push(new LocatedPiece(piece, new Square(row, col)))
+            if (piece && piece.isWhite !== this.isWhiteplayer) {
+               // accu.push(new LocatedPiece(piece, new Square(row, col)))
+               if (piece.type === PieceType.BISHOP) {
+                  accu.push(new LocatedBishop(new Square(row, col)))
+               } else {
+                  accu.push(new LocatedPiece(piece, new Square(row, col)))
+               }
+            }
          }
       }
       return accu
    }
 
-   toMoveLocatedKing(): LocatedPiece {
-      const toMoveLPieces = this.toMoveLocatedPieces()
-      for (let i = 0; i < toMoveLPieces.length; i++) {
-         const lpiece = toMoveLPieces[i]
-         if (lpiece.piece.type === PieceType.KING && lpiece.piece.isWhite === this.isWhiteToMove) return lpiece
+   playerLocatedKing(): LocatedPiece {
+      const playerLPieces = this.playerLocatedPieces()
+      for (let i = 0; i < playerLPieces.length; i++) {
+         const lpiece = playerLPieces[i]
+         if (lpiece.piece.type === PieceType.KING && lpiece.piece.isWhite === this.isWhiteplayer) return lpiece
       }
       return LocatedPiece.dummy // should never happen
    }
@@ -144,38 +159,35 @@ export class Chess {
       const opponentLPieces = this.opponentLocatedPieces()
       for (let i = 0; i < opponentLPieces.length; i++) {
          const lpiece = opponentLPieces[i]
-         if (this.attacks(lpiece, king)) return true
+         // if (this.attacks(lpiece, king)) return true
+         if (lpiece.attacks(this, king)) return true
       }
       return false
    }
 
    possibleMoves(): Move[] {
       const accu: Move[] = []
-      const lpieces = this.toMoveLocatedPieces()
-      const king = this.toMoveLocatedKing()
+      const lpieces = this.playerLocatedPieces()
+      const king = this.playerLocatedKing()
       console.log(`king ${king.toString()}`)
       for (let i = 0; i < lpieces.length; i++) {
          const locatedPiece = lpieces.at(i)
-         // console.log(`${locatedPiece.toString()}`)
+
          if (locatedPiece.piece.isPawn()) {
             const targetRow: u8 = locatedPiece.piece.isWhite ? locatedPiece.square.rowIndex - 1 : locatedPiece.square.rowIndex + 1
             if (targetRow >= 0 && targetRow <= 7 && this.isSquareEmpty(targetRow, locatedPiece.square.colIndex)) {
-               // console.log(`empty ${targetRow} ${locatedPiece.square.colIndex}`)
                const targetSquare = new Square(targetRow, locatedPiece.square.colIndex)
                const resultingChess = this.clone().setPieceAt(targetSquare, locatedPiece.piece).setPieceAt(locatedPiece.square, null)
                const move = new Move(MoveType.MOVE, locatedPiece, targetSquare, null, resultingChess)
-               // console.log(`move ${move.toString()} ${resultingChess.inCheck(king)}`)
                if (!resultingChess.inCheck(king)) accu.push(move)
             }
             const hasNotMoved: boolean = locatedPiece.piece.isWhite ? locatedPiece.square.rowIndex === 6 : locatedPiece.square.rowIndex === 1
             if (hasNotMoved) {
                const targetRow = locatedPiece.piece.isWhite ? locatedPiece.square.rowIndex - 2 : locatedPiece.square.rowIndex + 2
-               // console.log(`checking ${targetRow} ${locatedPiece.square.colIndex}`)
                if (targetRow >= 0 && targetRow <= 7 && this.isSquareEmpty(targetRow, locatedPiece.square.colIndex)) {
                   const targetSquare = new Square(targetRow, locatedPiece.square.colIndex)
                   const resultingChess = this.clone().setPieceAt(targetSquare, locatedPiece.piece).setPieceAt(locatedPiece.square, null)
                   const move = new Move(MoveType.MOVE, locatedPiece, targetSquare, null, resultingChess)
-                  // console.log(`move ${move.toString()} ${resultingChess.inCheck(king)}`)
                   if (!resultingChess.inCheck(king)) accu.push(move)
                }
             }

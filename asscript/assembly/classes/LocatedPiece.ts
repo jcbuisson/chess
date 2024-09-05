@@ -1,6 +1,7 @@
 
 import { Piece, PieceType } from './Piece'
 import { Square } from './Square'
+import { Chess } from './Chess'
 
 export class LocatedPiece {
    constructor(
@@ -13,5 +14,9 @@ export class LocatedPiece {
 
    toString(): string {
       return this.piece.toString() + this.square.toString()
+   }
+
+   attacks(chess: Chess, target: LocatedPiece): bool {
+      return false
    }
 }
