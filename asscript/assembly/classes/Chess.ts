@@ -116,7 +116,7 @@ export class Chess {
             if (piece && piece.isWhite === isWhitePlayer) {
                // accu.push(new LocatedPiece(piece, new Square(row, col)))
                if (piece.type === PieceType.BISHOP) {
-                  accu.push(new LocatedBishop(new Square(row, col)))
+                  accu.push(new LocatedBishop(piece.isWhite, new Square(row, col)))
                } else {
                   accu.push(new LocatedPiece(piece, new Square(row, col)))
                }

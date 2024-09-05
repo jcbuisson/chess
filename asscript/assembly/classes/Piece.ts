@@ -6,31 +6,31 @@ export enum PieceType {
 export class Piece {
    constructor(
       public type: PieceType,
-      public isWhite: boolean,
+      public isWhite: bool,
    ) {
    }
 
-   isPawn(): boolean {
+   isPawn(): bool {
       return this.type === PieceType.PAWN
    }
 
-   isKnight(): boolean {
+   isKnight(): bool {
       return this.type === PieceType.KNIGHT
    }
 
-   isBishop(): boolean {
+   isBishop(): bool {
       return this.type === PieceType.BISHOP
    }
 
-   isRook(): boolean {
+   isRook(): bool {
       return this.type === PieceType.ROOK
    }
 
-   isQueen(): boolean {
+   isQueen(): bool {
       return this.type === PieceType.QUEEN
    }
 
-   isKing(): boolean {
+   isKing(): bool {
       return this.type === PieceType.KING
    }
 

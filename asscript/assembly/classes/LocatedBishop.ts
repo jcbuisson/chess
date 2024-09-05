@@ -6,11 +6,11 @@ import { Chess } from "./Chess";
 
 export class LocatedBishop extends LocatedPiece {
 
-   constructor(square: Square) {
-      super(new Piece(PieceType.BISHOP, false), square)
+   constructor(isWhite: bool, square: Square) {
+      super(new Piece(PieceType.BISHOP, isWhite), square)
    }
 
-   
+   // return true if current located piece attacks `target` located piece
    attacks(chess: Chess, target: LocatedPiece): bool {
       const srow = this.square.rowIndex
       const scol = this.square.colIndex
