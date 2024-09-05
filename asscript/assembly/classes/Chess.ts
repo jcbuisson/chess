@@ -18,7 +18,7 @@ function row2ascii(row: Array<Nullable<Piece>>): string {
 export class Chess {
    constructor(
       public rows: Nullable<Piece>[][],
-      public isWhiteplayer: boolean,
+      public isWhitePlayer: boolean,
       public isKingCastlingPossible: boolean,
       public isQueenCastlingPossible: boolean,
    ) {
@@ -68,7 +68,7 @@ export class Chess {
             [this.rows[6][0], this.rows[6][1], this.rows[6][2], this.rows[6][3], this.rows[6][4], this.rows[6][5], this.rows[6][6], this.rows[6][7], ],
             [this.rows[7][0], this.rows[7][1], this.rows[7][2], this.rows[7][3], this.rows[7][4], this.rows[7][5], this.rows[7][6], this.rows[7][7], ],
          ],
-         this.isWhiteplayer,
+         this.isWhitePlayer,
          this.isKingCastlingPossible,
          this.isQueenCastlingPossible
       )
@@ -108,30 +108,12 @@ export class Chess {
       return this.rows[row][col] === null
    }
 
-   playerLocatedPieces(): LocatedPiece[] {
+   locatedPieces(isWhitePlayer: bool): LocatedPiece[] {
       const accu: LocatedPiece[] = []
       for (let row: u8 = 0; row < 8; row++) {
          for (let col: u8 = 0; col < 8; col++) {
             const piece = this.pieceAt(row, col)
-            if (piece && piece.isWhite === this.isWhiteplayer) {
-               // accu.push(new LocatedPiece(piece, new Square(row, col)))
-               if (piece.type === PieceType.BISHOP) {
-                  accu.push(new LocatedBishop(new Square(row, col)))
-               } else {
-                  accu.push(new LocatedPiece(piece, new Square(row, col)))
-               }
-            }
-         }
-      }
-      return accu
-   }
-
-   opponentLocatedPieces(): LocatedPiece[] {
-      const accu: LocatedPiece[] = []
-      for (let row: u8 = 0; row < 8; row++) {
-         for (let col: u8 = 0; col < 8; col++) {
-            const piece = this.pieceAt(row, col)
-            if (piece && piece.isWhite !== this.isWhiteplayer) {
+            if (piece && piece.isWhite === isWhitePlayer) {
                // accu.push(new LocatedPiece(piece, new Square(row, col)))
                if (piece.type === PieceType.BISHOP) {
                   accu.push(new LocatedBishop(new Square(row, col)))
@@ -145,10 +127,10 @@ export class Chess {
    }
 
    playerLocatedKing(): LocatedPiece {
-      const playerLPieces = this.playerLocatedPieces()
+      const playerLPieces = this.locatedPieces(this.isWhitePlayer)
       for (let i = 0; i < playerLPieces.length; i++) {
          const lpiece = playerLPieces[i]
-         if (lpiece.piece.type === PieceType.KING && lpiece.piece.isWhite === this.isWhiteplayer) return lpiece
+         if (lpiece.piece.type === PieceType.KING && lpiece.piece.isWhite === this.isWhitePlayer) return lpiece
       }
       return LocatedPiece.dummy // should never happen
    }
@@ -156,7 +138,7 @@ export class Chess {
 
    // indicates if the side to move is in check
    inCheck(king: LocatedPiece): bool {
-      const opponentLPieces = this.opponentLocatedPieces()
+      const opponentLPieces = this.locatedPieces(!this.isWhitePlayer)
       for (let i = 0; i < opponentLPieces.length; i++) {
          const lpiece = opponentLPieces[i]
          // if (this.attacks(lpiece, king)) return true
@@ -167,11 +149,11 @@ export class Chess {
 
    possibleMoves(): Move[] {
       const accu: Move[] = []
-      const lpieces = this.playerLocatedPieces()
+      const playerLPieces = this.locatedPieces(this.isWhitePlayer)
       const king = this.playerLocatedKing()
       console.log(`king ${king.toString()}`)
-      for (let i = 0; i < lpieces.length; i++) {
-         const locatedPiece = lpieces.at(i)
+      for (let i = 0; i < playerLPieces.length; i++) {
+         const locatedPiece = playerLPieces.at(i)
 
          if (locatedPiece.piece.isPawn()) {
             const targetRow: u8 = locatedPiece.piece.isWhite ? locatedPiece.square.rowIndex - 1 : locatedPiece.square.rowIndex + 1
