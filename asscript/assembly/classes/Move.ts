@@ -1,5 +1,4 @@
 
-// import { Piece } from './Piece'
 import { Square } from './Square'
 import { Piece } from './Piece'
 import { Chess } from './Chess'

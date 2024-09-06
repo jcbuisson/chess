@@ -1,7 +1,6 @@
-// import { PieceType, Piece } from "./Piece";
-import { PieceType, Piece } from "./Piece";
-import { Square } from "./Square";
-import { Chess } from "./Chess";
+import { PieceType, Piece } from "./Piece"
+import { Square } from "./Square"
+import { Chess } from "./Chess"
 
 
 export class Bishop extends Piece {

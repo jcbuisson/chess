@@ -1,10 +1,7 @@
 
-// import { PieceType, Piece } from './Piece'
 import { PieceType, Piece } from './Piece'
 import { Bishop } from './Bishop'
 import { Square } from './Square'
-// import { LocatedPiece } from './LocatedPiece'
-// import { LocatedBishop } from './LocatedBishop'
 import { MoveType, Move } from './Move'
 
 type Nullable<T> = T | null
@@ -12,7 +9,8 @@ type Nullable<T> = T | null
 
 export class Chess {
    constructor(
-      public lPieces: Piece[],
+      // public pieces: string, // rnbqkbnrpppppppp........................PPPPPPPPRNBQKBNR
+      public pieces: Piece[],
       public isWhitePlayer: boolean,
       public isKingCastlingPossible: boolean,
       public isQueenCastlingPossible: boolean,
@@ -51,12 +49,12 @@ export class Chess {
    }
 
    clone(): Chess {
-      const lPieces: Piece[] = []
-      for (let i = 0; i < this.lPieces.length; i++) {
-         lPieces.push(this.lPieces[i].clone())
+      const pieces: Piece[] = []
+      for (let i = 0; i < this.pieces.length; i++) {
+         pieces.push(this.pieces[i].clone())
       }
       return new Chess(
-         lPieces,
+         pieces,
          this.isWhitePlayer,
          this.isKingCastlingPossible,
          this.isQueenCastlingPossible
@@ -64,17 +62,16 @@ export class Chess {
    }
 
    pieceAt(row: u8, col: u8): Nullable<Piece> {
-      // return this.rows[row][col]
-      for (let i = 0; i < this.lPieces.length; i++) {
-         const lPiece = this.lPieces[i]
+      for (let i = 0; i < this.pieces.length; i++) {
+         const lPiece = this.pieces[i]
          if (lPiece.square.rowIndex === row && lPiece.square.colIndex === col) return lPiece
       }
       return null
    }
 
    movePiece(from: Square, to: Square) : Chess {
-      for (let i = 0; i < this.lPieces.length; i++) {
-         const lPiece = this.lPieces[i]
+      for (let i = 0; i < this.pieces.length; i++) {
+         const lPiece = this.pieces[i]
          if (lPiece.square.rowIndex === from.rowIndex && lPiece.square.colIndex === from.colIndex) {
             lPiece.square.rowIndex = to.rowIndex
             lPiece.square.colIndex = to.colIndex
@@ -85,44 +82,44 @@ export class Chess {
    }
 
    // deletePiece(lPiece: Piece): void {
-   //    const lPieces = []
-   //    for (let i = 0; i < this.lPieces.length; i++) {
-   //       const lp = this.lPieces[i]
+   //    const pieces = []
+   //    for (let i = 0; i < this.pieces.length; i++) {
+   //       const lp = this.pieces[i]
    //       if (lp.square.rowIndex === lPiece.square.rowIndex && lp.square.colIndex === lPiece.square.colIndex) continue
-   //       lPieces.push(lp)
+   //       pieces.push(lp)
    //    }
-   //    this.lPieces = lPieces
+   //    this.pieces = pieces
    // }
 
    // deletePieceAt(square: Square): void {
-   //    const lPieces = []
-   //    for (let i = 0; i < this.lPieces.length; i++) {
-   //       const lp = this.lPieces[i]
+   //    const pieces = []
+   //    for (let i = 0; i < this.pieces.length; i++) {
+   //       const lp = this.pieces[i]
    //       if (lp.square.rowIndex === square.rowIndex && lp.square.colIndex === square.colIndex) continue
-   //       lPieces.push(lp)
+   //       pieces.push(lp)
    //    }
-   //    this.lPieces = lPieces
+   //    this.pieces = pieces
    // }
 
    isSquareEmpty(row: u8, col: u8): bool {
-      for (let i = 0; i < this.lPieces.length; i++) {
-         const lp = this.lPieces[i]
+      for (let i = 0; i < this.pieces.length; i++) {
+         const lp = this.pieces[i]
          if (lp.square.rowIndex === row && lp.square.colIndex === col) return false
       }
       return true
    }
 
-   locatedPieces(isWhitePlayer: bool): Piece[] {
+   getPieces(isWhitePlayer: bool): Piece[] {
       const accu: Piece[] = []
-      for (let i = 0; i < this.lPieces.length; i++) {
-         const lp = this.lPieces[i]
+      for (let i = 0; i < this.pieces.length; i++) {
+         const lp = this.pieces[i]
          if (lp.isWhite === isWhitePlayer) accu.push(lp)
       }
       return accu
    }
 
    playerLocatedKing(): Piece {
-      const playerPieces = this.locatedPieces(this.isWhitePlayer)
+      const playerPieces = this.getPieces(this.isWhitePlayer)
       for (let i = 0; i < playerPieces.length; i++) {
          const lpiece = playerPieces[i]
          if (lpiece.type === PieceType.KING && lpiece.isWhite === this.isWhitePlayer) return lpiece
@@ -133,7 +130,7 @@ export class Chess {
 
    // indicates if the side to move is in check
    inCheck(king: Piece): bool {
-      const opponentPieces = this.locatedPieces(!this.isWhitePlayer)
+      const opponentPieces = this.getPieces(!this.isWhitePlayer)
       for (let i = 0; i < opponentPieces.length; i++) {
          const lpiece = opponentPieces[i]
          if (lpiece.attacks(this, king)) return true
@@ -143,7 +140,7 @@ export class Chess {
 
    possibleMoves(): Move[] {
       const accu: Move[] = []
-      const playerPieces = this.locatedPieces(this.isWhitePlayer)
+      const playerPieces = this.getPieces(this.isWhitePlayer)
       const king = this.playerLocatedKing()
       console.log(`king ${king.toString()}`)
       for (let i = 0; i < playerPieces.length; i++) {
