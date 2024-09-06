@@ -1,4 +1,9 @@
 
+import { Square } from './Square'
+import { Chess } from './Chess'
+import { Bishop } from './Bishop'
+
+
 export enum PieceType {
    PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING,
 }
@@ -7,7 +12,15 @@ export class Piece {
    constructor(
       public type: PieceType,
       public isWhite: bool,
+      public square: Square,
    ) {
+   }
+
+   clone() : Piece {
+      if (this.type === PieceType.BISHOP) {
+         return new Bishop(this.isWhite, this.square.clone())
+      }
+      return new Piece(this.type, this.isWhite, this.square.clone())
    }
 
    isPawn(): bool {
@@ -34,8 +47,19 @@ export class Piece {
       return this.type === PieceType.KING
    }
 
+   static dummy: Piece = new Piece(PieceType.PAWN, true, new Square(0, 0))
+
    toString(): string {
-      let s = "prnbqk".charAt(this.type)
+      return this.toTypeString() + this.square.toString()
+   }
+
+   toTypeString(): string {
+      const s = "prnbqk".charAt(this.type)
       return this.isWhite ? s.toUpperCase() : s
    }
+
+   attacks(chess: Chess, target: Piece): bool {
+      return false
+   }
+
 }

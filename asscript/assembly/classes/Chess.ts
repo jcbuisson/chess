@@ -1,7 +1,7 @@
 
 // import { PieceType, Piece } from './Piece'
-import { PieceType, LPiece } from './LPiece'
-import { LBishop } from './LBishop'
+import { PieceType, Piece } from './Piece'
+import { Bishop } from './Bishop'
 import { Square } from './Square'
 // import { LocatedPiece } from './LocatedPiece'
 // import { LocatedBishop } from './LocatedBishop'
@@ -10,13 +10,9 @@ import { MoveType, Move } from './Move'
 type Nullable<T> = T | null
 
 
-// rnbkqbnrpppppppp..............................PPPPPPPPRNBQKBNR
-// r00n01b02k03
-// liste de LocatedPiece
 export class Chess {
    constructor(
-      // public rows: Nullable<Piece>[][],
-      public lPieces: LPiece[],
+      public lPieces: Piece[],
       public isWhitePlayer: boolean,
       public isKingCastlingPossible: boolean,
       public isQueenCastlingPossible: boolean,
@@ -42,11 +38,11 @@ export class Chess {
    static createInitialBoard(): Chess {
       return new Chess(
          [
-            new LPiece(PieceType.ROOK, false, new Square(0, 0)), new LPiece(PieceType.KNIGHT, false, new Square(0, 1)), new LPiece(PieceType.BISHOP, false, new Square(0, 2)),  new LPiece(PieceType.QUEEN, false, new Square(0, 3)), new LPiece(PieceType.KING, false, new Square(0, 4)), new LBishop(false, new Square(4, 7)), new LPiece(PieceType.KNIGHT, false, new Square(0, 6)), new LPiece(PieceType.ROOK, false, new Square(0, 7)),
-            new LPiece(PieceType.PAWN, false, new Square(1, 0)), new LPiece(PieceType.PAWN, false, new Square(1, 1)), new LPiece(PieceType.PAWN, false, new Square(1, 2)), new LPiece(PieceType.PAWN, false, new Square(1, 3)), new LPiece(PieceType.PAWN, false, new Square(1, 4)), new LPiece(PieceType.PAWN, false, new Square(1, 5)), new LPiece(PieceType.PAWN, false, new Square(1, 6)), new LPiece(PieceType.PAWN, false, new Square(1, 7)),
+            new Piece(PieceType.ROOK, false, new Square(0, 0)), new Piece(PieceType.KNIGHT, false, new Square(0, 1)), new Piece(PieceType.BISHOP, false, new Square(0, 2)),  new Piece(PieceType.QUEEN, false, new Square(0, 3)), new Piece(PieceType.KING, false, new Square(0, 4)), new Bishop(false, new Square(4, 7)), new Piece(PieceType.KNIGHT, false, new Square(0, 6)), new Piece(PieceType.ROOK, false, new Square(0, 7)),
+            new Piece(PieceType.PAWN, false, new Square(1, 0)), new Piece(PieceType.PAWN, false, new Square(1, 1)), new Piece(PieceType.PAWN, false, new Square(1, 2)), new Piece(PieceType.PAWN, false, new Square(1, 3)), new Piece(PieceType.PAWN, false, new Square(1, 4)), new Piece(PieceType.PAWN, false, new Square(1, 5)), new Piece(PieceType.PAWN, false, new Square(1, 6)), new Piece(PieceType.PAWN, false, new Square(1, 7)),
 
-            new LPiece(PieceType.PAWN, true, new Square(6, 0)), new LPiece(PieceType.PAWN, true, new Square(6, 1)), new LPiece(PieceType.PAWN, true, new Square(6, 2)), new LPiece(PieceType.PAWN, true, new Square(6, 3)), new LPiece(PieceType.PAWN, true, new Square(6, 4)), new LPiece(PieceType.PAWN, true, new Square(6, 5)), new LPiece(PieceType.PAWN, true, new Square(6, 6)), new LPiece(PieceType.PAWN, true, new Square(6, 7)),
-            new LPiece(PieceType.ROOK, true, new Square(7, 0)), new LPiece(PieceType.KNIGHT, true, new Square(7, 1)), new LPiece(PieceType.BISHOP, true, new Square(7, 2)), new LPiece(PieceType.QUEEN, true, new Square(7, 3)), new LPiece(PieceType.KING, true, new Square(7, 4)), new LPiece(PieceType.BISHOP, true, new Square(7, 5)), new LPiece(PieceType.KNIGHT, true, new Square(7, 6)), new LPiece(PieceType.ROOK, true, new Square(7, 7)),
+            new Piece(PieceType.PAWN, true, new Square(6, 0)), new Piece(PieceType.PAWN, true, new Square(6, 1)), new Piece(PieceType.PAWN, true, new Square(6, 2)), new Piece(PieceType.PAWN, true, new Square(6, 3)), new Piece(PieceType.PAWN, true, new Square(6, 4)), new Piece(PieceType.PAWN, true, new Square(6, 5)), new Piece(PieceType.PAWN, true, new Square(6, 6)), new Piece(PieceType.PAWN, true, new Square(6, 7)),
+            new Piece(PieceType.ROOK, true, new Square(7, 0)), new Piece(PieceType.KNIGHT, true, new Square(7, 1)), new Piece(PieceType.BISHOP, true, new Square(7, 2)), new Piece(PieceType.QUEEN, true, new Square(7, 3)), new Piece(PieceType.KING, true, new Square(7, 4)), new Piece(PieceType.BISHOP, true, new Square(7, 5)), new Piece(PieceType.KNIGHT, true, new Square(7, 6)), new Piece(PieceType.ROOK, true, new Square(7, 7)),
          ],
          true, // white to move
          true, // king castling possible
@@ -55,7 +51,7 @@ export class Chess {
    }
 
    clone(): Chess {
-      const lPieces: LPiece[] = []
+      const lPieces: Piece[] = []
       for (let i = 0; i < this.lPieces.length; i++) {
          lPieces.push(this.lPieces[i].clone())
       }
@@ -67,7 +63,7 @@ export class Chess {
       )
    }
 
-   pieceAt(row: u8, col: u8): Nullable<LPiece> {
+   pieceAt(row: u8, col: u8): Nullable<Piece> {
       // return this.rows[row][col]
       for (let i = 0; i < this.lPieces.length; i++) {
          const lPiece = this.lPieces[i]
@@ -88,25 +84,25 @@ export class Chess {
       return this
    }
 
-   deletePiece(lPiece: LPiece): void {
-      const lPieces = []
-      for (let i = 0; i < this.lPieces.length; i++) {
-         const lp = this.lPieces[i]
-         if (lp.square.rowIndex === lPiece.square.rowIndex && lp.square.colIndex === lPiece.square.colIndex) continue
-         lPieces.push(lp)
-      }
-      this.lPieces = lPieces
-   }
+   // deletePiece(lPiece: Piece): void {
+   //    const lPieces = []
+   //    for (let i = 0; i < this.lPieces.length; i++) {
+   //       const lp = this.lPieces[i]
+   //       if (lp.square.rowIndex === lPiece.square.rowIndex && lp.square.colIndex === lPiece.square.colIndex) continue
+   //       lPieces.push(lp)
+   //    }
+   //    this.lPieces = lPieces
+   // }
 
-   deletePieceAt(square: Square): void {
-      const lPieces = []
-      for (let i = 0; i < this.lPieces.length; i++) {
-         const lp = this.lPieces[i]
-         if (lp.square.rowIndex === square.rowIndex && lp.square.colIndex === square.colIndex) continue
-         lPieces.push(lp)
-      }
-      this.lPieces = lPieces
-   }
+   // deletePieceAt(square: Square): void {
+   //    const lPieces = []
+   //    for (let i = 0; i < this.lPieces.length; i++) {
+   //       const lp = this.lPieces[i]
+   //       if (lp.square.rowIndex === square.rowIndex && lp.square.colIndex === square.colIndex) continue
+   //       lPieces.push(lp)
+   //    }
+   //    this.lPieces = lPieces
+   // }
 
    isSquareEmpty(row: u8, col: u8): bool {
       for (let i = 0; i < this.lPieces.length; i++) {
@@ -116,8 +112,8 @@ export class Chess {
       return true
    }
 
-   locatedPieces(isWhitePlayer: bool): LPiece[] {
-      const accu: LPiece[] = []
+   locatedPieces(isWhitePlayer: bool): Piece[] {
+      const accu: Piece[] = []
       for (let i = 0; i < this.lPieces.length; i++) {
          const lp = this.lPieces[i]
          if (lp.isWhite === isWhitePlayer) accu.push(lp)
@@ -125,21 +121,21 @@ export class Chess {
       return accu
    }
 
-   playerLocatedKing(): LPiece {
-      const playerLPieces = this.locatedPieces(this.isWhitePlayer)
-      for (let i = 0; i < playerLPieces.length; i++) {
-         const lpiece = playerLPieces[i]
+   playerLocatedKing(): Piece {
+      const playerPieces = this.locatedPieces(this.isWhitePlayer)
+      for (let i = 0; i < playerPieces.length; i++) {
+         const lpiece = playerPieces[i]
          if (lpiece.type === PieceType.KING && lpiece.isWhite === this.isWhitePlayer) return lpiece
       }
-      return LPiece.dummy // should never happen
+      return Piece.dummy // should never happen
    }
 
 
    // indicates if the side to move is in check
-   inCheck(king: LPiece): bool {
-      const opponentLPieces = this.locatedPieces(!this.isWhitePlayer)
-      for (let i = 0; i < opponentLPieces.length; i++) {
-         const lpiece = opponentLPieces[i]
+   inCheck(king: Piece): bool {
+      const opponentPieces = this.locatedPieces(!this.isWhitePlayer)
+      for (let i = 0; i < opponentPieces.length; i++) {
+         const lpiece = opponentPieces[i]
          if (lpiece.attacks(this, king)) return true
       }
       return false
@@ -147,11 +143,11 @@ export class Chess {
 
    possibleMoves(): Move[] {
       const accu: Move[] = []
-      const playerLPieces = this.locatedPieces(this.isWhitePlayer)
+      const playerPieces = this.locatedPieces(this.isWhitePlayer)
       const king = this.playerLocatedKing()
       console.log(`king ${king.toString()}`)
-      for (let i = 0; i < playerLPieces.length; i++) {
-         const locatedPiece = playerLPieces.at(i)
+      for (let i = 0; i < playerPieces.length; i++) {
+         const locatedPiece = playerPieces.at(i)
 
          if (locatedPiece.isPawn()) {
             const targetRow: u8 = locatedPiece.isWhite ? locatedPiece.square.rowIndex - 1 : locatedPiece.square.rowIndex + 1

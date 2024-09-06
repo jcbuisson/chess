@@ -3,7 +3,7 @@
 import { PieceType, Piece } from './classes/Piece'
 import { Square } from './classes/Square'
 import { Move } from './classes/Move'
-import { LPiece } from './classes/LPiece'
+import { Piece } from './classes/Piece'
 import { Chess } from './classes/Chess'
 
 
@@ -62,7 +62,7 @@ export function testChessToAscii(): string {
 }
 
 export function testLocatedPieces(): string {
-   const lpieces: LPiece[] = currentChess.locatedPieces(true)
+   const lpieces: Piece[] = currentChess.locatedPieces(true)
    return lpieces.reduce((accu, lpiece) => `${accu}, ${lpiece.toString()}`, '')
 }
 

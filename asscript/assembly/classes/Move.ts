@@ -1,7 +1,7 @@
 
 // import { Piece } from './Piece'
 import { Square } from './Square'
-import { LPiece } from './LPiece'
+import { Piece } from './Piece'
 import { Chess } from './Chess'
 
 
@@ -16,9 +16,9 @@ export enum MoveType {
 export class Move {
    constructor(
       public type: MoveType,
-      public locatedPiece: LPiece,
+      public locatedPiece: Piece,
       public to: Square,
-      public promotion: Nullable<LPiece>,
+      public promotion: Nullable<Piece>,
       public resultingChess: Chess,
    ) {
    }

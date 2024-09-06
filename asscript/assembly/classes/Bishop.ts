@@ -1,17 +1,17 @@
+// import { PieceType, Piece } from "./Piece";
 import { PieceType, Piece } from "./Piece";
-import { LocatedPiece } from "./LocatedPiece";
 import { Square } from "./Square";
 import { Chess } from "./Chess";
 
 
-export class LocatedBishop extends LocatedPiece {
+export class Bishop extends Piece {
 
    constructor(isWhite: bool, square: Square) {
-      super(new Piece(PieceType.BISHOP, isWhite), square)
+      super(PieceType.BISHOP, isWhite, square)
    }
 
    // return true if current located piece attacks `target` located piece
-   attacks(chess: Chess, target: LocatedPiece): bool {
+   attacks(chess: Chess, target: Piece): bool {
       const srow = this.square.rowIndex
       const scol = this.square.colIndex
       const trow = target.square.rowIndex
