@@ -6,6 +6,10 @@ export class Square {
    ) {
    }
 
+   clone(): Square {
+      return new Square(this.rowIndex, this.colIndex)
+   }
+
    toString(): string {
       return "abcdefgh".charAt(this.colIndex) + "87654321".charAt(this.rowIndex)
    }

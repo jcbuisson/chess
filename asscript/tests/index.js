@@ -5,7 +5,8 @@ import { testChessToAscii, testLocatedPieces, testMoves } from "../build/debug.j
 // console.log("ok")
 
 
-console.log('testChessToAscii', testChessToAscii())
+console.log('testChessToAscii')
+console.log(testChessToAscii())
 
 console.log('testLocatedPieces', testLocatedPieces())
 
