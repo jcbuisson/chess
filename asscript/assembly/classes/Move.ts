@@ -15,7 +15,7 @@ export enum MoveType {
 export class Move {
    constructor(
       public type: MoveType,
-      public locatedPiece: Piece,
+      public piece: Piece,
       public to: Square,
       public promotion: Nullable<Piece>,
       public resultingChess: Chess,
@@ -23,6 +23,6 @@ export class Move {
    }
 
    toString(): string {
-      return this.locatedPiece.toTypeString() + ' ' + this.locatedPiece.square.toString() + '-' + this.to.toString()
+      return this.piece.toTypeString() + ' ' + this.piece.square.toString() + '-' + this.to.toString()
    }
 }

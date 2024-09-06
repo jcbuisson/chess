@@ -1,7 +1,9 @@
 
 import { Square } from './Square'
 import { Chess } from './Chess'
+import { Pawn } from './Pawn'
 import { Bishop } from './Bishop'
+import { Move } from "./Move"
 
 
 export enum PieceType {
@@ -17,6 +19,9 @@ export class Piece {
    }
 
    clone() : Piece {
+      if (this.type === PieceType.PAWN) {
+         return new Pawn(this.isWhite, this.square.clone())
+      }
       if (this.type === PieceType.BISHOP) {
          return new Bishop(this.isWhite, this.square.clone())
       }
@@ -56,6 +61,10 @@ export class Piece {
    toTypeString(): string {
       const s = "prnbqk".charAt(this.type)
       return this.isWhite ? s.toUpperCase() : s
+   }
+
+   possibleMoves(chess: Chess, king: Piece): Move[] {
+      return []
    }
 
    attacks(chess: Chess, target: Piece): bool {
