@@ -12,21 +12,48 @@ export class Pawn extends Piece {
 
    possibleMoves(chess: Chess, king: Piece): Move[] {
       const accu: Move[] = []
-      const targetRow: u8 = this.isWhite ? this.square.rowIndex - 1 : this.square.rowIndex + 1
-      if (targetRow >= 0 && targetRow <= 7 && chess.isSquareEmpty(targetRow, this.square.colIndex)) {
-         const targetSquare = new Square(targetRow, this.square.colIndex)
+      // try 1-square move
+      let incrRow: i8 = this.isWhite ? 1 : - 1
+      let targetSquare = this.square.move(incrRow, 0)
+      if (chess.isSquareEmpty(targetSquare)) {
          const resultingChess = chess.clone().movePiece(this.square, targetSquare)
-         const move = new Move(MoveType.MOVE, this, targetSquare, null, resultingChess)
-         if (!resultingChess.inCheck(king)) accu.push(move)
-      }
-      const hasNotMoved: boolean = this.isWhite ? this.square.rowIndex === 6 : this.square.rowIndex === 1
-      if (hasNotMoved) {
-         const targetRow = this.isWhite ? this.square.rowIndex - 2 : this.square.rowIndex + 2
-         if (targetRow >= 0 && targetRow <= 7 && chess.isSquareEmpty(targetRow, this.square.colIndex)) {
-            const targetSquare = new Square(targetRow, this.square.colIndex)
-            const resultingChess = chess.clone().movePiece(this.square, targetSquare)
+         if (!resultingChess.inCheck(king)) {
             const move = new Move(MoveType.MOVE, this, targetSquare, null, resultingChess)
-            if (!resultingChess.inCheck(king)) accu.push(move)
+            accu.push(move)
+         }
+         if (this.square.rowIndex === Square.pawnRow(this.isWhite)) {
+            // pawn is still on its starting row: try 2-square move
+            incrRow = this.isWhite ? 2 : - 2
+            targetSquare = this.square.move(incrRow, 0)
+            if (chess.isSquareEmpty(targetSquare)) {
+               const resultingChess = chess.clone().movePiece(this.square, targetSquare)
+               if (!resultingChess.inCheck(king)) {
+                  const move = new Move(MoveType.MOVE, this, targetSquare, null, resultingChess)
+                  accu.push(move)
+               }
+            }
+         }
+      }
+      // try eat left
+      incrRow = this.isWhite ? 1 : - 1
+      targetSquare = this.square.move(incrRow, -1)
+      let attackedPiece = chess.pieceAt(targetSquare.rowIndex, targetSquare.colIndex)
+      if (attackedPiece) {
+         const resultingChess = chess.clone().deletePiece(attackedPiece).movePiece(this.square, targetSquare)
+         if (!resultingChess.inCheck(king)) {
+            const move = new Move(MoveType.EAT, this, targetSquare, null, resultingChess)
+            accu.push(move)
+         }
+      }
+      // try eat right
+      incrRow = this.isWhite ? 1 : - 1
+      targetSquare = this.square.move(incrRow, 1)
+      attackedPiece = chess.pieceAt(targetSquare.rowIndex, targetSquare.colIndex)
+      if (attackedPiece) {
+         const resultingChess = chess.clone().deletePiece(attackedPiece).movePiece(this.square, targetSquare)
+         if (!resultingChess.inCheck(king)) {
+            const move = new Move(MoveType.EAT, this, targetSquare, null, resultingChess)
+            accu.push(move)
          }
       }
       return accu

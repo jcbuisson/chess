@@ -18,7 +18,7 @@ export class Piece {
    ) {
    }
 
-   clone() : Piece {
+   clone(): Piece {
       if (this.type === PieceType.PAWN) {
          return new Pawn(this.isWhite, this.square.clone())
       }
@@ -63,10 +63,12 @@ export class Piece {
       return this.isWhite ? s.toUpperCase() : s
    }
 
+   // see subclasses Pawn, Bishop etc.
    possibleMoves(chess: Chess, king: Piece): Move[] {
       return []
    }
 
+   // see subclasses Pawn, Bishop etc.
    attacks(chess: Chess, target: Piece): bool {
       return false
    }

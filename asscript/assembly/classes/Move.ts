@@ -23,6 +23,7 @@ export class Move {
    }
 
    toString(): string {
-      return this.piece.toTypeString() + ' ' + this.piece.square.toString() + '-' + this.to.toString()
+      const type = this.type === MoveType.EAT ? 'x' : '-'
+      return this.piece.toTypeString() + ' ' + this.piece.square.toString() + type + this.to.toString()
    }
 }
