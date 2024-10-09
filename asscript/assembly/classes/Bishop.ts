@@ -12,6 +12,28 @@ export class Bishop extends Piece {
 
    possibleMoves(chess: Chess, king: Piece): Move[] {
       const accu: Move[] = []
+      // try moves on both diagonals
+      const rowIncr: i8 = chess.isWhitePlayer ? 1 : -1
+      for (let colIncr: i8 = -1; colIncr < 2; colIncr += 2) {
+         let square = this.square.clone()
+         console.log('square0 ' + square.toString())
+         console.log('colIncr ' + colIncr.toString() + ' rowIncr ' + rowIncr.toString())
+         while (true) {
+            square = square.move(rowIncr, colIncr)
+            if (!square.isValid()) break
+            console.log('square ' + square.toString() + (chess.isSquareEmpty(square) ? ' empty' : ' not empty'))
+            if (chess.isSquareEmpty(square)) {
+               const resultingChess = chess.clone().movePiece(this.square, square)
+               const move = new Move(MoveType.MOVE, this, square, null, resultingChess)
+               accu.push(move)
+            } else {
+               // const resultingChess = chess.clone().eatPiece(this.square, square)
+               // const move = new Move(MoveType.EAT, this, square, null, resultingChess)
+               // accu.push(move)
+               break
+            }
+         }
+      }
       return accu
    }
 

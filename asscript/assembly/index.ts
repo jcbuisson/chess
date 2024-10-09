@@ -91,3 +91,7 @@ export function moveResultingChess(move: Move): Chess {
 export function chessPossibleMoves(chess: Chess): Move[] {
    return chess.possibleMoves()
 }
+
+export function chessTogglePlayer(chess: Chess): bool {
+   return chess.togglePlayer()
+}

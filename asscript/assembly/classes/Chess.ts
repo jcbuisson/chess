@@ -53,7 +53,7 @@ export class Chess {
    static createInitialBoard(): Chess {
       return new Chess(
          [
-            new Piece(PieceType.ROOK, false, new Square(7, 0)), new Piece(PieceType.KNIGHT, false, new Square(7, 1)), new Piece(PieceType.BISHOP, false, new Square(7, 2)),  new Piece(PieceType.QUEEN, false, new Square(7, 3)), new Piece(PieceType.KING, false, new Square(7, 4)), new Bishop(false, new Square(2, 6)), new Piece(PieceType.KNIGHT, false, new Square(7, 6)), new Piece(PieceType.ROOK, false, new Square(7, 7)),
+            new Piece(PieceType.ROOK, false, new Square(7, 0)), new Piece(PieceType.KNIGHT, false, new Square(7, 1)), new Piece(PieceType.BISHOP, false, new Square(7, 2)),  new Piece(PieceType.QUEEN, false, new Square(7, 3)), new Piece(PieceType.KING, false, new Square(7, 4)), new Bishop(false, new Square(7, 5)), new Piece(PieceType.KNIGHT, false, new Square(7, 6)), new Piece(PieceType.ROOK, false, new Square(7, 7)),
             new Pawn(false, new Square(6, 0)), new Pawn(false, new Square(6, 1)), new Pawn(false, new Square(6, 2)), new Pawn(false, new Square(6, 3)), new Pawn(false, new Square(6, 4)), new Pawn(false, new Square(6, 5)), new Pawn(false, new Square(6, 6)), new Pawn(false, new Square(6, 7)),
 
             new Pawn(true, new Square(1, 0)), new Pawn(true, new Square(1, 1)), new Pawn(true, new Square(1, 2)), new Pawn(true, new Square(1, 3)), new Pawn(true, new Square(1, 4)), new Pawn(true, new Square(1, 5)), new Pawn(true, new Square(1, 6)), new Pawn(true, new Square(1, 7)),
@@ -134,6 +134,11 @@ export class Chess {
          if (lp.isWhite === isWhitePlayer) accu.push(lp)
       }
       return accu
+   }
+
+   togglePlayer(): bool {
+      this.isWhitePlayer = !this.isWhitePlayer
+      return this.isWhitePlayer
    }
 
    playerKing(): Piece {

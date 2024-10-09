@@ -24,6 +24,12 @@ export class Square {
       return isWhite ? 1 : 6
    }
 
+   isValid(): bool {
+      if (this.rowIndex < 0 || this.rowIndex > 7) return false
+      if (this.colIndex < 0 || this.colIndex > 7) return false
+      return true
+   }
+
    toString(): string {
       // return "abcdefgh".charAt(this.colIndex) + "87654321".charAt(this.rowIndex)
       return "abcdefgh".charAt(this.colIndex) + "12345678".charAt(this.rowIndex)
