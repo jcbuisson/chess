@@ -52,24 +52,24 @@ export function alphaBeta(
 }
 
 
-// global state
-const currentChess: Chess = Chess.createInitialBoard()
+// // global state
+// const currentChess: Chess = Chess.createInitialBoard()
 
-export function testLocatedPieces(): string {
-   const lpieces: Piece[] = currentChess.piecesOf(true)
-   return lpieces.reduce((accu, lpiece) => `${accu}, ${lpiece.toString()}`, '')
-}
+// export function testLocatedPieces(): string {
+//    const lpieces: Piece[] = currentChess.piecesOf(true)
+//    return lpieces.reduce((accu, lpiece) => `${accu}, ${lpiece.toString()}`, '')
+// }
 
-export function testMoves(): string {
-   const moves: Move[] = currentChess.possibleMoves()
-   // return moves.reduce((accu, move) => `${accu}, ${move.toString()}`, '')
-   let accu = ''
-   for (let i = 0; i < moves.length; i++) {
-      const move = moves[i]
-      accu += move.toString() + '\n' + move.resultingChess.toAscii() + '\n'
-   }
-   return accu
-}
+// export function testMoves(): string {
+//    const moves: Move[] = currentChess.possibleMoves()
+//    // return moves.reduce((accu, move) => `${accu}, ${move.toString()}`, '')
+//    let accu = ''
+//    for (let i = 0; i < moves.length; i++) {
+//       const move = moves[i]
+//       accu += move.toString() + '\n' + move.resultingChess.toAscii() + '\n'
+//    }
+//    return accu
+// }
 
 
 export function createInitialBoard(): Chess {
@@ -89,5 +89,5 @@ export function moveToString(move: Move): string {
 // }
 
 export function chessPossibleMoves(chess: Chess): Move[] {
-   return currentChess.possibleMoves()
+   return chess.possibleMoves()
 }
