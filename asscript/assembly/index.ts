@@ -80,6 +80,10 @@ export function chessToAscii(chess: Chess): string {
    return chess.toAscii()
 }
 
+export function moveToString(move: Move): string {
+   return move.toString()
+}
+
 // export function chessPiecesOf(chess: Chess, isWhitePlayer: bool): Piece[] {
 
 // }
