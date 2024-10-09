@@ -16,12 +16,12 @@ export class Bishop extends Piece {
       const rowIncr: i8 = chess.isWhitePlayer ? 1 : -1
       for (let colIncr: i8 = -1; colIncr < 2; colIncr += 2) {
          let square = this.square.clone()
-         console.log('square0 ' + square.toString())
-         console.log('colIncr ' + colIncr.toString() + ' rowIncr ' + rowIncr.toString())
+         // console.log('square0 ' + square.toString())
+         // console.log('colIncr ' + colIncr.toString() + ' rowIncr ' + rowIncr.toString())
          while (true) {
             square = square.move(rowIncr, colIncr)
             if (!square.isValid()) break
-            console.log('square ' + square.toString() + (chess.isSquareEmpty(square) ? ' empty' : ' not empty'))
+            // console.log('square ' + square.toString() + (chess.isSquareEmpty(square) ? ' empty' : ' not empty'))
             const piece = chess.pieceAt2(square)
             if (piece === null) {
                const resultingChess = chess.clone().movePiece(this.square, square)
@@ -29,7 +29,7 @@ export class Bishop extends Piece {
                accu.push(move)
             } else {
                if (piece.isWhite !== chess.isWhitePlayer) {
-                  const resultingChess = chess.clone().eatPiece(this.square, square)
+                  const resultingChess = chess.clone().eatPiece(this, piece)
                   const move = new Move(MoveType.EAT, this, square, null, resultingChess)
                   accu.push(move)
                }

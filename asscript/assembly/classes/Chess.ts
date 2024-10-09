@@ -106,19 +106,14 @@ export class Chess {
       return this
    }
 
-   eatPiece(from: Square, to: Square) : Chess {
-      for (let i = 0; i < this.pieces.length; i++) {
-         const piece = this.pieces[i]
-         if (piece.square.rowIndex === from.rowIndex && piece.square.colIndex === from.colIndex) {
-            piece.square.rowIndex = to.rowIndex
-            piece.square.colIndex = to.colIndex
-            break
-         }
-      }
+   eatPiece(from: Piece, to: Piece) : Chess {
+      from.square = to.square.clone()
+      this.pieces.slice(this.pieces.indexOf(to), 1)
       return this
    }
 
    deletePiece(piece: Piece): Chess {
+      // this.pieces.slice(this.pieces.indexOf(piece), 1)  // À TESTER
       const pieces: Piece[] = []
       for (let i = 0; i < this.pieces.length; i++) {
          const lp = this.pieces[i]
