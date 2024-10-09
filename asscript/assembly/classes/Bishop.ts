@@ -22,14 +22,17 @@ export class Bishop extends Piece {
             square = square.move(rowIncr, colIncr)
             if (!square.isValid()) break
             console.log('square ' + square.toString() + (chess.isSquareEmpty(square) ? ' empty' : ' not empty'))
-            if (chess.isSquareEmpty(square)) {
+            const piece = chess.pieceAt2(square)
+            if (piece === null) {
                const resultingChess = chess.clone().movePiece(this.square, square)
                const move = new Move(MoveType.MOVE, this, square, null, resultingChess)
                accu.push(move)
             } else {
-               // const resultingChess = chess.clone().eatPiece(this.square, square)
-               // const move = new Move(MoveType.EAT, this, square, null, resultingChess)
-               // accu.push(move)
+               if (piece.isWhite !== chess.isWhitePlayer) {
+                  const resultingChess = chess.clone().eatPiece(this.square, square)
+                  const move = new Move(MoveType.EAT, this, square, null, resultingChess)
+                  accu.push(move)
+               }
                break
             }
          }

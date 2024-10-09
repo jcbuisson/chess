@@ -80,29 +80,49 @@ export class Chess {
 
    pieceAt(row: u8, col: u8): Nullable<Piece> {
       for (let i = 0; i < this.pieces.length; i++) {
-         const lPiece = this.pieces[i]
-         if (lPiece.square.rowIndex === row && lPiece.square.colIndex === col) return lPiece
+         const piece = this.pieces[i]
+         if (piece.square.rowIndex === row && piece.square.colIndex === col) return piece
+      }
+      return null
+   }
+
+   pieceAt2(square: Square): Nullable<Piece> {
+      for (let i = 0; i < this.pieces.length; i++) {
+         const piece = this.pieces[i]
+         if (piece.square.rowIndex === square.rowIndex && piece.square.colIndex === square.colIndex) return piece
       }
       return null
    }
 
    movePiece(from: Square, to: Square) : Chess {
       for (let i = 0; i < this.pieces.length; i++) {
-         const lPiece = this.pieces[i]
-         if (lPiece.square.rowIndex === from.rowIndex && lPiece.square.colIndex === from.colIndex) {
-            lPiece.square.rowIndex = to.rowIndex
-            lPiece.square.colIndex = to.colIndex
+         const piece = this.pieces[i]
+         if (piece.square.rowIndex === from.rowIndex && piece.square.colIndex === from.colIndex) {
+            piece.square.rowIndex = to.rowIndex
+            piece.square.colIndex = to.colIndex
             break
          }
       }
       return this
    }
 
-   deletePiece(lPiece: Piece): Chess {
+   eatPiece(from: Square, to: Square) : Chess {
+      for (let i = 0; i < this.pieces.length; i++) {
+         const piece = this.pieces[i]
+         if (piece.square.rowIndex === from.rowIndex && piece.square.colIndex === from.colIndex) {
+            piece.square.rowIndex = to.rowIndex
+            piece.square.colIndex = to.colIndex
+            break
+         }
+      }
+      return this
+   }
+
+   deletePiece(piece: Piece): Chess {
       const pieces: Piece[] = []
       for (let i = 0; i < this.pieces.length; i++) {
          const lp = this.pieces[i]
-         if (lp.square.rowIndex === lPiece.square.rowIndex && lp.square.colIndex === lPiece.square.colIndex) continue
+         if (lp.square.rowIndex === piece.square.rowIndex && lp.square.colIndex === piece.square.colIndex) continue
          pieces.push(lp)
       }
       this.pieces = pieces
