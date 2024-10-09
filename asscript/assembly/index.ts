@@ -1,7 +1,5 @@
 // The entry file of your WebAssembly module.
 
-import { PieceType, Piece } from './classes/Piece'
-import { Square } from './classes/Square'
 import { Move } from './classes/Move'
 import { Piece } from './classes/Piece'
 import { Chess } from './classes/Chess'
