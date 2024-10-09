@@ -55,10 +55,6 @@ export function alphaBeta(
 // global state
 const currentChess: Chess = Chess.createInitialBoard()
 
-export function testChessToAscii(): string {
-   return currentChess.toAscii()
-}
-
 export function testLocatedPieces(): string {
    const lpieces: Piece[] = currentChess.piecesOf(true)
    return lpieces.reduce((accu, lpiece) => `${accu}, ${lpiece.toString()}`, '')
@@ -73,4 +69,21 @@ export function testMoves(): string {
       accu += move.toString() + '\n' + move.resultingChess.toAscii() + '\n'
    }
    return accu
+}
+
+
+export function createInitialBoard(): Chess {
+   return Chess.createInitialBoard()
+}
+
+export function chessToAscii(chess: Chess): string {
+   return chess.toAscii()
+}
+
+// export function chessPiecesOf(chess: Chess, isWhitePlayer: bool): Piece[] {
+
+// }
+
+export function chessPossibleMoves(chess: Chess): Move[] {
+   return currentChess.possibleMoves()
 }
