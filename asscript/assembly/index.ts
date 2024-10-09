@@ -84,9 +84,9 @@ export function moveToString(move: Move): string {
    return move.toString()
 }
 
-// export function chessPiecesOf(chess: Chess, isWhitePlayer: bool): Piece[] {
-
-// }
+export function moveResultingChess(move: Move): Chess {
+   return move.resultingChess
+}
 
 export function chessPossibleMoves(chess: Chess): Move[] {
    return chess.possibleMoves()

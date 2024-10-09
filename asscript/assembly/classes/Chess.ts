@@ -158,9 +158,9 @@ export class Chess {
    possibleMoves(): Move[] {
       const accu: Move[] = []
       const playerPieces = this.piecesOf(this.isWhitePlayer)
-      console.log(`playerPieces ${playerPieces}`)
+      // console.log(`playerPieces ${playerPieces}`)
       const king = this.playerKing()
-      console.log(`king ${king.toString()}`)
+      // console.log(`king ${king.toString()}`)
       for (let i = 0; i < playerPieces.length; i++) {
          const piece = playerPieces.at(i)
          const pieceMoves = piece.possibleMoves(this, king)
