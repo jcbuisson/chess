@@ -59,7 +59,7 @@ export class Bishop extends Piece {
       let row = srow > trow ? srow-1 : srow+1
       let col = scol > tcol ? scol-1 : scol+1
       while (row !== trow) {
-         if (!chess.isRowColEmpty(row, col)) return false
+         if (!chess.isSquareEmpty(new Square(row, col))) return false
          row = srow > trow ? row-1 : row+1
          col = scol > tcol ? col-1 : col+1
       }

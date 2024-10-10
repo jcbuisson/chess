@@ -72,6 +72,7 @@ export class Chess {
       }
       return new Chess(
          pieces,
+         // this.pieces,
          this.isWhitePlayer,
          this.isKingCastlingPossible,
          this.isQueenCastlingPossible
@@ -102,7 +103,8 @@ export class Chess {
    }
 
    deletePiece(piece: Piece): Chess {
-      // this.pieces.slice(this.pieces.indexOf(piece), 1)  // À TESTER
+      // À TESTER
+      // this.pieces.slice(this.pieces.indexOf(piece), 1)
       const pieces: Piece[] = []
       for (let i = 0; i < this.pieces.length; i++) {
          const lp = this.pieces[i]
@@ -111,10 +113,6 @@ export class Chess {
       }
       this.pieces = pieces
       return this
-   }
-
-   isRowColEmpty(row: u8, col: u8): bool {
-      return this.pieceAtSquare(new Square(row, col)) === null
    }
 
    isSquareEmpty(square: Square): bool {
