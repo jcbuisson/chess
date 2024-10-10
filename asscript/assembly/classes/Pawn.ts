@@ -37,7 +37,7 @@ export class Pawn extends Piece {
       // try eat left
       incrRow = this.isWhite ? 1 : - 1
       targetSquare = this.square.move(incrRow, -1)
-      let attackedPiece = chess.pieceAt(targetSquare.rowIndex, targetSquare.colIndex)
+      let attackedPiece = chess.pieceAtSquare(targetSquare)
       if (attackedPiece) {
          const resultingChess = chess.clone().deletePiece(attackedPiece).movePiece(this.square, targetSquare)
          if (!resultingChess.inCheck(king)) {
@@ -48,7 +48,7 @@ export class Pawn extends Piece {
       // try eat right
       incrRow = this.isWhite ? 1 : - 1
       targetSquare = this.square.move(incrRow, 1)
-      attackedPiece = chess.pieceAt(targetSquare.rowIndex, targetSquare.colIndex)
+      attackedPiece = chess.pieceAtSquare(targetSquare)
       if (attackedPiece) {
          const resultingChess = chess.clone().deletePiece(attackedPiece).movePiece(this.square, targetSquare)
          if (!resultingChess.inCheck(king)) {

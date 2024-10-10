@@ -39,7 +39,7 @@ export class Chess {
       for (let row: u8 = 7; row < 255; row--) {
          let line = ''
          for (let col: u8 = 0; col < 8; col++) {
-            const p = this.pieceAt(row, col)
+            const p = this.pieceAtSquare(new Square(row, col))
             const x = p === null ? '.' : p.toTypeString()
             line += ` ${x} `
          }
@@ -78,15 +78,7 @@ export class Chess {
       )
    }
 
-   pieceAt(row: u8, col: u8): Nullable<Piece> {
-      for (let i = 0; i < this.pieces.length; i++) {
-         const piece = this.pieces[i]
-         if (piece.square.rowIndex === row && piece.square.colIndex === col) return piece
-      }
-      return null
-   }
-
-   pieceAt2(square: Square): Nullable<Piece> {
+   pieceAtSquare(square: Square): Nullable<Piece> {
       for (let i = 0; i < this.pieces.length; i++) {
          const piece = this.pieces[i]
          if (piece.square.rowIndex === square.rowIndex && piece.square.colIndex === square.colIndex) return piece
@@ -95,13 +87,10 @@ export class Chess {
    }
 
    movePiece(from: Square, to: Square) : Chess {
-      for (let i = 0; i < this.pieces.length; i++) {
-         const piece = this.pieces[i]
-         if (piece.square.rowIndex === from.rowIndex && piece.square.colIndex === from.colIndex) {
-            piece.square.rowIndex = to.rowIndex
-            piece.square.colIndex = to.colIndex
-            break
-         }
+      const piece = this.pieceAtSquare(from)
+      if (piece !== null) {
+         piece.square.rowIndex = to.rowIndex
+         piece.square.colIndex = to.colIndex
       }
       return this
    }
@@ -124,22 +113,12 @@ export class Chess {
       return this
    }
 
-   // deletePieceAt(square: Square): void {
-   //    const pieces = []
-   //    for (let i = 0; i < this.pieces.length; i++) {
-   //       const lp = this.pieces[i]
-   //       if (lp.square.rowIndex === square.rowIndex && lp.square.colIndex === square.colIndex) continue
-   //       pieces.push(lp)
-   //    }
-   //    this.pieces = pieces
-   // }
-
    isRowColEmpty(row: u8, col: u8): bool {
-      return this.pieceAt(row, col) === null
+      return this.pieceAtSquare(new Square(row, col)) === null
    }
 
    isSquareEmpty(square: Square): bool {
-      return this.pieceAt(square.rowIndex, square.colIndex) === null
+      return this.pieceAtSquare(square) === null
    }
 
    piecesOf(isWhitePlayer: bool): Piece[] {
