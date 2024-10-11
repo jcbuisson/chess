@@ -66,7 +66,7 @@ export class Piece {
 
    // see subclasses Pawn, Bishop etc.
    attacks(chess: Chess, target: Piece): bool {
-      // console.log("Piece attacks: should never be called")
+      console.log("Piece attacks: should never be called")
       return false
    }
 

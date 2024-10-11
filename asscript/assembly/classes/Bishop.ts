@@ -4,6 +4,8 @@ import { MoveType, Move } from "./Move"
 import { Chess } from "./Chess"
 
 
+const JUMPS: i8[][] = [[1, -1], [1, 1], [-1, -1], [-1, 1]]
+
 export class Bishop extends Piece {
 
    constructor(isWhite: bool, square: Square) {
@@ -15,18 +17,16 @@ export class Bishop extends Piece {
    }
 
    possibleMoves(chess: Chess, king: Piece): Move[] {
-      console.log('bishop possibleMoves')
       const accu: Move[] = []
-      // try moves on both diagonals
-      const rowIncr: i8 = chess.isWhitePlayer ? 1 : -1
-      for (let colIncr: i8 = -1; colIncr < 2; colIncr += 2) {
+      // try moves on the 4 diagonal directions
+      for (let i = 0; i < JUMPS.length; i++) {
+         const jump = JUMPS[i]
+         const rowIncr = jump[0]
+         const colIncr = jump[1]
          let square = this.square.clone()
-         // console.log('square0 ' + square.toString())
-         // console.log('colIncr ' + colIncr.toString() + ' rowIncr ' + rowIncr.toString())
          while (true) {
             square = square.move(rowIncr, colIncr)
             if (!square.isValid()) break
-            // console.log('square ' + square.toString() + (chess.isSquareEmpty(square) ? ' empty' : ' not empty'))
             const piece = chess.pieceAtSquare(square)
             if (piece === null) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
@@ -36,11 +36,11 @@ export class Bishop extends Piece {
                }
             } else {
                if (piece.isWhite !== chess.isWhitePlayer) {
-                  // const resultingChess = chess.clone().eatPiece(this, piece)
-                  // if (!resultingChess.inCheck(king)) {
-                  //    const move = new Move(MoveType.EAT, this, square, null, resultingChess)
-                  //    accu.push(move)
-                  // }
+                  const resultingChess = chess.cloneWithEatenPiece(this, piece)
+                  if (!resultingChess.inCheck(king)) {
+                     const move = new Move(MoveType.EAT, this, square, null, resultingChess)
+                     accu.push(move)
+                  }
                }
                break
             }

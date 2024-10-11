@@ -88,18 +88,27 @@ export class Chess {
    }
 
    cloneWithMovedPiece(piece: Piece, to: Square) : Chess {
+      // create a new board situation
       const clonedChess = this.clone()
-      clonedChess.deletePiece(piece)
-      const movedPiece = piece.clone() // preserve subtype
+      // replace piece by a new one
+      const movedPiece = piece.clone() // clone preserve subtype
       movedPiece.square = to
+      clonedChess.deletePiece(piece)
       clonedChess.pieces.push(movedPiece)
       return clonedChess
    }
 
-   eatPiece(from: Piece, to: Piece) : Chess {
-      from.square = to.square.clone()
-      this.pieces.slice(this.pieces.indexOf(to), 1)
-      return this
+   cloneWithEatenPiece(fromPiece: Piece, toPiece: Piece) : Chess {
+      // create a new board situation
+      const clonedChess = this.clone()
+      // replace `fromPiece` by a new one
+      const movedPiece = fromPiece.clone() // clone preserve subtype
+      movedPiece.square = toPiece.square
+      
+      clonedChess.deletePiece(fromPiece)
+      clonedChess.deletePiece(toPiece)
+      clonedChess.pieces.push(movedPiece)
+      return clonedChess
    }
 
    deletePiece(piece: Piece): Chess {

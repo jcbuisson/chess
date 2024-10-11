@@ -21,7 +21,7 @@ for (const move of moves1) {
    console.log('move', moveToString(move))
 }
 
-const m1 = moves1[9]
+const m1 = moves1[13]
 console.log('playing m1', moveToString(m1))
 const c2 = moveResultingChess(m1)
 console.log(chessToAscii(c2))
@@ -31,22 +31,32 @@ for (const move of moves2) {
    console.log('move', moveToString(move))
 }
 
-const m2 = moves2[16]
-// console.log('playing m2', moveToString(m2))
-// const c3 = moveResultingChess(m2)
-// console.log(chessToAscii(c3))
-// chessTogglePlayer(c3)
-// const moves3 = chessPossibleMoves(c3)
-// for (const move of moves3) {
-//    console.log('move', moveToString(move))
-// }
+const m2 = moves2[22]
+console.log('playing m2', moveToString(m2))
+const c3 = moveResultingChess(m2)
+console.log(chessToAscii(c3))
+chessTogglePlayer(c3)
+const moves3 = chessPossibleMoves(c3)
+for (const move of moves3) {
+   console.log('move', moveToString(move))
+}
 
-// const m3 = moves3[11]
-// console.log('playing m3', moveToString(m3))
-// const c4 = moveResultingChess(m3)
-// console.log(chessToAscii(c4))
-// chessTogglePlayer(c4)
-// const moves4 = chessPossibleMoves(c4)
-// for (const move of moves4) {
-//    console.log('move', moveToString(move))
-// }
+const m3 = moves3[0]
+console.log('playing m3', moveToString(m3))
+const c4 = moveResultingChess(m3)
+console.log(chessToAscii(c4))
+chessTogglePlayer(c4)
+const moves4 = chessPossibleMoves(c4)
+for (const move of moves4) {
+   console.log('move', moveToString(move))
+}
+
+const m4 = moves4[16]
+console.log('playing m4', moveToString(m4))
+const c5 = moveResultingChess(m4)
+console.log(chessToAscii(c5))
+chessTogglePlayer(c5)
+const moves5 = chessPossibleMoves(c5)
+for (const move of moves5) {
+   console.log('move', moveToString(move))
+}

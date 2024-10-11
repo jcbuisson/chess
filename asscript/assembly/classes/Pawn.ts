@@ -43,22 +43,22 @@ export class Pawn extends Piece {
       targetSquare = this.square.move(incrRow, -1)
       let attackedPiece = chess.pieceAtSquare(targetSquare)
       if (attackedPiece) {
-         // const resultingChess = chess.clone().deletePiece(attackedPiece).cloneWithMovedPiece(this.square, targetSquare)
-         // if (!resultingChess.inCheck(king)) {
-         //    const move = new Move(MoveType.EAT, this, targetSquare, null, resultingChess)
-         //    accu.push(move)
-         // }
+         const resultingChess = chess.cloneWithEatenPiece(this, attackedPiece)
+         if (!resultingChess.inCheck(king)) {
+            const move = new Move(MoveType.EAT, this, targetSquare, null, resultingChess)
+            accu.push(move)
+         }
       }
       // try eat right
       incrRow = this.isWhite ? 1 : - 1
       targetSquare = this.square.move(incrRow, 1)
       attackedPiece = chess.pieceAtSquare(targetSquare)
       if (attackedPiece) {
-         // const resultingChess = chess.clone().deletePiece(attackedPiece).cloneWithMovedPiece(this.square, targetSquare)
-         // if (!resultingChess.inCheck(king)) {
-         //    const move = new Move(MoveType.EAT, this, targetSquare, null, resultingChess)
-         //    accu.push(move)
-         // }
+         const resultingChess = chess.cloneWithEatenPiece(this, attackedPiece)
+         if (!resultingChess.inCheck(king)) {
+            const move = new Move(MoveType.EAT, this, targetSquare, null, resultingChess)
+            accu.push(move)
+         }
       }
       return accu
    }
