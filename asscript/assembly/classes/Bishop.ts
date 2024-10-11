@@ -10,10 +10,14 @@ export class Bishop extends Piece {
       super(PieceType.BISHOP, isWhite, square)
    }
 
+   clone(): Piece {
+      return new Bishop(this.isWhite, this.square)
+   }
+
    possibleMoves(chess: Chess, king: Piece): Move[] {
+      console.log('bishop possibleMoves')
       const accu: Move[] = []
       // try moves on both diagonals
-      console.log('eat0 ' + this.square.toString())
       const rowIncr: i8 = chess.isWhitePlayer ? 1 : -1
       for (let colIncr: i8 = -1; colIncr < 2; colIncr += 2) {
          let square = this.square.clone()
@@ -25,18 +29,18 @@ export class Bishop extends Piece {
             // console.log('square ' + square.toString() + (chess.isSquareEmpty(square) ? ' empty' : ' not empty'))
             const piece = chess.pieceAtSquare(square)
             if (piece === null) {
-               const resultingChess = chess.clone().movePiece(this.square, square)
+               const resultingChess = chess.cloneWithMovedPiece(this, square)
                if (!resultingChess.inCheck(king)) {
                   const move = new Move(MoveType.MOVE, this, square, null, resultingChess)
                   accu.push(move)
                }
             } else {
                if (piece.isWhite !== chess.isWhitePlayer) {
-                  const resultingChess = chess.clone().eatPiece(this, piece)
-                  if (!resultingChess.inCheck(king)) {
-                     const move = new Move(MoveType.EAT, this, square, null, resultingChess)
-                     accu.push(move)
-                  }
+                  // const resultingChess = chess.clone().eatPiece(this, piece)
+                  // if (!resultingChess.inCheck(king)) {
+                  //    const move = new Move(MoveType.EAT, this, square, null, resultingChess)
+                  //    accu.push(move)
+                  // }
                }
                break
             }

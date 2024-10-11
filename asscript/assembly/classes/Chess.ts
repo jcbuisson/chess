@@ -66,13 +66,9 @@ export class Chess {
    }
 
    clone(): Chess {
-      const pieces: Piece[] = []
-      for (let i = 0; i < this.pieces.length; i++) {
-         pieces.push(this.pieces[i].clone())
-      }
       return new Chess(
-         pieces,
-         // this.pieces,
+         // this.pieces.map<Piece>(piece => piece.clone()),
+         this.pieces.map<Piece>(piece => piece),
          this.isWhitePlayer,
          this.isKingCastlingPossible,
          this.isQueenCastlingPossible
@@ -87,13 +83,13 @@ export class Chess {
       return null
    }
 
-   movePiece(from: Square, to: Square) : Chess {
-      const piece = this.pieceAtSquare(from)
-      if (piece !== null) {
-         piece.square.rowIndex = to.rowIndex
-         piece.square.colIndex = to.colIndex
-      }
-      return this
+   cloneWithMovedPiece(piece: Piece, to: Square) : Chess {
+      const clonedChess = this.clone()
+      clonedChess.deletePiece(piece)
+      const movedPiece = piece.clone() // preserve subtype
+      movedPiece.square = to
+      clonedChess.pieces.push(movedPiece)
+      return clonedChess
    }
 
    eatPiece(from: Piece, to: Piece) : Chess {
@@ -136,8 +132,8 @@ export class Chess {
    playerKing(): Piece {
       const playerPieces = this.piecesOf(this.isWhitePlayer)
       for (let i = 0; i < playerPieces.length; i++) {
-         const lpiece = playerPieces[i]
-         if (lpiece.type === PieceType.KING && lpiece.isWhite === this.isWhitePlayer) return lpiece
+         const piece = playerPieces[i]
+         if (piece.type === PieceType.KING && piece.isWhite === this.isWhitePlayer) return piece
       }
       return Piece.dummy // should never happen
    }
@@ -146,8 +142,8 @@ export class Chess {
    inCheck(king: Piece): bool {
       const opponentPieces = this.piecesOf(!this.isWhitePlayer)
       for (let i = 0; i < opponentPieces.length; i++) {
-         const lpiece = opponentPieces[i]
-         if (lpiece.attacks(this, king)) return true
+         const piece = opponentPieces[i]
+         if (piece.attacks(this, king)) return true
       }
       return false
    }
@@ -159,8 +155,8 @@ export class Chess {
       const king = this.playerKing()
       // console.log(`king ${king.toString()}`)
       for (let i = 0; i < playerPieces.length; i++) {
-         const piece = playerPieces.at(i)
-         const pieceMoves = piece.possibleMoves(this, king)
+         const piece: Piece = playerPieces.at(i)
+         const pieceMoves: Move[] = piece.possibleMoves(this, king)
          for (let i = 0; i < pieceMoves.length; i++) {
             accu.push(pieceMoves[i])
          }

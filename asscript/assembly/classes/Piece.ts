@@ -19,13 +19,8 @@ export class Piece {
    }
 
    clone(): Piece {
-      if (this.type === PieceType.PAWN) {
-         return new Pawn(this.isWhite, this.square.clone())
-      }
-      if (this.type === PieceType.BISHOP) {
-         return new Bishop(this.isWhite, this.square.clone())
-      }
-      return new Piece(this.type, this.isWhite, this.square.clone())
+      console.log("Piece clone, should never be called: " + this.toString())
+      return this
    }
 
    isPawn(): bool {
@@ -65,11 +60,13 @@ export class Piece {
 
    // see subclasses Pawn, Bishop etc.
    possibleMoves(chess: Chess, king: Piece): Move[] {
+      console.log("Piece possibleMoves: should never be called " + this.toString())
       return []
    }
 
    // see subclasses Pawn, Bishop etc.
    attacks(chess: Chess, target: Piece): bool {
+      // console.log("Piece attacks: should never be called")
       return false
    }
 
