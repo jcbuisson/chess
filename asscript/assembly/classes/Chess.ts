@@ -2,6 +2,10 @@
 import { PieceType, Piece } from './Piece'
 import { Pawn } from './Pawn'
 import { Bishop } from './Bishop'
+import { Rook } from './Rook'
+import { Knight } from './Knight'
+import { King } from './King'
+import { Queen } from './Queen'
 import { Square } from './Square'
 import { Move } from './Move'
 
@@ -53,11 +57,11 @@ export class Chess {
    static createInitialBoard(): Chess {
       return new Chess(
          [
-            new Piece(PieceType.ROOK, false, new Square(7, 0)), new Piece(PieceType.KNIGHT, false, new Square(7, 1)), new Piece(PieceType.BISHOP, false, new Square(7, 2)),  new Piece(PieceType.QUEEN, false, new Square(7, 3)), new Piece(PieceType.KING, false, new Square(7, 4)), new Bishop(false, new Square(7, 5)), new Piece(PieceType.KNIGHT, false, new Square(7, 6)), new Piece(PieceType.ROOK, false, new Square(7, 7)),
+            new Rook(false, new Square(7, 0)), new Knight(false, new Square(7, 1)), new Bishop(false, new Square(7, 2)), new Queen(false, new Square(7, 3)), new King(false, new Square(7, 4)), new Bishop(false, new Square(7, 5)), new Knight(false, new Square(7, 6)), new Rook(false, new Square(7, 7)),
             new Pawn(false, new Square(6, 0)), new Pawn(false, new Square(6, 1)), new Pawn(false, new Square(6, 2)), new Pawn(false, new Square(6, 3)), new Pawn(false, new Square(6, 4)), new Pawn(false, new Square(6, 5)), new Pawn(false, new Square(6, 6)), new Pawn(false, new Square(6, 7)),
 
             new Pawn(true, new Square(1, 0)), new Pawn(true, new Square(1, 1)), new Pawn(true, new Square(1, 2)), new Pawn(true, new Square(1, 3)), new Pawn(true, new Square(1, 4)), new Pawn(true, new Square(1, 5)), new Pawn(true, new Square(1, 6)), new Pawn(true, new Square(1, 7)),
-            new Piece(PieceType.ROOK, true, new Square(0, 0)), new Piece(PieceType.KNIGHT, true, new Square(0, 1)), new Piece(PieceType.BISHOP, true, new Square(0, 2)), new Piece(PieceType.QUEEN, true, new Square(0, 3)), new Piece(PieceType.KING, true, new Square(0, 4)), new Piece(PieceType.BISHOP, true, new Square(0, 5)), new Piece(PieceType.KNIGHT, true, new Square(0, 6)), new Piece(PieceType.ROOK, true, new Square(0, 7)),
+            new Rook(true, new Square(0, 0)), new Knight(true, new Square(0, 1)), new Bishop(true, new Square(0, 2)), new Queen(true, new Square(0, 3)), new King(true, new Square(0, 4)), new Bishop(true, new Square(0, 5)), new Knight(true, new Square(0, 6)), new Rook(true, new Square(0, 7)),
          ],
          true, // white to move
          true, // king castling possible
@@ -118,8 +122,8 @@ export class Chess {
    piecesOf(isWhitePlayer: bool): Piece[] {
       const accu: Piece[] = []
       for (let i = 0; i < this.pieces.length; i++) {
-         const lp = this.pieces[i]
-         if (lp.isWhite === isWhitePlayer) accu.push(lp)
+         const piece = this.pieces[i]
+         if (piece.isWhite === isWhitePlayer) accu.push(piece)
       }
       return accu
    }
