@@ -49,7 +49,7 @@ export class Bishop extends Piece {
       return accu
    }
 
-   // return true if current piece attacks opponent `target` piece
+   // return true if current piece attacks opponent's `target` piece
    attacks(chess: Chess, target: Piece): bool {
       const srow = this.square.rowIndex
       const scol = this.square.colIndex

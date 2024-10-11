@@ -7,8 +7,8 @@ import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, mov
 const c0 = createInitialBoard()
 console.log(chessToAscii(c0))
 const moves0 = chessPossibleMoves(c0)
-for (const move of moves0) {
-   console.log('move', moveToString(move))
+for (let i = 0; i < moves0.length; i++) {
+   console.log(i, moveToString(moves0[i]))
 }
 
 const m0 = moves0[9]
@@ -17,8 +17,8 @@ const c1 = moveResultingChess(m0)
 console.log(chessToAscii(c1))
 chessTogglePlayer(c1)
 const moves1 = chessPossibleMoves(c1)
-for (const move of moves1) {
-   console.log('move', moveToString(move))
+for (let i = 0; i < moves1.length; i++) {
+   console.log(i, moveToString(moves1[i]))
 }
 
 const m1 = moves1[13]
@@ -27,36 +27,16 @@ const c2 = moveResultingChess(m1)
 console.log(chessToAscii(c2))
 chessTogglePlayer(c2)
 const moves2 = chessPossibleMoves(c2)
-for (const move of moves2) {
-   console.log('move', moveToString(move))
+for (let i = 0; i < moves2.length; i++) {
+   console.log(i, moveToString(moves2[i]))
 }
 
-const m2 = moves2[22]
+const m2 = moves2[23]
 console.log('playing m2', moveToString(m2))
 const c3 = moveResultingChess(m2)
 console.log(chessToAscii(c3))
 chessTogglePlayer(c3)
 const moves3 = chessPossibleMoves(c3)
-for (const move of moves3) {
-   console.log('move', moveToString(move))
-}
-
-const m3 = moves3[0]
-console.log('playing m3', moveToString(m3))
-const c4 = moveResultingChess(m3)
-console.log(chessToAscii(c4))
-chessTogglePlayer(c4)
-const moves4 = chessPossibleMoves(c4)
-for (const move of moves4) {
-   console.log('move', moveToString(move))
-}
-
-const m4 = moves4[16]
-console.log('playing m4', moveToString(m4))
-const c5 = moveResultingChess(m4)
-console.log(chessToAscii(c5))
-chessTogglePlayer(c5)
-const moves5 = chessPossibleMoves(c5)
-for (const move of moves5) {
-   console.log('move', moveToString(move))
+for (let i = 0; i < moves3.length; i++) {
+   console.log(i, moveToString(moves3[i]))
 }

@@ -174,6 +174,8 @@ export class Chess {
             accu.push(pieceMoves[i])
          }
       }
+
+      // AJOUTER LES ROQUES
       return accu
    }
 }

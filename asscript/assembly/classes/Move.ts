@@ -8,8 +8,10 @@ type Nullable<T> = T | null
 
 
 export enum MoveType {
-   MOVE,    // 0
-   EAT,     // 1
+   MOVE,           // 0
+   EAT,            // 1
+   KING_CASTLING,  // 2
+   QUEEN_CASTLING, // 3
 }
 
 export class Move {
