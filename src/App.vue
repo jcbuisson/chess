@@ -31,10 +31,6 @@ const boardConfig = {
 onMounted(() => {
    chess = createInitialBoard()
    console.log(chessToAscii(chess))
-   const moves = chessPossibleMoves(chess)
-   // for (let i = 0; i < moves.length; i++) {
-   //    console.log(i, moveToString(moves[i]))
-   // }
 })
 
 function moveEventToString(moveEvent) {
@@ -66,6 +62,7 @@ const onMove = (moveEvent) => {
    // execute myMove on `chess`
    chess = moveResultingChess(myMove)
    console.log(chessToAscii(chess))
+
    // now it's opponent's turn
    chessTogglePlayer(chess)
    const opponentKingSquare = playerKingSquare(chess)
@@ -74,12 +71,15 @@ const onMove = (moveEvent) => {
    for (let i = 0; i < opponentMoves.length; i++) {
       console.log(i, moveToString(opponentMoves[i]))
    }
-   const opponentMove = opponentMoves[0]
-   console.log('opponentMove', moveToString(opponentMove), moveToString(opponentMove).substring(2))
-   chess = moveResultingChess(opponentMove)
-   const legal = boardAPI.move(moveToString(opponentMove).substring(2))
-   if (!legal) console.log("ILLEGAL MOVE", moveToString(opponentMove).substring(2))
-   chessTogglePlayer(chess)
+   // opponentMoves.length === 0: checkmate or pat
+   if (opponentMoves.length > 0) {
+      const opponentMove = opponentMoves[0]
+      console.log('opponentMove', moveToString(opponentMove), moveToString(opponentMove).substring(2))
+      chess = moveResultingChess(opponentMove)
+      const legal = boardAPI.move(moveToString(opponentMove).substring(2))
+      if (!legal) console.log("ILLEGAL MOVE", moveToString(opponentMove).substring(2))
+      chessTogglePlayer(chess)
+   }
 }
 
 function handleCheckmate(isMated) {

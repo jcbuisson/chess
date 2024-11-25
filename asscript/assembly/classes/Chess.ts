@@ -117,16 +117,6 @@ export class Chess {
       return clonedChess
    }
 
-   // deletePiece(piece: Piece): void {
-   //    const pieces: Piece[] = []
-   //    for (let i = 0; i < this.pieces.length; i++) {
-   //       const lp = this.pieces[i]
-   //       if (lp.square.rowIndex === piece.square.rowIndex && lp.square.colIndex === piece.square.colIndex) continue
-   //       pieces.push(lp)
-   //    }
-   //    this.pieces = pieces
-   // }
-
    deletePieceAt(square: Square): void {
       const pieces: Piece[] = []
       for (let i = 0; i < this.pieces.length; i++) {
@@ -181,9 +171,7 @@ export class Chess {
    possibleMoves(): Move[] {
       const accu: Move[] = []
       const playerPieces = this.piecesOf(this.isWhitePlayer)
-      // console.log(`playerPieces ${playerPieces}`)
       const kingSquare = this.playerKingSquare()
-      // console.log(`kingSquare ${kingSquare.toString()}`)
       for (let i = 0; i < playerPieces.length; i++) {
          const piece: Piece = playerPieces.at(i)
          const pieceMoves: Move[] = piece.possibleMoves(this, kingSquare)

@@ -28,7 +28,7 @@ export class King extends Piece {
             const piece = chess.pieceAtSquare(square)
             if (piece === null) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
-               if (!resultingChess.inCheck(kingSquare)) {
+               if (!resultingChess.inCheck(square)) {
                   const move = new Move(MoveType.MOVE, this, square, null, resultingChess)
                   accu.push(move)
                   if (chess.isWhitePlayer) resultingChess.isWhiteKingCastlingPossible = false; else resultingChess.isBlackKingCastlingPossible = false
@@ -37,10 +37,9 @@ export class King extends Piece {
             } else {
                if (piece.isWhite !== chess.isWhitePlayer) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
-                  if (!resultingChess.inCheck(kingSquare)) {
+                  if (!resultingChess.inCheck(square)) {
                      console.log(`XXX piece: ${piece.toString()}`)
                      console.log(`XXX square: ${square.toString()}`)
-                     console.log(`XXX king: ${kingSquare.toString()}`)
                      console.log(`XXX chess: ${resultingChess.toAscii()}`)
                      const move = new Move(MoveType.EAT, this, square, null, resultingChess)
                      accu.push(move)
