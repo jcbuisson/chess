@@ -17,7 +17,7 @@ export class Queen extends Piece {
       return new Queen(this.isWhite, this.square)
    }
 
-   possibleMoves(chess: Chess, king: Piece): Move[] {
+   possibleMoves(chess: Chess, kingSquare: Square): Move[] {
       const accu: Move[] = []
       // try moves on the 4 diagonal directions
       for (let i = 0; i < DIAGJUMPS.length; i++) {
@@ -31,14 +31,14 @@ export class Queen extends Piece {
             const piece = chess.pieceAtSquare(square)
             if (piece === null) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
-               if (!resultingChess.inCheck(king)) {
+               if (!resultingChess.inCheck(kingSquare)) {
                   const move = new Move(MoveType.MOVE, this, square, null, resultingChess)
                   accu.push(move)
                }
             } else {
                if (piece.isWhite !== chess.isWhitePlayer) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
-                  if (!resultingChess.inCheck(king)) {
+                  if (!resultingChess.inCheck(kingSquare)) {
                      const move = new Move(MoveType.EAT, this, square, null, resultingChess)
                      accu.push(move)
                   }
@@ -59,14 +59,14 @@ export class Queen extends Piece {
             const piece = chess.pieceAtSquare(square)
             if (piece === null) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
-               if (!resultingChess.inCheck(king)) {
+               if (!resultingChess.inCheck(kingSquare)) {
                   const move = new Move(MoveType.MOVE, this, square, null, resultingChess)
                   accu.push(move)
                }
             } else {
                if (piece.isWhite !== chess.isWhitePlayer) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
-                  if (!resultingChess.inCheck(king)) {
+                  if (!resultingChess.inCheck(kingSquare)) {
                      const move = new Move(MoveType.EAT, this, square, null, resultingChess)
                      accu.push(move)
                   }
@@ -78,16 +78,16 @@ export class Queen extends Piece {
       return accu
    }
 
-   attacksAsBishop(chess: Chess, target: Piece): bool {
+   attacksAsBishop(chess: Chess, square: Square): bool {
       const srow = this.square.rowIndex
       const scol = this.square.colIndex
-      const trow = target.square.rowIndex
-      const tcol = target.square.colIndex
+      const trow = square.rowIndex
+      const tcol = square.colIndex
       const drow = srow > trow ? srow-trow : trow-srow
       const dcol = scol > tcol ? scol-tcol : tcol-scol
       // false if they are not on the same diagonal
       if (drow !== dcol) return false
-      // move on the diagonal from `this` to target
+      // move on the diagonal from `this` to `square`
       let row = srow > trow ? srow-1 : srow+1
       let col = scol > tcol ? scol-1 : scol+1
       while (row !== trow) {
@@ -99,13 +99,13 @@ export class Queen extends Piece {
       return true
    }
 
-   attacksAsRook(chess: Chess, target: Piece): bool {
+   attacksAsRook(chess: Chess, square: Square): bool {
       const srow = this.square.rowIndex
       const scol = this.square.colIndex
-      const trow = target.square.rowIndex
-      const tcol = target.square.colIndex
+      const trow = square.rowIndex
+      const tcol = square.colIndex
       if (srow === trow) {
-         // they are on the same row: try to move on the row from this to target
+         // they are on the same row: try to move on the row from this to `square`
          let col = scol > tcol ? scol-1 : scol+1
          while (col !== tcol) {
             if (!chess.isSquareEmpty(new Square(srow, col))) return false
@@ -126,10 +126,10 @@ export class Queen extends Piece {
       }
    }
 
-   // return true if current piece (queen) attacks opponent `target` piece
-   attacks(chess: Chess, target: Piece): bool {
-      if (this.attacksAsBishop(chess, target)) return true
-      if (this.attacksAsRook(chess, target)) return true
+   // return true if current piece (queen) attacks opponent `square`
+   attacks(chess: Chess, square: Square): bool {
+      if (this.attacksAsBishop(chess, square)) return true
+      if (this.attacksAsRook(chess, square)) return true
       return false
    }
 

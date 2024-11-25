@@ -17,7 +17,9 @@ import { onMounted } from 'vue'
 import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
-import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, moveResultingChess, chessTogglePlayer } from "/asscript/build/release.js"
+import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, pieceToString, squareToString, moveResultingChess, chessTogglePlayer,
+   playerKingSquare, inCheck,
+} from "/asscript/build/release.js"
 
 let chess
 let boardAPI
@@ -66,6 +68,8 @@ const onMove = (moveEvent) => {
    console.log(chessToAscii(chess))
    // now it's opponent's turn
    chessTogglePlayer(chess)
+   const opponentKingSquare = playerKingSquare(chess)
+   console.log('opponentKingSquare', squareToString(opponentKingSquare), inCheck(chess, opponentKingSquare))
    const opponentMoves = chessPossibleMoves(chess)
    for (let i = 0; i < opponentMoves.length; i++) {
       console.log(i, moveToString(opponentMoves[i]))

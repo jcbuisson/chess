@@ -59,13 +59,13 @@ export class Piece {
    }
 
    // see subclasses Pawn, Bishop etc.
-   possibleMoves(chess: Chess, king: Piece): Move[] {
+   possibleMoves(chess: Chess, kingSquare: Square): Move[] {
       console.log("Piece possibleMoves: should never be called " + this.toString())
       return []
    }
 
    // see subclasses Pawn, Bishop etc.
-   attacks(chess: Chess, target: Piece): bool {
+   attacks(chess: Chess, square: Square): bool {
       console.log("Piece attacks: should never be called")
       return false
    }

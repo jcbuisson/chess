@@ -16,7 +16,7 @@ export class Bishop extends Piece {
       return new Bishop(this.isWhite, this.square)
    }
 
-   possibleMoves(chess: Chess, king: Piece): Move[] {
+   possibleMoves(chess: Chess, kingSquare: Square): Move[] {
       const accu: Move[] = []
       // try moves on the 4 diagonal directions
       for (let i = 0; i < JUMPS.length; i++) {
@@ -30,14 +30,14 @@ export class Bishop extends Piece {
             const piece = chess.pieceAtSquare(square)
             if (piece === null) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
-               if (!resultingChess.inCheck(king)) {
+               if (!resultingChess.inCheck(kingSquare)) {
                   const move = new Move(MoveType.MOVE, this, square, null, resultingChess)
                   accu.push(move)
                }
             } else {
                if (piece.isWhite !== chess.isWhitePlayer) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
-                  if (!resultingChess.inCheck(king)) {
+                  if (!resultingChess.inCheck(kingSquare)) {
                      const move = new Move(MoveType.EAT, this, square, null, resultingChess)
                      accu.push(move)
                   }
@@ -49,17 +49,17 @@ export class Bishop extends Piece {
       return accu
    }
 
-   // return true if current piece attacks opponent's `target` piece
-   attacks(chess: Chess, target: Piece): bool {
+   // return true if current piece attacks opponent's `square`
+   attacks(chess: Chess, square: Square): bool {
       const srow = this.square.rowIndex
       const scol = this.square.colIndex
-      const trow = target.square.rowIndex
-      const tcol = target.square.colIndex
+      const trow = square.rowIndex
+      const tcol = square.colIndex
       const drow = srow > trow ? srow-trow : trow-srow
       const dcol = scol > tcol ? scol-tcol : tcol-scol
       // false if they are not on the same diagonal
       if (drow !== dcol) return false
-      // move on the diagonal from `this` to target
+      // move on the diagonal from `this` to `square`
       let row = srow > trow ? srow-1 : srow+1
       let col = scol > tcol ? scol-1 : scol+1
       while (row !== trow) {
@@ -67,7 +67,7 @@ export class Bishop extends Piece {
          row = srow > trow ? row-1 : row+1
          col = scol > tcol ? col-1 : col+1
       }
-      // `this` is able to freely move to target square: attacks it!
+      // `this` is able to freely move to `square`: attacks it!
       return true
    }
 

@@ -16,7 +16,8 @@ export class King extends Piece {
       return new King(this.isWhite, this.square)
    }
 
-   possibleMoves(chess: Chess, king: Piece): Move[] {
+   // king castlings are added in the parent Chess.possibleMoves
+   possibleMoves(chess: Chess, kingSquare: Square): Move[] {
       const accu: Move[] = []
       // try the 8 possible jumps
       for (let i = 0; i < JUMPS.length; i++) {
@@ -27,21 +28,25 @@ export class King extends Piece {
             const piece = chess.pieceAtSquare(square)
             if (piece === null) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
-               if (!resultingChess.inCheck(king)) {
+               if (!resultingChess.inCheck(kingSquare)) {
                   const move = new Move(MoveType.MOVE, this, square, null, resultingChess)
                   accu.push(move)
-                  resultingChess.isKingCastlingPossible = false
-                  resultingChess.isQueenCastlingPossible = false
+                  if (chess.isWhitePlayer) resultingChess.isWhiteKingCastlingPossible = false; else resultingChess.isBlackKingCastlingPossible = false
+                  if (chess.isWhitePlayer) resultingChess.isWhiteQueenCastlingPossible = false; else resultingChess.isBlackQueenCastlingPossible = false
                }
             } else {
                if (piece.isWhite !== chess.isWhitePlayer) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
-                  if (!resultingChess.inCheck(king)) {
+                  if (!resultingChess.inCheck(kingSquare)) {
+                     console.log(`XXX piece: ${piece.toString()}`)
+                     console.log(`XXX square: ${square.toString()}`)
+                     console.log(`XXX king: ${kingSquare.toString()}`)
+                     console.log(`XXX chess: ${resultingChess.toAscii()}`)
                      const move = new Move(MoveType.EAT, this, square, null, resultingChess)
                      accu.push(move)
-                     resultingChess.isKingCastlingPossible = false
-                     resultingChess.isQueenCastlingPossible = false
-                  }
+                     if (chess.isWhitePlayer) resultingChess.isWhiteKingCastlingPossible = false; else resultingChess.isBlackKingCastlingPossible = false
+                     if (chess.isWhitePlayer) resultingChess.isWhiteQueenCastlingPossible = false; else resultingChess.isBlackQueenCastlingPossible = false
+                     }
                }
             }
          }
@@ -49,9 +54,9 @@ export class King extends Piece {
       return accu
    }
 
-   // return true if current piece (knight) attacks opponent `target` piece
-   attacks(chess: Chess, target: Piece): bool {
-      return Math.abs(this.square.rowIndex - target.square.rowIndex) +  Math.abs(this.square.colIndex - target.square.colIndex) === 1
+   // return true if current piece (knight) attacks opponent `square`
+   attacks(chess: Chess, square: Square): bool {
+      return Math.abs(this.square.rowIndex - square.rowIndex) +  Math.abs(this.square.colIndex - square.colIndex) === 1
    }
 
 }

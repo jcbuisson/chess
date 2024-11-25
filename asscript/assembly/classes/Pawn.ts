@@ -14,14 +14,14 @@ export class Pawn extends Piece {
       return new Pawn(this.isWhite, this.square)
    }
 
-   possibleMoves(chess: Chess, king: Piece): Move[] {
+   possibleMoves(chess: Chess, kingSquare: Square): Move[] {
       const accu: Move[] = []
       // try 1-square move
       let incrRow: i8 = this.isWhite ? 1 : -1
       let targetSquare = this.square.move(incrRow, 0)
       if (chess.isSquareEmpty(targetSquare)) {
          const resultingChess = chess.cloneWithMovedPiece(this, targetSquare)
-         if (!resultingChess.inCheck(king)) {
+         if (!resultingChess.inCheck(kingSquare)) {
             const move = new Move(MoveType.MOVE, this, targetSquare, null, resultingChess)
             accu.push(move)
          }
@@ -31,7 +31,7 @@ export class Pawn extends Piece {
             targetSquare = this.square.move(incrRow, 0)
             if (chess.isSquareEmpty(targetSquare)) {
                const resultingChess = chess.cloneWithMovedPiece(this, targetSquare)
-               if (!resultingChess.inCheck(king)) {
+               if (!resultingChess.inCheck(kingSquare)) {
                   const move = new Move(MoveType.MOVE, this, targetSquare, null, resultingChess)
                   accu.push(move)
                }
@@ -44,7 +44,7 @@ export class Pawn extends Piece {
       let attackedPiece = chess.pieceAtSquare(targetSquare)
       if (attackedPiece) {
          const resultingChess = chess.cloneWithEatenPiece(this, attackedPiece)
-         if (!resultingChess.inCheck(king)) {
+         if (!resultingChess.inCheck(kingSquare)) {
             const move = new Move(MoveType.EAT, this, targetSquare, null, resultingChess)
             accu.push(move)
          }
@@ -55,7 +55,7 @@ export class Pawn extends Piece {
       attackedPiece = chess.pieceAtSquare(targetSquare)
       if (attackedPiece) {
          const resultingChess = chess.cloneWithEatenPiece(this, attackedPiece)
-         if (!resultingChess.inCheck(king)) {
+         if (!resultingChess.inCheck(kingSquare)) {
             const move = new Move(MoveType.EAT, this, targetSquare, null, resultingChess)
             accu.push(move)
          }
@@ -63,11 +63,11 @@ export class Pawn extends Piece {
       return accu
    }
 
-   // return true if current pawn piece attacks opponent's `target` piece
-   attacks(chess: Chess, target: Piece): bool {
+   // return true if current pawn piece attacks opponent's `square`
+   attacks(chess: Chess, square: Square): bool {
       const incrRow = this.isWhite ? 1 : -1
-      if (target.square.rowIndex - this.square.rowIndex !== incrRow) return false
-      return Math.abs(target.square.colIndex - this.square.colIndex) === 1
+      if (square.rowIndex - this.square.rowIndex !== incrRow) return false
+      return Math.abs(square.colIndex - this.square.colIndex) === 1
    }
 
 }

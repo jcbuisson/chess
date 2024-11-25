@@ -2,6 +2,7 @@
 
 import { Move } from './classes/Move'
 import { Piece } from './classes/Piece'
+import { Square } from './classes/Square'
 import { Chess } from './classes/Chess'
 
 
@@ -60,8 +61,16 @@ export function chessToAscii(chess: Chess): string {
    return chess.toAscii()
 }
 
+export function squareToString(square: Square): string {
+   return square.toString()
+}
+
 export function moveToString(move: Move): string {
    return move.toString()
+}
+
+export function pieceToString(piece: Piece): string {
+   return piece.toString()
 }
 
 export function moveResultingChess(move: Move): Chess {
@@ -74,4 +83,12 @@ export function chessPossibleMoves(chess: Chess): Move[] {
 
 export function chessTogglePlayer(chess: Chess): bool {
    return chess.togglePlayer()
+}
+
+export function playerKingSquare(chess: Chess): Square {
+   return chess.playerKingSquare()
+}
+
+export function inCheck(chess: Chess, kingSquare: Square): bool {
+   return chess.inCheck(kingSquare)
 }

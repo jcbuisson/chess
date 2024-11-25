@@ -16,6 +16,8 @@ export class Square {
       return new Square(this.rowIndex, this.colIndex)
    }
 
+   static dummy: Square = new Square(99, 99)
+
    move(rowIncr: i8, colIncr: i8): Square {
       return new Square(this.rowIndex + rowIncr, this.colIndex + colIncr)
    }
