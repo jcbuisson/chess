@@ -18,6 +18,7 @@ export class King extends Piece {
 
    possibleMoves(chess: Chess, king: Piece): Move[] {
       const accu: Move[] = []
+      // try the 8 possible jumps
       for (let i = 0; i < JUMPS.length; i++) {
          const rowCol = JUMPS[i]
          let square = this.square.clone()
@@ -29,6 +30,8 @@ export class King extends Piece {
                if (!resultingChess.inCheck(king)) {
                   const move = new Move(MoveType.MOVE, this, square, null, resultingChess)
                   accu.push(move)
+                  resultingChess.isKingCastlingPossible = false
+                  resultingChess.isQueenCastlingPossible = false
                }
             } else {
                if (piece.isWhite !== chess.isWhitePlayer) {
@@ -36,6 +39,8 @@ export class King extends Piece {
                   if (!resultingChess.inCheck(king)) {
                      const move = new Move(MoveType.EAT, this, square, null, resultingChess)
                      accu.push(move)
+                     resultingChess.isKingCastlingPossible = false
+                     resultingChess.isQueenCastlingPossible = false
                   }
                }
             }

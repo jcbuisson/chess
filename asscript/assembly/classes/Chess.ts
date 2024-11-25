@@ -7,7 +7,7 @@ import { Knight } from './Knight'
 import { King } from './King'
 import { Queen } from './Queen'
 import { Square } from './Square'
-import { Move } from './Move'
+import { Move, MoveType } from './Move'
 
 type Nullable<T> = T | null
 
@@ -111,7 +111,20 @@ export class Chess {
       return clonedChess
    }
 
-   deletePiece(piece: Piece): Chess {
+   // cloneWithKingCastling(king: Piece) : Chess {
+   //    // create a new board situation
+   //    const clonedChess = this.clone()
+   //    // // replace `fromPiece` by a new one
+   //    // const movedPiece = fromPiece.clone() // clone preserve subtype
+   //    // movedPiece.square = toPiece.square
+      
+   //    // clonedChess.deletePiece(fromPiece)
+   //    // clonedChess.deletePiece(toPiece)
+   //    // clonedChess.pieces.push(movedPiece)
+   //    return clonedChess
+   // }
+
+   deletePiece(piece: Piece): void {
       // À TESTER
       // this.pieces.slice(this.pieces.indexOf(piece), 1)
       const pieces: Piece[] = []
@@ -121,7 +134,6 @@ export class Chess {
          pieces.push(lp)
       }
       this.pieces = pieces
-      return this
    }
 
    isSquareEmpty(square: Square): bool {
@@ -161,6 +173,10 @@ export class Chess {
       return false
    }
 
+   isSquareAttacked(square: Square): bool {
+      return false
+   }
+
    possibleMoves(): Move[] {
       const accu: Move[] = []
       const playerPieces = this.piecesOf(this.isWhitePlayer)
@@ -176,6 +192,36 @@ export class Chess {
       }
 
       // AJOUTER LES ROQUES
+      if (this.isKingCastlingPossible) {
+         if (this.isWhitePlayer) {
+            const sq0 = new Square(0, 4)
+            const sq1 = new Square(0, 5)
+            const sq2 = new Square(0, 6)
+            const sq3 = new Square(0, 7)
+            if (this.isSquareEmpty(sq1) && this.isSquareEmpty(sq2)) {
+               if (!this.isSquareAttacked(sq0) && !this.isSquareAttacked(sq1) && !this.isSquareAttacked(sq2) && !this.isSquareAttacked(sq3)) {
+                  const rook = this.pieceAtSquare(sq3)
+                  if (rook) {// useless
+                     const resultingChess = this.clone()
+                     resultingChess.deletePiece(king)
+                     resultingChess.deletePiece(rook)
+                     const movedKing = king.clone()
+                     movedKing.square = sq2
+                     resultingChess.pieces.push(movedKing)
+                     const movedRook = rook.clone()
+                     movedRook.square = sq1
+                     resultingChess.pieces.push(movedRook)
+                     resultingChess.isKingCastlingPossible = false
+                     resultingChess.isQueenCastlingPossible = false
+                     const move = new Move(MoveType.KING_CASTLING, king, sq2, null, resultingChess)
+                     accu.push(move)
+                  }
+               }
+            }
+         } else {
+
+         }
+      }
       return accu
    }
 }

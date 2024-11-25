@@ -25,7 +25,16 @@ export class Move {
    }
 
    toString(): string {
-      const type = this.type === MoveType.EAT ? 'x' : '-'
-      return this.piece.toTypeString() + ' ' + this.piece.square.toString() + type + this.to.toString()
+      if (this.type === MoveType.MOVE) {
+         return this.piece.toTypeString() + ' ' + this.piece.square.toString() + "-" + this.to.toString()
+      } else if (this.type === MoveType.EAT) {
+         return this.piece.toTypeString() + ' ' + this.piece.square.toString() + "x" + this.to.toString()
+      } else if (this.type === MoveType.KING_CASTLING) {
+         return this.piece.toTypeString() + " O-O"
+      } else if (this.type === MoveType.QUEEN_CASTLING) {
+         return this.piece.toTypeString() + " O-O-O"
+      }
+      // should never go there
+      return ""
    }
 }
