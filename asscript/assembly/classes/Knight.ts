@@ -28,14 +28,14 @@ export class Knight extends Piece {
             if (piece === null) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
                if (!resultingChess.inCheck(kingSquare)) {
-                  const move = new Move(MoveType.MOVE, this, square, null, resultingChess)
+                  const move = new Move(MoveType.MOVE, this, square, PieceType.NONE, resultingChess)
                   accu.push(move)
                }
             } else {
                if (piece.isWhite !== chess.isWhitePlayer) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
                   if (!resultingChess.inCheck(kingSquare)) {
-                     const move = new Move(MoveType.EAT, this, square, null, resultingChess)
+                     const move = new Move(MoveType.EAT, this, square, PieceType.NONE, resultingChess)
                      accu.push(move)
                   }
                }
@@ -47,10 +47,11 @@ export class Knight extends Piece {
 
    // return true if current piece (knight) attacks opponent `square`
    attacks(chess: Chess, square: Square): bool {
-      const rowDiff = Math.abs(this.square.rowIndex - square.rowIndex)
-      const colDiff = Math.abs(this.square.colIndex - square.colIndex)
-      if (rowDiff === 2 && colDiff === 1) return true
-      if (rowDiff === 1 && colDiff === 2) return true
+      // do not use Math.abs(srow-trow) since srow-trow is u8 and cannot be negative
+      const drow = this.square.rowIndex > square.rowIndex ? this.square.rowIndex - square.rowIndex : square.rowIndex - this.square.rowIndex
+      const dcol = this.square.colIndex > square.colIndex ? this.square.colIndex - square.colIndex : square.colIndex - this.square.colIndex
+      if (drow === 2 && dcol === 1) return true
+      if (drow === 1 && dcol === 2) return true
       return false
    }
 

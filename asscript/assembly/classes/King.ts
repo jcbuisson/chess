@@ -29,7 +29,7 @@ export class King extends Piece {
             if (piece === null) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
                if (!resultingChess.inCheck(square)) {
-                  const move = new Move(MoveType.MOVE, this, square, null, resultingChess)
+                  const move = new Move(MoveType.MOVE, this, square, PieceType.NONE, resultingChess)
                   accu.push(move)
                   if (chess.isWhitePlayer) resultingChess.isWhiteKingCastlingPossible = false; else resultingChess.isBlackKingCastlingPossible = false
                   if (chess.isWhitePlayer) resultingChess.isWhiteQueenCastlingPossible = false; else resultingChess.isBlackQueenCastlingPossible = false
@@ -38,10 +38,7 @@ export class King extends Piece {
                if (piece.isWhite !== chess.isWhitePlayer) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
                   if (!resultingChess.inCheck(square)) {
-                     console.log(`XXX piece: ${piece.toString()}`)
-                     console.log(`XXX square: ${square.toString()}`)
-                     console.log(`XXX chess: ${resultingChess.toAscii()}`)
-                     const move = new Move(MoveType.EAT, this, square, null, resultingChess)
+                     const move = new Move(MoveType.EAT, this, square, PieceType.NONE, resultingChess)
                      accu.push(move)
                      if (chess.isWhitePlayer) resultingChess.isWhiteKingCastlingPossible = false; else resultingChess.isBlackKingCastlingPossible = false
                      if (chess.isWhitePlayer) resultingChess.isWhiteQueenCastlingPossible = false; else resultingChess.isBlackQueenCastlingPossible = false

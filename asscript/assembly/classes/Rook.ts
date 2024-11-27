@@ -31,14 +31,14 @@ export class Rook extends Piece {
             if (piece === null) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
                if (!resultingChess.inCheck(kingSquare)) {
-                  const move = new Move(MoveType.MOVE, this, square, null, resultingChess)
+                  const move = new Move(MoveType.MOVE, this, square, PieceType.NONE, resultingChess)
                   accu.push(move)
                }
             } else {
                if (piece.isWhite !== chess.isWhitePlayer) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
                   if (!resultingChess.inCheck(kingSquare)) {
-                     const move = new Move(MoveType.EAT, this, square, null, resultingChess)
+                     const move = new Move(MoveType.EAT, this, square, PieceType.NONE, resultingChess)
                      accu.push(move)
                   }
                }

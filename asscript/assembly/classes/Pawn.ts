@@ -22,7 +22,7 @@ export class Pawn extends Piece {
       if (chess.isSquareEmpty(targetSquare)) {
          const resultingChess = chess.cloneWithMovedPiece(this, targetSquare)
          if (!resultingChess.inCheck(kingSquare)) {
-            const move = new Move(MoveType.MOVE, this, targetSquare, null, resultingChess)
+            const move = new Move(MoveType.MOVE, this, targetSquare, PieceType.NONE, resultingChess)
             accu.push(move)
          }
          if (this.square.rowIndex === Square.pawnRow(this.isWhite)) {
@@ -32,7 +32,7 @@ export class Pawn extends Piece {
             if (chess.isSquareEmpty(targetSquare)) {
                const resultingChess = chess.cloneWithMovedPiece(this, targetSquare)
                if (!resultingChess.inCheck(kingSquare)) {
-                  const move = new Move(MoveType.MOVE, this, targetSquare, null, resultingChess)
+                  const move = new Move(MoveType.MOVE, this, targetSquare, PieceType.NONE, resultingChess)
                   accu.push(move)
                }
             }
@@ -45,7 +45,7 @@ export class Pawn extends Piece {
       if (attackedPiece) {
          const resultingChess = chess.cloneWithEatenPiece(this, attackedPiece)
          if (!resultingChess.inCheck(kingSquare)) {
-            const move = new Move(MoveType.EAT, this, targetSquare, null, resultingChess)
+            const move = new Move(MoveType.EAT, this, targetSquare, PieceType.NONE, resultingChess)
             accu.push(move)
          }
       }
@@ -56,7 +56,7 @@ export class Pawn extends Piece {
       if (attackedPiece) {
          const resultingChess = chess.cloneWithEatenPiece(this, attackedPiece)
          if (!resultingChess.inCheck(kingSquare)) {
-            const move = new Move(MoveType.EAT, this, targetSquare, null, resultingChess)
+            const move = new Move(MoveType.EAT, this, targetSquare, PieceType.NONE, resultingChess)
             accu.push(move)
          }
       }

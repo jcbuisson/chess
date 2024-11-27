@@ -31,14 +31,14 @@ export class Bishop extends Piece {
             if (piece === null) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
                if (!resultingChess.inCheck(kingSquare)) {
-                  const move = new Move(MoveType.MOVE, this, square, null, resultingChess)
+                  const move = new Move(MoveType.MOVE, this, square, PieceType.NONE, resultingChess)
                   accu.push(move)
                }
             } else {
                if (piece.isWhite !== chess.isWhitePlayer) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
                   if (!resultingChess.inCheck(kingSquare)) {
-                     const move = new Move(MoveType.EAT, this, square, null, resultingChess)
+                     const move = new Move(MoveType.EAT, this, square, PieceType.NONE, resultingChess)
                      accu.push(move)
                   }
                }
@@ -55,6 +55,7 @@ export class Bishop extends Piece {
       const scol = this.square.colIndex
       const trow = square.rowIndex
       const tcol = square.colIndex
+      // do not use Math.abs(srow-trow) since srow-trow is u8 and cannot be negative
       const drow = srow > trow ? srow-trow : trow-srow
       const dcol = scol > tcol ? scol-tcol : tcol-scol
       // false if they are not on the same diagonal

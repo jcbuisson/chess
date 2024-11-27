@@ -1,6 +1,6 @@
 
 import { Square } from './Square'
-import { Piece } from './Piece'
+import { Piece, PieceType } from './Piece'
 import { Chess } from './Chess'
 
 
@@ -19,7 +19,7 @@ export class Move {
       public type: MoveType,
       public piece: Piece,
       public to: Square,
-      public promotion: Nullable<Piece>,
+      public promotion: PieceType,
       public resultingChess: Chess,
    ) {
    }

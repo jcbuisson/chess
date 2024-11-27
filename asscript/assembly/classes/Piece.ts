@@ -7,7 +7,7 @@ import { Move } from "./Move"
 
 
 export enum PieceType {
-   PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING,
+   PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING, NONE,
 }
 
 export class Piece {

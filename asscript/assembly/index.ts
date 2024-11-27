@@ -13,6 +13,37 @@ const NegativeInfinity = i32.MIN_VALUE // or i64.MIN_VALUE
 type Nullable<T> = T | null
 
 
+export function minimax(chess: Chess, depth: int, isMaximizingPlayer: bool): number {
+   if (chess.isGameOver() || depth === 0) {
+      return chess.evaluate()  // Retourne le score de l'état actuel
+   }
+
+   if (isMaximizingPlayer) {
+      let maxEval: number = -Infinity
+      const moves = chess.possibleMoves()
+      for (let i = 0; i < moves.length; i++) {
+         const move = moves[i]
+         const childEval = minimax(move.resultingChess, depth - 1, false)
+         if (childEval > maxEval) {
+            maxEval = childEval
+            chess.bestMove = move
+         }
+      }
+      return maxEval
+   } else {
+      let minEval: number = Infinity
+      const moves = chess.possibleMoves()
+      for (let i = 0; i < moves.length; i++) {
+         const move = moves[i]
+         const childEval = minimax(move.resultingChess, depth - 1, true)
+         if (childEval < minEval) {
+            minEval = childEval
+            chess.bestMove = move
+         }
+      }
+      return minEval
+   }
+}
 
 export function alphaBeta(
    depth: int,          // Current depth in game tree

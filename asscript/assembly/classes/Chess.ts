@@ -14,18 +14,18 @@ type Nullable<T> = T | null
 // rnbqkbnrpppppppp........................PPPPPPPPRNBQKBNR
 // - facile de trouver les voisins (+8, +9 etc.)
 // - facile de cloner
-// - une case est représentée par un indice dans la chaine 0..63
+// - une case est représentée par un indice 0..63
 
 
 export class Chess {
    constructor(
-      // public pieces: string,
       public pieces: Piece[],
       public isWhitePlayer: boolean,
       public isWhiteKingCastlingPossible: boolean,
       public isWhiteQueenCastlingPossible: boolean,
       public isBlackKingCastlingPossible: boolean,
       public isBlackQueenCastlingPossible: boolean,
+      public bestMove: Nullable<Move>,
    ) {
    }
 
@@ -70,6 +70,7 @@ export class Chess {
          true, // white queen castling possible
          true, // black king castling possible
          true, // black queen castling possible
+         null,
       )
    }
 
@@ -82,6 +83,7 @@ export class Chess {
          this.isWhiteQueenCastlingPossible,
          this.isBlackKingCastlingPossible,
          this.isBlackQueenCastlingPossible,
+         null,
       )
    }
 
@@ -164,8 +166,16 @@ export class Chess {
       return false
    }
 
+   isGameOver(): bool {
+      return false
+   }
+
    isSquareAttacked(square: Square): bool {
       return false
+   }
+
+   evaluate(): number {
+      return 0.
    }
 
    possibleMoves(): Move[] {
@@ -201,7 +211,7 @@ export class Chess {
                      resultingChess.pieces.push(movedRook)
                      resultingChess.isWhiteKingCastlingPossible = false
                      resultingChess.isWhiteQueenCastlingPossible = false
-                     const move = new Move(MoveType.KING_CASTLING, movedKing, sq2, null, resultingChess)
+                     const move = new Move(MoveType.KING_CASTLING, movedKing, sq2, PieceType.NONE, resultingChess)
                      accu.push(move)
                   }
                }
@@ -226,7 +236,7 @@ export class Chess {
                      resultingChess.pieces.push(movedRook)
                      resultingChess.isWhiteKingCastlingPossible = false
                      resultingChess.isWhiteQueenCastlingPossible = false
-                     const move = new Move(MoveType.KING_CASTLING, movedKing, sq2, null, resultingChess)
+                     const move = new Move(MoveType.QUEEN_CASTLING, movedKing, sq2, PieceType.NONE, resultingChess)
                      accu.push(move)
                   }
                }
@@ -253,7 +263,7 @@ export class Chess {
                      resultingChess.pieces.push(movedRook)
                      resultingChess.isBlackKingCastlingPossible = false
                      resultingChess.isBlackQueenCastlingPossible = false
-                     const move = new Move(MoveType.KING_CASTLING, movedKing, sq2, null, resultingChess)
+                     const move = new Move(MoveType.KING_CASTLING, movedKing, sq2, PieceType.NONE, resultingChess)
                      accu.push(move)
                   }
                }
@@ -278,7 +288,7 @@ export class Chess {
                      resultingChess.pieces.push(movedRook)
                      resultingChess.isBlackKingCastlingPossible = false
                      resultingChess.isBlackQueenCastlingPossible = false
-                     const move = new Move(MoveType.KING_CASTLING, movedKing, sq2, null, resultingChess)
+                     const move = new Move(MoveType.QUEEN_CASTLING, movedKing, sq2, PieceType.NONE, resultingChess)
                      accu.push(move)
                   }
                }

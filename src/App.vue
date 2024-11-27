@@ -63,23 +63,31 @@ const onMove = (moveEvent) => {
    chess = moveResultingChess(myMove)
    console.log(chessToAscii(chess))
 
+   if (boardAPI.getIsGameOver()) {
+      console.log("Game Over!")
+      return
+   }
+
    // now it's opponent's turn
    chessTogglePlayer(chess)
-   const opponentKingSquare = playerKingSquare(chess)
-   console.log('opponentKingSquare', squareToString(opponentKingSquare), inCheck(chess, opponentKingSquare))
+
+   // look for move to make
    const opponentMoves = chessPossibleMoves(chess)
    for (let i = 0; i < opponentMoves.length; i++) {
       console.log(i, moveToString(opponentMoves[i]))
    }
-   // opponentMoves.length === 0: checkmate or pat
-   if (opponentMoves.length > 0) {
-      const opponentMove = opponentMoves[0]
-      console.log('opponentMove', moveToString(opponentMove), moveToString(opponentMove).substring(2))
-      chess = moveResultingChess(opponentMove)
-      const legal = boardAPI.move(moveToString(opponentMove).substring(2))
-      if (!legal) console.log("ILLEGAL MOVE", moveToString(opponentMove).substring(2))
-      chessTogglePlayer(chess)
+   const opponentMove = opponentMoves[0]
+   console.log('opponentMove', moveToString(opponentMove), moveToString(opponentMove).substring(2))
+
+   // play move
+   chess = moveResultingChess(opponentMove)
+   const legal = boardAPI.move(moveToString(opponentMove).substring(2))
+   if (legal) {
+      console.log(chessToAscii(chess))
+   } else {
+      console.log("ILLEGAL MOVE", moveToString(opponentMove).substring(2))
    }
+   chessTogglePlayer(chess)
 }
 
 function handleCheckmate(isMated) {
