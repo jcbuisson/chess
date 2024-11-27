@@ -13,9 +13,13 @@ const NegativeInfinity = i32.MIN_VALUE // or i64.MIN_VALUE
 type Nullable<T> = T | null
 
 
+// compute the best score for position `chess`, and put the associated move in `chess.bestMove`
 export function minimax(chess: Chess, depth: int, isMaximizingPlayer: bool): number {
-   if (chess.isGameOver() || depth === 0) {
-      return chess.evaluate()  // Retourne le score de l'état actuel
+   if (depth === 0) {
+      return chess.evaluate()
+   }
+   if (chess.isCheckmate()) {
+      return isMaximizingPlayer ? Infinity : -Infinity
    }
 
    if (isMaximizingPlayer) {
@@ -90,6 +94,10 @@ export function createInitialBoard(): Chess {
 
 export function chessToAscii(chess: Chess): string {
    return chess.toAscii()
+}
+
+export function chessBestMove(chess: Chess): Nullable<Move> {
+   return chess.bestMove
 }
 
 export function squareToString(square: Square): string {

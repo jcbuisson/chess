@@ -26,6 +26,9 @@ export class Chess {
       public isBlackKingCastlingPossible: boolean,
       public isBlackQueenCastlingPossible: boolean,
       public bestMove: Nullable<Move>,
+
+      // cached:
+      // kingSquare, inCheck
    ) {
    }
 
@@ -166,8 +169,9 @@ export class Chess {
       return false
    }
 
-   isGameOver(): bool {
-      return false
+   isCheckmate(): bool {
+      const kingSquare = this.playerKingSquare()
+      return this.inCheck(kingSquare) && this.possibleMoves().length === 0
    }
 
    isSquareAttacked(square: Square): bool {
@@ -175,7 +179,16 @@ export class Chess {
    }
 
    evaluate(): number {
-      return 0.
+      let score = 0
+      for (let i = 0; i < this.pieces.length; i++) {
+         const piece = this.pieces[i]
+         if (piece.type === PieceType.QUEEN) score += piece.isWhite === this.isWhitePlayer ? 9 : -9
+         if (piece.type === PieceType.ROOK) score += piece.isWhite === this.isWhitePlayer ? 5 : -5
+         if (piece.type === PieceType.BISHOP) score += piece.isWhite === this.isWhitePlayer ? 3 : -3
+         if (piece.type === PieceType.KNIGHT) score += piece.isWhite === this.isWhitePlayer ? 3 : -3
+         if (piece.type === PieceType.PAWN) score += piece.isWhite === this.isWhitePlayer ? 1 : -1
+      }
+      return score
    }
 
    possibleMoves(): Move[] {

@@ -18,7 +18,7 @@ import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
 import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, pieceToString, squareToString, moveResultingChess, chessTogglePlayer,
-   playerKingSquare, inCheck,
+   minimax, chessBestMove,
 } from "/asscript/build/release.js"
 
 let chess
@@ -71,21 +71,26 @@ const onMove = (moveEvent) => {
    // now it's opponent's turn
    chessTogglePlayer(chess)
 
-   // look for move to make
-   const opponentMoves = chessPossibleMoves(chess)
-   for (let i = 0; i < opponentMoves.length; i++) {
-      console.log(i, moveToString(opponentMoves[i]))
-   }
-   const opponentMove = opponentMoves[0]
-   console.log('opponentMove', moveToString(opponentMove), moveToString(opponentMove).substring(2))
+   const score = minimax(chess, 2, true)
+   console.log(`score ${score}`)
+   const bestOpponentMove = chessBestMove(chess)
+   // console.log(`bestOpponentMove ${moveToString(bestOpponentMove)}`)
+
+   // // look for move to make
+   // const opponentMoves = chessPossibleMoves(chess)
+   // for (let i = 0; i < opponentMoves.length; i++) {
+   //    console.log(i, moveToString(opponentMoves[i]))
+   // }
+   // const bestOpponentMove = opponentMoves[0]
+   console.log('bestOpponentMove', moveToString(bestOpponentMove), moveToString(bestOpponentMove).substring(2))
 
    // play move
-   chess = moveResultingChess(opponentMove)
-   const legal = boardAPI.move(moveToString(opponentMove).substring(2))
+   chess = moveResultingChess(bestOpponentMove)
+   const legal = boardAPI.move(moveToString(bestOpponentMove).substring(2))
    if (legal) {
       console.log(chessToAscii(chess))
    } else {
-      console.log("ILLEGAL MOVE", moveToString(opponentMove).substring(2))
+      console.log("ILLEGAL MOVE", moveToString(bestOpponentMove).substring(2))
    }
    chessTogglePlayer(chess)
 }
