@@ -72,7 +72,7 @@ const onMove = (moveEvent) => {
    // console.log(`score ${score}`)
    // const bestComputerMove = chessBestMove(chess)
 
-   // look for move to make for computer
+   // look for computer moves
    const computerMoves = chessPossibleMoves(chess)
    for (let i = 0; i < computerMoves.length; i++) {
       console.log(i, moveToString(computerMoves[i]))

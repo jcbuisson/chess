@@ -136,11 +136,11 @@ export class Chess {
       return this.pieceAtSquare(square) === null
    }
 
-   piecesOf(isWhitePlayer: bool): Piece[] {
+   piecesOf(isWhite: bool): Piece[] {
       const accu: Piece[] = []
       for (let i = 0; i < this.pieces.length; i++) {
          const piece = this.pieces[i]
-         if (piece.isWhite === isWhitePlayer) accu.push(piece)
+         if (piece.isWhite === isWhite) accu.push(piece)
       }
       return accu
    }
