@@ -21,14 +21,14 @@ Important pour minimiser l'empreinte mémoire car des très nombreuses positions
 
 # AssemblyScript
 
-## Compiler
+## Compilation
 ```
 cd asscript/
 npm run asbuild
 ```
 - les fichiers build/release.wasm  et build/release.js sont produits
 - le fichier à importer depuis Vue est build/release.js, qui fetch release.wasm, le compile et exporte les fonctions pour JS
-- il n'y a pas de problème de mime-type comme dans NutriEducX, peut-être nouvelle version
+
 
 ## Test
 ```

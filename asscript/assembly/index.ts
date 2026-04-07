@@ -15,11 +15,12 @@ type Nullable<T> = T | null
 
 // compute the best score for position `chess`, and put the associated move in `chess.bestMove`
 export function minimax(chess: Chess, depth: int, isMaximizingPlayer: bool): number {
-   if (depth === 0) {
-      return chess.evaluate()
-   }
+   console.log(`*** call depth=${depth}, isMax=${isMaximizingPlayer ? 't' : 'f'}`)
    if (chess.isCheckmate()) {
       return isMaximizingPlayer ? Infinity : -Infinity
+   }
+   if (depth === 0) {
+      return chess.evaluate()
    }
 
    if (isMaximizingPlayer) {
@@ -27,6 +28,7 @@ export function minimax(chess: Chess, depth: int, isMaximizingPlayer: bool): num
       const moves = chess.possibleMoves()
       for (let i = 0; i < moves.length; i++) {
          const move = moves[i]
+         move.resultingChess.togglePlayer()
          const childEval = minimax(move.resultingChess, depth - 1, false)
          if (childEval > maxEval) {
             maxEval = childEval
@@ -39,6 +41,7 @@ export function minimax(chess: Chess, depth: int, isMaximizingPlayer: bool): num
       const moves = chess.possibleMoves()
       for (let i = 0; i < moves.length; i++) {
          const move = moves[i]
+         move.resultingChess.togglePlayer()
          const childEval = minimax(move.resultingChess, depth - 1, true)
          if (childEval < minEval) {
             minEval = childEval

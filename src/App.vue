@@ -53,9 +53,6 @@ const onMove = (moveEvent) => {
    const moveNotation = moveEventToString(moveEvent)
    console.log('moveEvent', moveNotation, moveEvent)
    const myMoves = chessPossibleMoves(chess)
-   for (let i = 0; i < myMoves.length; i++) {
-      console.log(i, moveToString(myMoves[i]))
-   }
    // get my move from possible moves
    const myMove = myMoves.find(move => moveNotation === moveToString(move))
    console.log('myMove', moveToString(myMove))
