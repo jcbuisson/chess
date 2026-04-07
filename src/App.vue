@@ -65,30 +65,32 @@ const onMove = (moveEvent) => {
       return
    }
 
-   // now it's opponent's turn
+   // now it is computer's turn
    chessTogglePlayer(chess)
 
-   const score = minimax(chess, 2, true)
-   console.log(`score ${score}`)
-   const bestOpponentMove = chessBestMove(chess)
-   // console.log(`bestOpponentMove ${moveToString(bestOpponentMove)}`)
+   // const score = minimax(chess, 2, true)
+   // console.log(`score ${score}`)
+   // const bestComputerMove = chessBestMove(chess)
 
-   // // look for move to make
-   // const opponentMoves = chessPossibleMoves(chess)
-   // for (let i = 0; i < opponentMoves.length; i++) {
-   //    console.log(i, moveToString(opponentMoves[i]))
-   // }
-   // const bestOpponentMove = opponentMoves[0]
-   console.log('bestOpponentMove', moveToString(bestOpponentMove), moveToString(bestOpponentMove).substring(2))
-
-   // play move
-   chess = moveResultingChess(bestOpponentMove)
-   const legal = boardAPI.move(moveToString(bestOpponentMove).substring(2))
-   if (legal) {
-      console.log(chessToAscii(chess))
-   } else {
-      console.log("ILLEGAL MOVE", moveToString(bestOpponentMove).substring(2))
+   // look for move to make for computer
+   const computerMoves = chessPossibleMoves(chess)
+   for (let i = 0; i < computerMoves.length; i++) {
+      console.log(i, moveToString(computerMoves[i]))
    }
+   const bestComputerMove = computerMoves[0]
+   console.log('bestComputerMove', moveToString(bestComputerMove), moveToString(bestComputerMove).substring(2))
+
+   // play move on model
+   chess = moveResultingChess(bestComputerMove)
+   // play move on boardAPI
+   const legal = boardAPI.move(moveToString(bestComputerMove).substring(2))
+   if (!legal) {
+      console.log("ILLEGAL MOVE - SHOULD NOT HAPPEN", moveToString(bestComputerMove).substring(2))
+   }
+   // display resulting board
+   console.log(chessToAscii(chess))
+
+   // now it is human's turn again
    chessTogglePlayer(chess)
 }
 
