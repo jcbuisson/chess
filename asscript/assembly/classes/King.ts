@@ -17,7 +17,7 @@ export class King extends Piece {
    }
 
    // king castlings are added in the parent Chess.possibleMoves
-   possibleMoves(chess: Chess, kingSquare: Square): Move[] {
+   possibleMoves(chess: Chess): Move[] {
       const accu: Move[] = []
       // try the 8 possible jumps
       for (let i = 0; i < JUMPS.length; i++) {
@@ -28,21 +28,21 @@ export class King extends Piece {
             const piece = chess.pieceAtSquare(square)
             if (piece === null) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
-               if (!resultingChess.inCheck(square)) {
+               if (!resultingChess.inCheck_(this.isWhite)) {
                   const move = new Move(MoveType.MOVE, this, square, PieceType.NONE, resultingChess)
                   accu.push(move)
-                  if (chess.isWhitePlayer) resultingChess.isWhiteKingCastlingPossible = false; else resultingChess.isBlackKingCastlingPossible = false
-                  if (chess.isWhitePlayer) resultingChess.isWhiteQueenCastlingPossible = false; else resultingChess.isBlackQueenCastlingPossible = false
+                  if (this.isWhite) resultingChess.isWhiteKingCastlingPossible = false; else resultingChess.isBlackKingCastlingPossible = false
+                  if (this.isWhite) resultingChess.isWhiteQueenCastlingPossible = false; else resultingChess.isBlackQueenCastlingPossible = false
                }
             } else {
-               if (piece.isWhite !== chess.isWhitePlayer) {
+               if (piece.isWhite !== this.isWhite) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
-                  if (!resultingChess.inCheck(square)) {
+                  if (!resultingChess.inCheck_(this.isWhite)) {
                      const move = new Move(MoveType.EAT, this, square, PieceType.NONE, resultingChess)
                      accu.push(move)
-                     if (chess.isWhitePlayer) resultingChess.isWhiteKingCastlingPossible = false; else resultingChess.isBlackKingCastlingPossible = false
-                     if (chess.isWhitePlayer) resultingChess.isWhiteQueenCastlingPossible = false; else resultingChess.isBlackQueenCastlingPossible = false
-                     }
+                     if (this.isWhite) resultingChess.isWhiteKingCastlingPossible = false; else resultingChess.isBlackKingCastlingPossible = false
+                     if (this.isWhite) resultingChess.isWhiteQueenCastlingPossible = false; else resultingChess.isBlackQueenCastlingPossible = false
+                  }
                }
             }
          }

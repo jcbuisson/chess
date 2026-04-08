@@ -16,7 +16,7 @@ export class Rook extends Piece {
       return new Rook(this.isWhite, this.square)
    }
 
-   possibleMoves(chess: Chess, kingSquare: Square): Move[] {
+   possibleMoves(chess: Chess): Move[] {
       const accu: Move[] = []
       // try moves on the 4 H/V directions
       for (let i = 0; i < HVJUMPS.length; i++) {
@@ -30,14 +30,14 @@ export class Rook extends Piece {
             const piece = chess.pieceAtSquare(square)
             if (piece === null) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
-               if (!resultingChess.inCheck(kingSquare)) {
+               if (!resultingChess.inCheck_(this.isWhite)) {
                   const move = new Move(MoveType.MOVE, this, square, PieceType.NONE, resultingChess)
                   accu.push(move)
                }
             } else {
                if (piece.isWhite !== chess.isWhitePlayer) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
-                  if (!resultingChess.inCheck(kingSquare)) {
+                  if (!resultingChess.inCheck_(this.isWhite)) {
                      const move = new Move(MoveType.EAT, this, square, PieceType.NONE, resultingChess)
                      accu.push(move)
                   }

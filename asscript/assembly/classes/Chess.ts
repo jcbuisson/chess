@@ -188,7 +188,7 @@ export class Chess {
    // indicates if the side `isWhite` is in check
    inCheck_(isWhite: bool): bool {
       const opponentPieces = this.piecesOf(!isWhite);
-      const kingSquare = kingSquare_(isWhite);
+      const kingSquare = this.kingSquare_(isWhite);
       for (let i = 0; i < opponentPieces.length; i++) {
          const piece = opponentPieces[i]
          if (piece.attacks(this, kingSquare)) return true
@@ -229,7 +229,7 @@ export class Chess {
       const kingSquare = this.playerKingSquare()
       for (let i = 0; i < playerPieces.length; i++) {
          const piece: Piece = playerPieces.at(i)
-         const pieceMoves: Move[] = piece.possibleMoves(this, kingSquare)
+         const pieceMoves: Move[] = piece.possibleMoves(this)
          for (let i = 0; i < pieceMoves.length; i++) {
             accu.push(pieceMoves[i])
          }
@@ -346,13 +346,9 @@ export class Chess {
    possibleMoves_(isWhite: bool): Move[] {
       const accu: Move[] = []
       const playerPieces = this.piecesOf(isWhite)
-
-
-
-      const kingSquare = this.kingSquare_(isWhite)
       for (let i = 0; i < playerPieces.length; i++) {
          const piece: Piece = playerPieces.at(i)
-         const pieceMoves: Move[] = piece.possibleMoves(this, kingSquare)
+         const pieceMoves: Move[] = piece.possibleMoves(this)
 
          for (let i = 0; i < pieceMoves.length; i++) {
             const move = pieceMoves[i]

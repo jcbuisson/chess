@@ -14,14 +14,14 @@ export class Pawn extends Piece {
       return new Pawn(this.isWhite, this.square)
    }
 
-   possibleMoves(chess: Chess, kingSquare: Square): Move[] {
+   possibleMoves(chess: Chess): Move[] {
       const accu: Move[] = []
       // try 1-square move
       let incrRow: i8 = this.isWhite ? 1 : -1
       let targetSquare = this.square.move(incrRow, 0)
       if (chess.isSquareEmpty(targetSquare)) {
          const resultingChess = chess.cloneWithMovedPiece(this, targetSquare)
-         if (!resultingChess.inCheck(kingSquare)) {
+         if (!resultingChess.inCheck_(this.isWhite)) {
             const move = new Move(MoveType.MOVE, this, targetSquare, PieceType.NONE, resultingChess)
             accu.push(move)
          }
@@ -31,7 +31,7 @@ export class Pawn extends Piece {
             targetSquare = this.square.move(incrRow, 0)
             if (chess.isSquareEmpty(targetSquare)) {
                const resultingChess = chess.cloneWithMovedPiece(this, targetSquare)
-               if (!resultingChess.inCheck(kingSquare)) {
+               if (!resultingChess.inCheck_(this.isWhite)) {
                   const move = new Move(MoveType.MOVE, this, targetSquare, PieceType.NONE, resultingChess)
                   accu.push(move)
                }
@@ -44,7 +44,7 @@ export class Pawn extends Piece {
       let attackedPiece = chess.pieceAtSquare(targetSquare)
       if (attackedPiece) {
          const resultingChess = chess.cloneWithEatenPiece(this, attackedPiece)
-         if (!resultingChess.inCheck(kingSquare)) {
+         if (!resultingChess.inCheck_(this.isWhite)) {
             const move = new Move(MoveType.EAT, this, targetSquare, PieceType.NONE, resultingChess)
             accu.push(move)
          }
@@ -55,7 +55,7 @@ export class Pawn extends Piece {
       attackedPiece = chess.pieceAtSquare(targetSquare)
       if (attackedPiece) {
          const resultingChess = chess.cloneWithEatenPiece(this, attackedPiece)
-         if (!resultingChess.inCheck(kingSquare)) {
+         if (!resultingChess.inCheck_(this.isWhite)) {
             const move = new Move(MoveType.EAT, this, targetSquare, PieceType.NONE, resultingChess)
             accu.push(move)
          }
