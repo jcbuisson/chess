@@ -33,3 +33,58 @@ const moves2 = chessPossibleMoves_(c2, isWhite)
 for (let i = 0; i < moves2.length; i++) {
    console.log(i, moveToString(moves2[i]))
 }
+const m2 = moves2[24]
+console.log('playing m2', moveToString(m2))
+const c3 = moveResultingChess(m2)
+console.log(chessToAscii(c3))
+
+// BLACK TO MOVE
+isWhite = false
+const moves3 = chessPossibleMoves_(c3, isWhite)
+for (let i = 0; i < moves3.length; i++) {
+   console.log(i, moveToString(moves3[i]))
+}
+const m3 = moves3[0]
+console.log('playing m3', moveToString(m3))
+const c4 = moveResultingChess(m3)
+console.log(chessToAscii(c4))
+
+// WHITE TO MOVE
+isWhite = true
+const moves4 = chessPossibleMoves_(c4, isWhite)
+for (let i = 0; i < moves4.length; i++) {
+   console.log(i, moveToString(moves4[i]))
+}
+const m4 = moves4[18]
+console.log('playing m4', moveToString(m4))
+const c5 = moveResultingChess(m4)
+console.log(chessToAscii(c5))
+
+// BLACK TO MOVE
+isWhite = false
+const moves5 = chessPossibleMoves_(c5, isWhite)
+for (let i = 0; i < moves5.length; i++) {
+   console.log(i, moveToString(moves5[i]))
+}
+const m5 = moves5[4]
+console.log('playing m5', moveToString(m5))
+const c6 = moveResultingChess(m5)
+console.log(chessToAscii(c6))
+
+// WHITE TO MOVE
+isWhite = true
+const moves6 = chessPossibleMoves_(c6, isWhite)
+for (let i = 0; i < moves6.length; i++) {
+   console.log(i, moveToString(moves6[i]))
+}
+// const m6 = moves6[33]
+// console.log('playing m6', moveToString(m6))
+// const c7 = moveResultingChess(m6)
+// console.log(chessToAscii(c7))
+
+// // BLACK TO MOVE
+// isWhite = false
+// const moves7 = chessPossibleMoves_(c7, isWhite)
+// for (let i = 0; i < moves7.length; i++) {
+//    console.log(i, moveToString(moves7[i]))
+// }

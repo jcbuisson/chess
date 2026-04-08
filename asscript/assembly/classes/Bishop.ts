@@ -49,7 +49,7 @@ export class Bishop extends Piece {
       return accu
    }
 
-   // return true if current piece attacks opponent's `square`
+   // return true if current piece attacks `square`
    attacks(chess: Chess, square: Square): bool {
       const srow = this.square.rowIndex
       const scol = this.square.colIndex
@@ -68,7 +68,7 @@ export class Bishop extends Piece {
          row = srow > trow ? row-1 : row+1
          col = scol > tcol ? col-1 : col+1
       }
-      // `this` is able to freely move to `square`: attacks it!
+      // `this` is able to freely move to `square`
       return true
    }
 

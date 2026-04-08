@@ -350,10 +350,10 @@ export class Chess {
          const piece: Piece = playerPieces.at(i)
          const pieceMoves: Move[] = piece.possibleMoves(this)
 
-         for (let i = 0; i < pieceMoves.length; i++) {
-            const move = pieceMoves[i]
-            // console.log("piece " + piece.toString() + ", move " + move.toString())
-         }
+         // for (let i = 0; i < pieceMoves.length; i++) {
+         //    const move = pieceMoves[i]
+         //    console.log("piece " + piece.toString() + ", move " + move.toString())
+         // }
 
          for (let i = 0; i < pieceMoves.length; i++) {
             accu.push(pieceMoves[i])
