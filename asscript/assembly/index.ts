@@ -123,6 +123,10 @@ export function chessPossibleMoves(chess: Chess): Move[] {
    return chess.possibleMoves()
 }
 
+export function chessPossibleMoves_(chess: Chess, isWhite: bool): Move[] {
+   return chess.possibleMoves_(isWhite)
+}
+
 export function chessTogglePlayer(chess: Chess): bool {
    return chess.togglePlayer()
 }

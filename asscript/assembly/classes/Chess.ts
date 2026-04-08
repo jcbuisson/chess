@@ -11,6 +11,11 @@ import { Move, MoveType } from './Move'
 
 type Nullable<T> = T | null
 
+// export enum Side {
+//    WHITE, BLACK,
+// }
+
+// alternative de représentation des pieces d'une position 
 // rnbqkbnrpppppppp........................PPPPPPPPRNBQKBNR
 // - facile de trouver les voisins (+8, +9 etc.)
 // - facile de cloner
@@ -20,11 +25,13 @@ type Nullable<T> = T | null
 export class Chess {
    constructor(
       public pieces: Piece[],
-      public isWhitePlayer: boolean,
+      public isWhitePlayer: boolean, // TO REMOVE?
       public isWhiteKingCastlingPossible: boolean,
       public isWhiteQueenCastlingPossible: boolean,
       public isBlackKingCastlingPossible: boolean,
       public isBlackQueenCastlingPossible: boolean,
+
+      // helpers
       public bestMove: Nullable<Move>,
 
       // cached:
@@ -159,6 +166,15 @@ export class Chess {
       return Square.dummy // should never happen
    }
 
+   kingSquare_(isWhite: bool): Square {
+      const playerPieces = this.piecesOf(isWhite)
+      for (let i = 0; i < playerPieces.length; i++) {
+         const piece = playerPieces[i]
+         if (piece.type === PieceType.KING && piece.isWhite === isWhite) return piece.square
+      }
+      return Square.dummy // should never happen
+   }
+
    // indicates if the side to move is in check
    inCheck(kingSquare: Square): bool {
       const opponentPieces = this.piecesOf(!this.isWhitePlayer)
@@ -169,8 +185,24 @@ export class Chess {
       return false
    }
 
+   // indicates if the side `isWhite` is in check
+   inCheck_(isWhite: bool): bool {
+      const opponentPieces = this.piecesOf(!isWhite);
+      const kingSquare = kingSquare_(isWhite);
+      for (let i = 0; i < opponentPieces.length; i++) {
+         const piece = opponentPieces[i]
+         if (piece.attacks(this, kingSquare)) return true
+      }
+      return false
+   }
+
    isCheckmate(): bool {
       const kingSquare = this.playerKingSquare()
+      return this.inCheck(kingSquare) && this.possibleMoves().length === 0
+   }
+
+   isCheckmate_(isWhite: bool): bool {
+      const kingSquare = this.kingSquare_(isWhite)
       return this.inCheck(kingSquare) && this.possibleMoves().length === 0
    }
 
@@ -308,6 +340,22 @@ export class Chess {
             }
          }
       }
+      return accu
+   }
+
+   possibleMoves_(isWhite: bool): Move[] {
+      const accu: Move[] = []
+      const playerPieces = this.piecesOf(isWhite)
+      const kingSquare = this.kingSquare_(isWhite)
+      for (let i = 0; i < playerPieces.length; i++) {
+         const piece: Piece = playerPieces.at(i)
+         const pieceMoves: Move[] = piece.possibleMoves(this, kingSquare)
+         for (let i = 0; i < pieceMoves.length; i++) {
+            accu.push(pieceMoves[i])
+         }
+      }
+
+      // CASTLINGS: TODO
       return accu
    }
 }
