@@ -352,7 +352,7 @@ export class Chess {
 
          for (let i = 0; i < pieceMoves.length; i++) {
             const move = pieceMoves[i]
-            console.log("piece " + piece.toString() + ", move " + move.toString())
+            // console.log("piece " + piece.toString() + ", move " + move.toString())
          }
 
          for (let i = 0; i < pieceMoves.length; i++) {
