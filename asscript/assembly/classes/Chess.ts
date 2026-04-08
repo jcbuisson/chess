@@ -346,10 +346,19 @@ export class Chess {
    possibleMoves_(isWhite: bool): Move[] {
       const accu: Move[] = []
       const playerPieces = this.piecesOf(isWhite)
+
+
+
       const kingSquare = this.kingSquare_(isWhite)
       for (let i = 0; i < playerPieces.length; i++) {
          const piece: Piece = playerPieces.at(i)
          const pieceMoves: Move[] = piece.possibleMoves(this, kingSquare)
+
+         for (let i = 0; i < pieceMoves.length; i++) {
+            const move = pieceMoves[i]
+            console.log("piece " + piece.toString() + ", move " + move.toString())
+         }
+
          for (let i = 0; i < pieceMoves.length; i++) {
             accu.push(pieceMoves[i])
          }
