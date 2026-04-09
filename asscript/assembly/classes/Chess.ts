@@ -56,7 +56,7 @@ export class Chess {
          let line = ''
          for (let col: u8 = 0; col < 8; col++) {
             const p = this.pieceAtSquare(new Square(row, col))
-            const x = p === null ? '.' : p.toTypeString()
+            const x = p.isNull() ? '.' : p.toTypeString()
             line += ` ${x} `
          }
          result += `${row+1} |${line}|\n`
@@ -374,7 +374,7 @@ export class Chess {
          resultingChess.deletePieceAt(rookStart)
          const movedKing = new King(isWhite, kingEnd)
          resultingChess.pieces.push(movedKing)
-         const rook = chess.pieceAtSquare(rookStart)
+         const rook = chess.pieceAtSquare(rookStart) // sure to be not null
          const movedRook = rook.clone()
          movedRook.square = rookEnd
          resultingChess.pieces.push(movedRook)

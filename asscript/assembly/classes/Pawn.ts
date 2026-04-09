@@ -42,7 +42,7 @@ export class Pawn extends Piece {
       incrRow = this.isWhite ? 1 : -1
       targetSquare = this.square.move(incrRow, -1)
       let attackedPiece = chess.pieceAtSquare(targetSquare)
-      if (attackedPiece) {
+      if (!attackedPiece.isNull()) {
          const resultingChess = chess.cloneWithEatenPiece(this, attackedPiece)
          if (!resultingChess.inCheck_(this.isWhite)) {
             const move = new Move(MoveType.EAT, this, targetSquare, PieceType.NONE, resultingChess)
@@ -53,7 +53,7 @@ export class Pawn extends Piece {
       incrRow = this.isWhite ? 1 : -1
       targetSquare = this.square.move(incrRow, 1)
       attackedPiece = chess.pieceAtSquare(targetSquare)
-      if (attackedPiece) {
+      if (!attackedPiece.isNull()) {
          const resultingChess = chess.cloneWithEatenPiece(this, attackedPiece)
          if (!resultingChess.inCheck_(this.isWhite)) {
             const move = new Move(MoveType.EAT, this, targetSquare, PieceType.NONE, resultingChess)

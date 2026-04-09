@@ -29,7 +29,7 @@ export class Queen extends Piece {
             square = square.move(rowIncr, colIncr)
             if (!square.isValid()) break
             const piece = chess.pieceAtSquare(square)
-            if (piece === null) {
+            if (piece.isNull()) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
                if (!resultingChess.inCheck_(this.isWhite)) {
                   const move = new Move(MoveType.MOVE, this, square, PieceType.NONE, resultingChess)
@@ -57,7 +57,7 @@ export class Queen extends Piece {
             square = square.move(rowIncr, colIncr)
             if (!square.isValid()) break
             const piece = chess.pieceAtSquare(square)
-            if (piece === null) {
+            if (piece.isNull()) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
                if (!resultingChess.inCheck_(this.isWhite)) {
                   const move = new Move(MoveType.MOVE, this, square, PieceType.NONE, resultingChess)

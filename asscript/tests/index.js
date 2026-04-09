@@ -16,67 +16,67 @@ console.log('playing m0', moveToString(m0))
 const c1 = moveResultingChess(m0) // each move contains the resultingChess (good for speed, bad for memory)
 console.log(chessToAscii(c1))
 
-// BLACK TO MOVE
-isWhite = false
-const moves1 = chessPossibleMoves_(c1, isWhite)
-for (let i = 0; i < moves1.length; i++) {
-   console.log(i, moveToString(moves1[i]))
-}
-const m1 = moves1[13]
-console.log('playing m1', moveToString(m1))
-const c2 = moveResultingChess(m1)
-console.log(chessToAscii(c2))
+// // BLACK TO MOVE
+// isWhite = false
+// const moves1 = chessPossibleMoves_(c1, isWhite)
+// for (let i = 0; i < moves1.length; i++) {
+//    console.log(i, moveToString(moves1[i]))
+// }
+// const m1 = moves1[13]
+// console.log('playing m1', moveToString(m1))
+// const c2 = moveResultingChess(m1)
+// console.log(chessToAscii(c2))
 
-// WHITE TO MOVE
-isWhite = true
-const moves2 = chessPossibleMoves_(c2, isWhite)
-for (let i = 0; i < moves2.length; i++) {
-   console.log(i, moveToString(moves2[i]))
-}
-const m2 = moves2[24]
-console.log('playing m2', moveToString(m2))
-const c3 = moveResultingChess(m2)
-console.log(chessToAscii(c3))
+// // WHITE TO MOVE
+// isWhite = true
+// const moves2 = chessPossibleMoves_(c2, isWhite)
+// for (let i = 0; i < moves2.length; i++) {
+//    console.log(i, moveToString(moves2[i]))
+// }
+// const m2 = moves2[24]
+// console.log('playing m2', moveToString(m2))
+// const c3 = moveResultingChess(m2)
+// console.log(chessToAscii(c3))
 
-// BLACK TO MOVE
-isWhite = false
-const moves3 = chessPossibleMoves_(c3, isWhite)
-for (let i = 0; i < moves3.length; i++) {
-   console.log(i, moveToString(moves3[i]))
-}
-const m3 = moves3[0]
-console.log('playing m3', moveToString(m3))
-const c4 = moveResultingChess(m3)
-console.log(chessToAscii(c4))
+// // BLACK TO MOVE
+// isWhite = false
+// const moves3 = chessPossibleMoves_(c3, isWhite)
+// for (let i = 0; i < moves3.length; i++) {
+//    console.log(i, moveToString(moves3[i]))
+// }
+// const m3 = moves3[0]
+// console.log('playing m3', moveToString(m3))
+// const c4 = moveResultingChess(m3)
+// console.log(chessToAscii(c4))
 
-// WHITE TO MOVE
-isWhite = true
-const moves4 = chessPossibleMoves_(c4, isWhite)
-for (let i = 0; i < moves4.length; i++) {
-   console.log(i, moveToString(moves4[i]))
-}
-const m4 = moves4[18]
-console.log('playing m4', moveToString(m4))
-const c5 = moveResultingChess(m4)
-console.log(chessToAscii(c5))
+// // WHITE TO MOVE
+// isWhite = true
+// const moves4 = chessPossibleMoves_(c4, isWhite)
+// for (let i = 0; i < moves4.length; i++) {
+//    console.log(i, moveToString(moves4[i]))
+// }
+// const m4 = moves4[18]
+// console.log('playing m4', moveToString(m4))
+// const c5 = moveResultingChess(m4)
+// console.log(chessToAscii(c5))
 
-// BLACK TO MOVE
-isWhite = false
-const moves5 = chessPossibleMoves_(c5, isWhite)
-for (let i = 0; i < moves5.length; i++) {
-   console.log(i, moveToString(moves5[i]))
-}
-const m5 = moves5[4]
-console.log('playing m5', moveToString(m5))
-const c6 = moveResultingChess(m5)
-console.log(chessToAscii(c6))
+// // BLACK TO MOVE
+// isWhite = false
+// const moves5 = chessPossibleMoves_(c5, isWhite)
+// for (let i = 0; i < moves5.length; i++) {
+//    console.log(i, moveToString(moves5[i]))
+// }
+// const m5 = moves5[4]
+// console.log('playing m5', moveToString(m5))
+// const c6 = moveResultingChess(m5)
+// console.log(chessToAscii(c6))
 
-// WHITE TO MOVE
-isWhite = true
-const moves6 = chessPossibleMoves_(c6, isWhite)
-for (let i = 0; i < moves6.length; i++) {
-   console.log(i, moveToString(moves6[i]))
-}
+// // WHITE TO MOVE
+// isWhite = true
+// const moves6 = chessPossibleMoves_(c6, isWhite)
+// for (let i = 0; i < moves6.length; i++) {
+//    console.log(i, moveToString(moves6[i]))
+// }
 // const m6 = moves6[33]
 // console.log('playing m6', moveToString(m6))
 // const c7 = moveResultingChess(m6)
