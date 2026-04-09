@@ -16,7 +16,7 @@ export class King extends Piece {
       return new King(this.isWhite, this.square)
    }
 
-   // king castlings are added in the parent Chess.possibleMoves
+   // king castlings are not here, but in Chess.possibleMoves_
    possibleMoves(chess: Chess): Move[] {
       const accu: Move[] = []
       // try the 8 possible jumps

@@ -1,8 +1,6 @@
 
 import { Square } from './Square'
 import { Chess } from './Chess'
-import { Pawn } from './Pawn'
-import { Bishop } from './Bishop'
 import { Move } from "./Move"
 
 
@@ -47,7 +45,11 @@ export class Piece {
       return this.type === PieceType.KING
    }
 
-   static dummy: Piece = new Piece(PieceType.PAWN, true, new Square(0, 0))
+   static dummy: Piece = new Piece(PieceType.NONE, true, new Square(0, 0))
+
+   isNull(): bool {
+      return this.type === PieceType.NONE
+   }
 
    toString(): string {
       return this.toTypeString() + this.square.toString()
