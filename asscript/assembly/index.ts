@@ -25,7 +25,7 @@ export function minimax(chess: Chess, depth: int, isWhite: bool): number {
 
    if (isWhite) {
       let maxEval: number = -Infinity
-      const moves = chess.possibleMoves_(isWhite)
+      const moves = chess.possibleMoves(isWhite)
       for (let i = 0; i < moves.length; i++) {
          const move = moves[i]
          // move.resultingChess.togglePlayer()
@@ -38,7 +38,7 @@ export function minimax(chess: Chess, depth: int, isWhite: bool): number {
       return maxEval
    } else {
       let minEval: number = Infinity
-      const moves = chess.possibleMoves_(isWhite)
+      const moves = chess.possibleMoves(isWhite)
       for (let i = 0; i < moves.length; i++) {
          const move = moves[i]
          // move.resultingChess.togglePlayer()
@@ -124,7 +124,7 @@ export function moveResultingChess(move: Move): Chess {
 // }
 
 export function chessPossibleMoves_(chess: Chess, isWhite: bool): Move[] {
-   return chess.possibleMoves_(isWhite)
+   return chess.possibleMoves(isWhite)
 }
 
 export function chessTogglePlayer(chess: Chess): bool {

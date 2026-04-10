@@ -204,7 +204,7 @@ export class Chess {
    }
 
    isCheckmate(isWhite: bool): bool {
-      return this.inCheck_(isWhite) && this.possibleMoves_(isWhite).length === 0
+      return this.inCheck_(isWhite) && this.possibleMoves(isWhite).length === 0
    }
 
    evaluate(): number {
@@ -220,129 +220,7 @@ export class Chess {
       return score
    }
 
-   possibleMoves0(): Move[] {
-      const accu: Move[] = []
-      // const playerPieces = this.piecesOf(this.isWhitePlayer)
-      // const kingSquare = this.playerKingSquare()
-      // for (let i = 0; i < playerPieces.length; i++) {
-      //    const piece: Piece = playerPieces.at(i)
-      //    const pieceMoves: Move[] = piece.possibleMoves(this)
-      //    for (let i = 0; i < pieceMoves.length; i++) {
-      //       accu.push(pieceMoves[i])
-      //    }
-      // }
-
-      // // CASTLINGS
-      // if (this.isWhitePlayer) {
-      //    if (this.isWhiteKingCastlingPossible) {
-      //       const sq0 = new Square(0, 4)
-      //       const sq1 = new Square(0, 5)
-      //       const sq2 = new Square(0, 6)
-      //       const sq3 = new Square(0, 7)
-      //       if (this.isSquareEmpty(sq1) && this.isSquareEmpty(sq2)) {
-      //          if (!this.isSquareAttacked(sq0) && !this.isSquareAttacked(sq1) && !this.isSquareAttacked(sq2) && !this.isSquareAttacked(sq3)) {
-      //             const rook = this.pieceAtSquare(sq3)
-      //             if (rook) {// useless
-      //                const resultingChess = this.clone()
-      //                resultingChess.deletePieceAt(kingSquare)
-      //                resultingChess.deletePieceAt(rook.square)
-      //                const movedKing = new King(this.isWhitePlayer, sq2)
-      //                resultingChess.pieces.push(movedKing)
-      //                const movedRook = rook.clone()
-      //                movedRook.square = sq1
-      //                resultingChess.pieces.push(movedRook)
-      //                resultingChess.isWhiteKingCastlingPossible = false
-      //                resultingChess.isWhiteQueenCastlingPossible = false
-      //                const move = new Move(MoveType.KING_CASTLING, movedKing, sq2, PieceType.NONE, resultingChess)
-      //                accu.push(move)
-      //             }
-      //          }
-      //       }
-      //    } else if (this.isWhiteQueenCastlingPossible) {
-      //       const sq0 = new Square(0, 0)
-      //       const sq1 = new Square(0, 1)
-      //       const sq2 = new Square(0, 2)
-      //       const sq3 = new Square(0, 3)
-      //       const sq4 = new Square(0, 4)
-      //       if (this.isSquareEmpty(sq1) && this.isSquareEmpty(sq2) && this.isSquareEmpty(sq3)) {
-      //          if (!this.isSquareAttacked(sq0) && !this.isSquareAttacked(sq1) && !this.isSquareAttacked(sq2) && !this.isSquareAttacked(sq3) && !this.isSquareAttacked(sq4)) {
-      //             const rook = this.pieceAtSquare(sq0)
-      //             if (rook) {// useless
-      //                const resultingChess = this.clone()
-      //                resultingChess.deletePieceAt(kingSquare)
-      //                resultingChess.deletePieceAt(rook.square)
-      //                const movedKing = new King(this.isWhitePlayer, sq2)
-      //                resultingChess.pieces.push(movedKing)
-      //                const movedRook = rook.clone()
-      //                movedRook.square = sq3
-      //                resultingChess.pieces.push(movedRook)
-      //                resultingChess.isWhiteKingCastlingPossible = false
-      //                resultingChess.isWhiteQueenCastlingPossible = false
-      //                const move = new Move(MoveType.QUEEN_CASTLING, movedKing, sq2, PieceType.NONE, resultingChess)
-      //                accu.push(move)
-      //             }
-      //          }
-      //       }
-      //    }
-      // } else {
-      //    // black is playing
-      //    if (this.isBlackKingCastlingPossible) {
-      //       const sq0 = new Square(7, 4)
-      //       const sq1 = new Square(7, 5)
-      //       const sq2 = new Square(7, 6)
-      //       const sq3 = new Square(7, 7)
-      //       if (this.isSquareEmpty(sq1) && this.isSquareEmpty(sq2)) {
-      //          if (!this.isSquareAttacked(sq0) && !this.isSquareAttacked(sq1) && !this.isSquareAttacked(sq2) && !this.isSquareAttacked(sq3)) {
-      //             const rook = this.pieceAtSquare(sq3)
-      //             if (rook) {// useless
-      //                const resultingChess = this.clone()
-      //                resultingChess.deletePieceAt(kingSquare)
-      //                resultingChess.deletePieceAt(rook.square)
-      //                const movedKing = new King(this.isWhitePlayer, sq2)
-      //                resultingChess.pieces.push(movedKing)
-      //                const movedRook = rook.clone()
-      //                movedRook.square = sq1
-      //                resultingChess.pieces.push(movedRook)
-      //                resultingChess.isBlackKingCastlingPossible = false
-      //                resultingChess.isBlackQueenCastlingPossible = false
-      //                const move = new Move(MoveType.KING_CASTLING, movedKing, sq2, PieceType.NONE, resultingChess)
-      //                accu.push(move)
-      //             }
-      //          }
-      //       }
-      //    } else if (this.isBlackQueenCastlingPossible) {
-      //       const sq0 = new Square(7, 0)
-      //       const sq1 = new Square(7, 1)
-      //       const sq2 = new Square(7, 2)
-      //       const sq3 = new Square(7, 3)
-      //       const sq4 = new Square(7, 4)
-      //       if (this.isSquareEmpty(sq1) && this.isSquareEmpty(sq2) && this.isSquareEmpty(sq3)) {
-      //          if (!this.isSquareAttacked(sq0) && !this.isSquareAttacked(sq1) && !this.isSquareAttacked(sq2) && !this.isSquareAttacked(sq3) && !this.isSquareAttacked(sq4)) {
-      //             const rook = this.pieceAtSquare(sq0)
-      //             if (rook) {// useless
-      //                const resultingChess = this.clone()
-      //                resultingChess.deletePieceAt(kingSquare)
-      //                resultingChess.deletePieceAt(rook.square)
-      //                const movedKing = new King(this.isWhitePlayer, sq2)
-      //                resultingChess.pieces.push(movedKing)
-      //                const movedRook = rook.clone()
-      //                movedRook.square = sq3
-      //                resultingChess.pieces.push(movedRook)
-      //                resultingChess.isBlackKingCastlingPossible = false
-      //                resultingChess.isBlackQueenCastlingPossible = false
-      //                const move = new Move(MoveType.QUEEN_CASTLING, movedKing, sq2, PieceType.NONE, resultingChess)
-      //                accu.push(move)
-      //             }
-      //          }
-      //       }
-      //    }
-      // }
-      return accu
-   }
-
-
-
-   possibleMoves_(isWhite: bool): Move[] {
+   possibleMoves(isWhite: bool): Move[] {
       const accu: Move[] = []
       const playerPieces = this.piecesOf(isWhite)
       for (let i = 0; i < playerPieces.length; i++) {
