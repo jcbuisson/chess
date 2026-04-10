@@ -11,10 +11,6 @@ import { Move, MoveType } from './Move'
 
 type Nullable<T> = T | null
 
-// export enum Side {
-//    WHITE, BLACK,
-// }
-
 // alternative de représentation des pieces d'une position 
 // rnbqkbnrpppppppp........................PPPPPPPPRNBQKBNR
 // - facile de trouver les voisins (+8, +9 etc.)
@@ -40,18 +36,6 @@ export class Chess {
    }
 
    toAscii(): string {
-      // let whitePieces = ''
-      // let blackPieces = ''
-      // for (let i = 0; i < this.pieces.length; i++) {
-      //    const piece = this.pieces[i]
-      //    if (piece.isWhite) {
-      //       whitePieces += piece.toTypeString()
-      //    } else {
-      //       blackPieces += piece.toTypeString()
-      //    }
-      // }
-      // let result = `W: ${whitePieces}, B: ${blackPieces}\n`
-      // result += '  +------------------------+\n'
       let result = '  +------------------------+\n'
       for (let row: u8 = 7; row < 255; row--) {
          let line = ''
@@ -155,21 +139,7 @@ export class Chess {
       return accu
    }
 
-   // togglePlayer(): bool {
-   //    this.isWhitePlayer = !this.isWhitePlayer
-   //    return this.isWhitePlayer
-   // }
-
-   // playerKingSquare(): Square {
-   //    const playerPieces = this.piecesOf(this.isWhitePlayer)
-   //    for (let i = 0; i < playerPieces.length; i++) {
-   //       const piece = playerPieces[i]
-   //       if (piece.type === PieceType.KING && piece.isWhite === this.isWhitePlayer) return piece.square
-   //    }
-   //    return Square.dummy // should never happen
-   // }
-
-   kingSquare_(isWhite: bool): Square {
+   kingSquare(isWhite: bool): Square {
       const playerPieces = this.piecesOf(isWhite)
       for (let i = 0; i < playerPieces.length; i++) {
          const piece = playerPieces[i]
@@ -189,7 +159,7 @@ export class Chess {
 
    // indicates if the side `isWhite` is in check
    inCheck_(isWhite: bool): bool {
-      const kingSquare = this.kingSquare_(isWhite);
+      const kingSquare = this.kingSquare(isWhite);
       return this.isSquareAttacked(isWhite, kingSquare)
    }
 
