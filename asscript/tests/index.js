@@ -11,9 +11,9 @@ const moves0 = chessPossibleMoves_(c0, isWhite)
 for (let i = 0; i < moves0.length; i++) {
    console.log(i, moveToString(moves0[i]))
 }
-const m0 = moves0[9]
-console.log('playing m0', moveToString(m0))
-const c1 = moveResultingChess(m0) // each move contains the resultingChess (good for speed, bad for memory)
+const M0 = moves0[9]
+console.log('playing m0', moveToString(M0))
+const c1 = moveResultingChess(M0) // each move contains the resultingChess (good for speed, bad for memory)
 console.log(chessToAscii(c1))
 
 // BLACK TO MOVE
@@ -22,7 +22,7 @@ const moves1 = chessPossibleMoves_(c1, isWhite)
 for (let i = 0; i < moves1.length; i++) {
    console.log(i, moveToString(moves1[i]))
 }
-const m1 = moves1[13]
+const m1 = moves1[11]
 console.log('playing m1', moveToString(m1))
 const c2 = moveResultingChess(m1)
 console.log(chessToAscii(c2))
@@ -66,9 +66,9 @@ const moves5 = chessPossibleMoves_(c5, isWhite)
 for (let i = 0; i < moves5.length; i++) {
    console.log(i, moveToString(moves5[i]))
 }
-const M5 = moves5[4]
-console.log('playing m5', moveToString(M5))
-const c6 = moveResultingChess(M5)
+const m5 = moves5[4]
+console.log('playing m5', moveToString(m5))
+const c6 = moveResultingChess(m5)
 console.log(chessToAscii(c6))
 
 // WHITE TO MOVE
@@ -88,3 +88,29 @@ const moves7 = chessPossibleMoves_(c7, isWhite)
 for (let i = 0; i < moves7.length; i++) {
    console.log(i, moveToString(moves7[i]))
 }
+const m7 = moves7[5]
+console.log('playing m7', moveToString(m7))
+const c8 = moveResultingChess(m7)
+console.log(chessToAscii(c8))
+
+// WHITE TO MOVE
+isWhite = true
+const moves8 = chessPossibleMoves_(c8, isWhite)
+for (let i = 0; i < moves8.length; i++) {
+   console.log(i, moveToString(moves8[i]))
+}
+const M8 = moves8[33]
+console.log('playing M8', moveToString(M8))
+const c9 = moveResultingChess(M8)
+console.log(chessToAscii(c9))
+
+// BLACK TO MOVE
+isWhite = false
+const moves9 = chessPossibleMoves_(c9, isWhite)
+for (let i = 0; i < moves9.length; i++) {
+   console.log(i, moveToString(moves9[i]))
+}
+const m9 = moves9[43]
+console.log('playing m9', moveToString(m9))
+const c10 = moveResultingChess(m9)
+console.log(chessToAscii(c10))

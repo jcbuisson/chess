@@ -36,7 +36,7 @@ export class Queen extends Piece {
                   accu.push(move)
                }
             } else {
-               if (piece.isWhite !== chess.isWhitePlayer) {
+               if (piece.isWhite !== this.isWhite) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
                   if (!resultingChess.inCheck_(this.isWhite)) {
                      const move = new Move(MoveType.EAT, this, square, PieceType.NONE, resultingChess)
