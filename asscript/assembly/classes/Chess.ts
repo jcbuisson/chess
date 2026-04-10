@@ -21,7 +21,6 @@ type Nullable<T> = T | null
 export class Chess {
    constructor(
       public pieces: Piece[],
-      public isWhitePlayer: boolean, // TO REMOVE?
       public isWhiteKingCastlingPossible: boolean,
       public isWhiteQueenCastlingPossible: boolean,
       public isBlackKingCastlingPossible: boolean,
@@ -60,7 +59,6 @@ export class Chess {
             new Pawn(true, new Square(1, 0)), new Pawn(true, new Square(1, 1)), new Pawn(true, new Square(1, 2)), new Pawn(true, new Square(1, 3)), new Pawn(true, new Square(1, 4)), new Pawn(true, new Square(1, 5)), new Pawn(true, new Square(1, 6)), new Pawn(true, new Square(1, 7)),
             new Rook(true, new Square(0, 0)), new Knight(true, new Square(0, 1)), new Bishop(true, new Square(0, 2)), new Queen(true, new Square(0, 3)), new King(true, new Square(0, 4)), new Bishop(true, new Square(0, 5)), new Knight(true, new Square(0, 6)), new Rook(true, new Square(0, 7)),
          ],
-         true, // white to move
          true, // white king castling possible
          true, // white queen castling possible
          true, // black king castling possible
@@ -71,9 +69,7 @@ export class Chess {
 
    clone(): Chess {
       return new Chess(
-         // this.pieces.map<Piece>(piece => piece.clone()),
          this.pieces.map<Piece>(piece => piece),
-         this.isWhitePlayer,
          this.isWhiteKingCastlingPossible,
          this.isWhiteQueenCastlingPossible,
          this.isBlackKingCastlingPossible,
@@ -171,11 +167,11 @@ export class Chess {
       let score = 0
       for (let i = 0; i < this.pieces.length; i++) {
          const piece = this.pieces[i]
-         if (piece.type === PieceType.QUEEN) score += piece.isWhite === this.isWhitePlayer ? 9 : -9
-         if (piece.type === PieceType.ROOK) score += piece.isWhite === this.isWhitePlayer ? 5 : -5
-         if (piece.type === PieceType.BISHOP) score += piece.isWhite === this.isWhitePlayer ? 3 : -3
-         if (piece.type === PieceType.KNIGHT) score += piece.isWhite === this.isWhitePlayer ? 3 : -3
-         if (piece.type === PieceType.PAWN) score += piece.isWhite === this.isWhitePlayer ? 1 : -1
+         if (piece.type === PieceType.QUEEN) score += piece.isWhite ? 9 : -9
+         if (piece.type === PieceType.ROOK) score += piece.isWhite ? 5 : -5
+         if (piece.type === PieceType.BISHOP) score += piece.isWhite ? 3 : -3
+         if (piece.type === PieceType.KNIGHT) score += piece.isWhite ? 3 : -3
+         if (piece.type === PieceType.PAWN) score += piece.isWhite ? 1 : -1
       }
       return score
    }
