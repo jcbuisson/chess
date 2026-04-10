@@ -155,19 +155,19 @@ export class Chess {
       return accu
    }
 
-   togglePlayer(): bool {
-      this.isWhitePlayer = !this.isWhitePlayer
-      return this.isWhitePlayer
-   }
+   // togglePlayer(): bool {
+   //    this.isWhitePlayer = !this.isWhitePlayer
+   //    return this.isWhitePlayer
+   // }
 
-   playerKingSquare(): Square {
-      const playerPieces = this.piecesOf(this.isWhitePlayer)
-      for (let i = 0; i < playerPieces.length; i++) {
-         const piece = playerPieces[i]
-         if (piece.type === PieceType.KING && piece.isWhite === this.isWhitePlayer) return piece.square
-      }
-      return Square.dummy // should never happen
-   }
+   // playerKingSquare(): Square {
+   //    const playerPieces = this.piecesOf(this.isWhitePlayer)
+   //    for (let i = 0; i < playerPieces.length; i++) {
+   //       const piece = playerPieces[i]
+   //       if (piece.type === PieceType.KING && piece.isWhite === this.isWhitePlayer) return piece.square
+   //    }
+   //    return Square.dummy // should never happen
+   // }
 
    kingSquare_(isWhite: bool): Square {
       const playerPieces = this.piecesOf(isWhite)
@@ -177,16 +177,6 @@ export class Chess {
       }
       return Square.dummy // should never happen
    }
-
-   // // indicates if the side to move is in check
-   // inCheck(kingSquare: Square): bool {
-   //    const opponentPieces = this.piecesOf(!this.isWhitePlayer)
-   //    for (let i = 0; i < opponentPieces.length; i++) {
-   //       const piece = opponentPieces[i]
-   //       if (piece.attacks(this, kingSquare)) return true
-   //    }
-   //    return false
-   // }
 
    isSquareAttacked(isWhite: bool, square: Square): bool {
       const opponentPieces = this.piecesOf(!isWhite);

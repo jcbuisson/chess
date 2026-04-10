@@ -13,7 +13,7 @@ type Nullable<T> = T | null
 
 // compute the best score for position `chess`, and put the associated move in `chess.bestMove`
 export function minimax(chess: Chess, depth: int, isWhite: bool): number {
-   // console.log(`*** call depth=${depth}, isMax=${isMaximizingPlayer ? 't' : 'f'}`)
+   // console.log(`*** call depth=${depth}, isWhite=${isWhite ? 't' : 'f'}`)
    if (chess.isCheckmate(isWhite)) {
       return isWhite ? Infinity : -Infinity
    }
