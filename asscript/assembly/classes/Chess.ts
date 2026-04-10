@@ -40,18 +40,19 @@ export class Chess {
    }
 
    toAscii(): string {
-      let whitePieces = ''
-      let blackPieces = ''
-      for (let i = 0; i < this.pieces.length; i++) {
-         const piece = this.pieces[i]
-         if (piece.isWhite) {
-            whitePieces += piece.toTypeString()
-         } else {
-            blackPieces += piece.toTypeString()
-         }
-      }
-      let result = `W: ${whitePieces}, B: ${blackPieces}\n`
-      result += '  +------------------------+\n'
+      // let whitePieces = ''
+      // let blackPieces = ''
+      // for (let i = 0; i < this.pieces.length; i++) {
+      //    const piece = this.pieces[i]
+      //    if (piece.isWhite) {
+      //       whitePieces += piece.toTypeString()
+      //    } else {
+      //       blackPieces += piece.toTypeString()
+      //    }
+      // }
+      // let result = `W: ${whitePieces}, B: ${blackPieces}\n`
+      // result += '  +------------------------+\n'
+      let result = '  +------------------------+\n'
       for (let row: u8 = 7; row < 255; row--) {
          let line = ''
          for (let col: u8 = 0; col < 8; col++) {
@@ -202,9 +203,8 @@ export class Chess {
       return this.isSquareAttacked(isWhite, kingSquare)
    }
 
-   isCheckmate(): bool {
-      const kingSquare = this.playerKingSquare()
-      return this.inCheck(kingSquare) && this.possibleMoves().length === 0
+   isCheckmate(isWhite: bool): bool {
+      return this.inCheck_(isWhite) && this.possibleMoves_(isWhite).length === 0
    }
 
    evaluate(): number {
@@ -220,7 +220,7 @@ export class Chess {
       return score
    }
 
-   possibleMoves(): Move[] {
+   possibleMoves0(): Move[] {
       const accu: Move[] = []
       // const playerPieces = this.piecesOf(this.isWhitePlayer)
       // const kingSquare = this.playerKingSquare()

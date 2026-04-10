@@ -14,22 +14,22 @@ type Nullable<T> = T | null
 
 
 // compute the best score for position `chess`, and put the associated move in `chess.bestMove`
-export function minimax(chess: Chess, depth: int, isMaximizingPlayer: bool): number {
+export function minimax(chess: Chess, depth: int, isWhite: bool): number {
    // console.log(`*** call depth=${depth}, isMax=${isMaximizingPlayer ? 't' : 'f'}`)
-   if (chess.isCheckmate()) {
-      return isMaximizingPlayer ? Infinity : -Infinity
+   if (chess.isCheckmate(isWhite)) {
+      return isWhite ? Infinity : -Infinity
    }
    if (depth === 0) {
       return chess.evaluate()
    }
 
-   if (isMaximizingPlayer) {
+   if (isWhite) {
       let maxEval: number = -Infinity
-      const moves = chess.possibleMoves()
+      const moves = chess.possibleMoves_(isWhite)
       for (let i = 0; i < moves.length; i++) {
          const move = moves[i]
          // move.resultingChess.togglePlayer()
-         const childEval = minimax(move.resultingChess, depth - 1, false)
+         const childEval = minimax(move.resultingChess, depth - 1, !isWhite)
          if (childEval > maxEval) {
             maxEval = childEval
             chess.bestMove = move
@@ -38,11 +38,11 @@ export function minimax(chess: Chess, depth: int, isMaximizingPlayer: bool): num
       return maxEval
    } else {
       let minEval: number = Infinity
-      const moves = chess.possibleMoves()
+      const moves = chess.possibleMoves_(isWhite)
       for (let i = 0; i < moves.length; i++) {
          const move = moves[i]
          // move.resultingChess.togglePlayer()
-         const childEval = minimax(move.resultingChess, depth - 1, true)
+         const childEval = minimax(move.resultingChess, depth - 1, !isWhite)
          if (childEval < minEval) {
             minEval = childEval
             chess.bestMove = move
@@ -52,43 +52,43 @@ export function minimax(chess: Chess, depth: int, isMaximizingPlayer: bool): num
    }
 }
 
-export function alphaBeta(
-   depth: int,          // Current depth in game tree
-   maxDepth: int,
-   nodeIndex: int,      // Index of current node in scores array
-   isMaximizingPlayer: bool, // True if maximizing player, False if minimizing player
-   scores: StaticArray<int>, // Array of leaf node scores
-   alpha: int,          // Alpha value
-   beta: int            // Beta value
-): int {
-   if (depth === maxDepth) { // Assume maximum depth of 3
-      return unchecked(scores[nodeIndex])
-   }
+// export function alphaBeta(
+//    depth: int,          // Current depth in game tree
+//    maxDepth: int,
+//    nodeIndex: int,      // Index of current node in scores array
+//    isMaximizingPlayer: bool, // True if maximizing player, False if minimizing player
+//    scores: StaticArray<int>, // Array of leaf node scores
+//    alpha: int,          // Alpha value
+//    beta: int            // Beta value
+// ): int {
+//    if (depth === maxDepth) { // Assume maximum depth of 3
+//       return unchecked(scores[nodeIndex])
+//    }
 
-   if (isMaximizingPlayer) {
-      let maxEval: int = NegativeInfinity
-      for (let i = 0; i < 2; i++) { // Assume binary tree
-         const value: int = alphaBeta(depth + 1, maxDepth, nodeIndex * 2 + i, false, scores, alpha, beta);
-         maxEval = max(maxEval, value)
-         alpha = max(alpha, value)
-         if (beta <= alpha) {
-            break
-         }
-      }
-      return maxEval
-   } else {
-      let minEval: int = PositiveInfinity
-      for (let i = 0; i < 2; i++) {
-         const value: int = alphaBeta(depth + 1, maxDepth, nodeIndex * 2 + i, true, scores, alpha, beta)
-         minEval = min(minEval, value)
-         beta = min(beta, value)
-         if (beta <= alpha) {
-            break
-         }
-      }
-      return minEval
-   }
-}
+//    if (isMaximizingPlayer) {
+//       let maxEval: int = NegativeInfinity
+//       for (let i = 0; i < 2; i++) { // Assume binary tree
+//          const value: int = alphaBeta(depth + 1, maxDepth, nodeIndex * 2 + i, false, scores, alpha, beta);
+//          maxEval = max(maxEval, value)
+//          alpha = max(alpha, value)
+//          if (beta <= alpha) {
+//             break
+//          }
+//       }
+//       return maxEval
+//    } else {
+//       let minEval: int = PositiveInfinity
+//       for (let i = 0; i < 2; i++) {
+//          const value: int = alphaBeta(depth + 1, maxDepth, nodeIndex * 2 + i, true, scores, alpha, beta)
+//          minEval = min(minEval, value)
+//          beta = min(beta, value)
+//          if (beta <= alpha) {
+//             break
+//          }
+//       }
+//       return minEval
+//    }
+// }
 
 
 export function createInitialBoard(): Chess {
@@ -119,9 +119,9 @@ export function moveResultingChess(move: Move): Chess {
    return move.resultingChess
 }
 
-export function chessPossibleMoves(chess: Chess): Move[] {
-   return chess.possibleMoves()
-}
+// export function chessPossibleMoves(chess: Chess): Move[] {
+//    return chess.possibleMoves()
+// }
 
 export function chessPossibleMoves_(chess: Chess, isWhite: bool): Move[] {
    return chess.possibleMoves_(isWhite)

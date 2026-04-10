@@ -1,5 +1,5 @@
 // import assert from "assert"
-import { createInitialBoard, chessToAscii, chessPossibleMoves, chessPossibleMoves_, moveToString, moveResultingChess, chessTogglePlayer } from "../build/debug.js"
+import { createInitialBoard, chessToAscii, chessPossibleMoves_, moveToString, moveResultingChess } from "../build/debug.js"
 
 
 const c0 = createInitialBoard()
