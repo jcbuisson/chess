@@ -119,22 +119,6 @@ export function moveResultingChess(move: Move): Chess {
    return move.resultingChess
 }
 
-// export function chessPossibleMoves(chess: Chess): Move[] {
-//    return chess.possibleMoves()
-// }
-
 export function chessPossibleMoves_(chess: Chess, isWhite: bool): Move[] {
    return chess.possibleMoves(isWhite)
-}
-
-export function chessTogglePlayer(chess: Chess): bool {
-   return chess.togglePlayer()
-}
-
-export function playerKingSquare(chess: Chess): Square {
-   return chess.playerKingSquare()
-}
-
-export function inCheck(chess: Chess, kingSquare: Square): bool {
-   return chess.inCheck(kingSquare)
 }

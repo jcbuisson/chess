@@ -178,15 +178,15 @@ export class Chess {
       return Square.dummy // should never happen
    }
 
-   // indicates if the side to move is in check
-   inCheck(kingSquare: Square): bool {
-      const opponentPieces = this.piecesOf(!this.isWhitePlayer)
-      for (let i = 0; i < opponentPieces.length; i++) {
-         const piece = opponentPieces[i]
-         if (piece.attacks(this, kingSquare)) return true
-      }
-      return false
-   }
+   // // indicates if the side to move is in check
+   // inCheck(kingSquare: Square): bool {
+   //    const opponentPieces = this.piecesOf(!this.isWhitePlayer)
+   //    for (let i = 0; i < opponentPieces.length; i++) {
+   //       const piece = opponentPieces[i]
+   //       if (piece.attacks(this, kingSquare)) return true
+   //    }
+   //    return false
+   // }
 
    isSquareAttacked(isWhite: bool, square: Square): bool {
       const opponentPieces = this.piecesOf(!isWhite);
@@ -222,6 +222,7 @@ export class Chess {
 
    possibleMoves(isWhite: bool): Move[] {
       const accu: Move[] = []
+      // PIECES MOVES
       const playerPieces = this.piecesOf(isWhite)
       for (let i = 0; i < playerPieces.length; i++) {
          const piece: Piece = playerPieces.at(i)
@@ -230,8 +231,7 @@ export class Chess {
             accu.push(pieceMoves[i])
          }
       }
-
-      // CASTLINGS
+      // CASTLING MOVES
       function notAttacked(chess: Chess, isWhite: bool, squares: Square[]): bool {
          for (let i = 0; i < squares.length; i++) {
             if (chess.isSquareAttacked(isWhite, squares[i])) return false
