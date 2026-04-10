@@ -1,5 +1,5 @@
 // import assert from "assert"
-import { createInitialBoard, chessToAscii, chessPossibleMoves_, moveToString, moveResultingChess } from "../build/debug.js"
+import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, moveResultingChess } from "../build/debug.js"
 
 
 const c0 = createInitialBoard()
@@ -7,7 +7,7 @@ const c0 = createInitialBoard()
 // WHITE TO MOVE
 let isWhite = true
 console.log(chessToAscii(c0))
-const moves0 = chessPossibleMoves_(c0, isWhite)
+const moves0 = chessPossibleMoves(c0, isWhite)
 for (let i = 0; i < moves0.length; i++) {
    console.log(i, moveToString(moves0[i]))
 }
@@ -18,7 +18,7 @@ console.log(chessToAscii(c1))
 
 // BLACK TO MOVE
 isWhite = false
-const moves1 = chessPossibleMoves_(c1, isWhite)
+const moves1 = chessPossibleMoves(c1, isWhite)
 for (let i = 0; i < moves1.length; i++) {
    console.log(i, moveToString(moves1[i]))
 }
@@ -29,7 +29,7 @@ console.log(chessToAscii(c2))
 
 // WHITE TO MOVE
 isWhite = true
-const moves2 = chessPossibleMoves_(c2, isWhite)
+const moves2 = chessPossibleMoves(c2, isWhite)
 for (let i = 0; i < moves2.length; i++) {
    console.log(i, moveToString(moves2[i]))
 }
@@ -40,7 +40,7 @@ console.log(chessToAscii(c3))
 
 // BLACK TO MOVE
 isWhite = false
-const moves3 = chessPossibleMoves_(c3, isWhite)
+const moves3 = chessPossibleMoves(c3, isWhite)
 for (let i = 0; i < moves3.length; i++) {
    console.log(i, moveToString(moves3[i]))
 }
@@ -51,7 +51,7 @@ console.log(chessToAscii(c4))
 
 // WHITE TO MOVE
 isWhite = true
-const moves4 = chessPossibleMoves_(c4, isWhite)
+const moves4 = chessPossibleMoves(c4, isWhite)
 for (let i = 0; i < moves4.length; i++) {
    console.log(i, moveToString(moves4[i]))
 }
@@ -62,7 +62,7 @@ console.log(chessToAscii(c5))
 
 // BLACK TO MOVE
 isWhite = false
-const moves5 = chessPossibleMoves_(c5, isWhite)
+const moves5 = chessPossibleMoves(c5, isWhite)
 for (let i = 0; i < moves5.length; i++) {
    console.log(i, moveToString(moves5[i]))
 }
@@ -73,7 +73,7 @@ console.log(chessToAscii(c6))
 
 // WHITE TO MOVE
 isWhite = true
-const moves6 = chessPossibleMoves_(c6, isWhite)
+const moves6 = chessPossibleMoves(c6, isWhite)
 for (let i = 0; i < moves6.length; i++) {
    console.log(i, moveToString(moves6[i]))
 }
@@ -84,7 +84,7 @@ console.log(chessToAscii(c7))
 
 // BLACK TO MOVE
 isWhite = false
-const moves7 = chessPossibleMoves_(c7, isWhite)
+const moves7 = chessPossibleMoves(c7, isWhite)
 for (let i = 0; i < moves7.length; i++) {
    console.log(i, moveToString(moves7[i]))
 }
@@ -95,7 +95,7 @@ console.log(chessToAscii(c8))
 
 // WHITE TO MOVE
 isWhite = true
-const moves8 = chessPossibleMoves_(c8, isWhite)
+const moves8 = chessPossibleMoves(c8, isWhite)
 for (let i = 0; i < moves8.length; i++) {
    console.log(i, moveToString(moves8[i]))
 }
@@ -106,7 +106,7 @@ console.log(chessToAscii(c9))
 
 // BLACK TO MOVE
 isWhite = false
-const moves9 = chessPossibleMoves_(c9, isWhite)
+const moves9 = chessPossibleMoves(c9, isWhite)
 for (let i = 0; i < moves9.length; i++) {
    console.log(i, moveToString(moves9[i]))
 }

@@ -7,8 +7,6 @@ import { Chess } from './classes/Chess'
 
 
 type int = i32 // or i64
-const PositiveInfinity = i32.MAX_VALUE // or i64.MAX_VALUE
-const NegativeInfinity = i32.MIN_VALUE // or i64.MIN_VALUE
 
 type Nullable<T> = T | null
 
@@ -119,6 +117,6 @@ export function moveResultingChess(move: Move): Chess {
    return move.resultingChess
 }
 
-export function chessPossibleMoves_(chess: Chess, isWhite: bool): Move[] {
+export function chessPossibleMoves(chess: Chess, isWhite: bool): Move[] {
    return chess.possibleMoves(isWhite)
 }
