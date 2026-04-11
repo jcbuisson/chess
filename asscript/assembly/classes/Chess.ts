@@ -164,16 +164,25 @@ export class Chess {
    }
 
    evaluate(): number {
-      let score = 0
+      let whitePieces = 0
+      let blackPieces = 0
       for (let i = 0; i < this.pieces.length; i++) {
          const piece = this.pieces[i]
-         if (piece.type === PieceType.QUEEN) score += piece.isWhite ? 9 : -9
-         if (piece.type === PieceType.ROOK) score += piece.isWhite ? 5 : -5
-         if (piece.type === PieceType.BISHOP) score += piece.isWhite ? 3 : -3
-         if (piece.type === PieceType.KNIGHT) score += piece.isWhite ? 3 : -3
-         if (piece.type === PieceType.PAWN) score += piece.isWhite ? 1 : -1
+         if (piece.type === PieceType.QUEEN) {
+            if (piece.isWhite) { whitePieces += 9 } else { blackPieces += 9 }
+         }
+         if (piece.type === PieceType.ROOK) {
+            if (piece.isWhite) { whitePieces += 5 } else { blackPieces += 5 }
+         }
+         if (piece.type === PieceType.BISHOP || piece.type === PieceType.KNIGHT) {
+            if (piece.isWhite) { whitePieces += 3 } else { blackPieces += 3 }
+         }
+         if (piece.type === PieceType.PAWN) {
+            if (piece.isWhite) { whitePieces += 1 } else { blackPieces += 1 }
+         }
       }
-      return score
+      // console.log(`${whitePieces}, ${blackPieces}, ${this.possibleMoves(true).length}, ${this.possibleMoves(false).length}`)
+      return whitePieces + this.possibleMoves(true).length - blackPieces - this.possibleMoves(false).length
    }
 
    possibleMoves(isWhite: bool): Move[] {

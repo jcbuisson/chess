@@ -17,7 +17,7 @@ export class Piece {
    }
 
    clone(): Piece {
-      console.log("Piece clone, should never be called: " + this.toString())
+      console.log(`Piece clone, should never be called: type=${this.type}, isWhite=${this.isWhite}, square=${this.square.toString()}`)
       return this
    }
 

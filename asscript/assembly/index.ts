@@ -124,3 +124,7 @@ export function moveResultingChess(move: Move): Chess {
 export function chessPossibleMoves(chess: Chess, isWhite: bool): Move[] {
    return chess.possibleMoves(isWhite)
 }
+
+export function chessEvaluate(chess: Chess): number {
+   return chess.evaluate()
+}
