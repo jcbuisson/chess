@@ -27,14 +27,14 @@ export class Knight extends Piece {
             const piece = chess.pieceAtSquare(square)
             if (piece.isNull()) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
-               if (!resultingChess.inCheck_(this.isWhite)) {
+               if (!resultingChess.inCheck(this.isWhite)) {
                   const move = new Move(MoveType.MOVE, this, square, PieceType.NONE, resultingChess)
                   accu.push(move)
                }
             } else {
                if (piece.isWhite !== this.isWhite) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
-                  if (!resultingChess.inCheck_(this.isWhite)) {
+                  if (!resultingChess.inCheck(this.isWhite)) {
                      const move = new Move(MoveType.EAT, this, square, PieceType.NONE, resultingChess)
                      accu.push(move)
                   }

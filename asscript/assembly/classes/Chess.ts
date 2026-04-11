@@ -154,13 +154,13 @@ export class Chess {
    }
 
    // indicates if the side `isWhite` is in check
-   inCheck_(isWhite: bool): bool {
+   inCheck(isWhite: bool): bool {
       const kingSquare = this.kingSquare(isWhite);
       return this.isSquareAttacked(isWhite, kingSquare)
    }
 
    isCheckmate(isWhite: bool): bool {
-      return this.inCheck_(isWhite) && this.possibleMoves(isWhite).length === 0
+      return this.inCheck(isWhite) && this.possibleMoves(isWhite).length === 0
    }
 
    evaluate(): number {

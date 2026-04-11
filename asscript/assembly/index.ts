@@ -97,6 +97,10 @@ export function chessToAscii(chess: Chess): string {
    return chess.toAscii()
 }
 
+export function chessInCheck(chess: Chess, isWhite: bool): bool {
+   return chess.inCheck(isWhite)
+}
+
 export function chessBestMove(chess: Chess): Nullable<Move> {
    return chess.bestMove
 }
