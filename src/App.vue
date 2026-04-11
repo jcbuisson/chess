@@ -1,12 +1,18 @@
 <template>
    <div class="flex flex-row h-screen items-center">
 
-      <TheChessboard
-         :boardConfig="boardConfig"
-         @board-created="(api) => (boardAPI = api)"
-         @move="onMove"
-         @checkmate="handleCheckmate"
-      ></TheChessboard>
+      <div class="flex flex-col items-center gap-4">
+         <TheChessboard
+            :boardConfig="boardConfig"
+            @board-created="(api) => (boardAPI = api)"
+            @move="onMove"
+            @checkmate="handleCheckmate"
+         ></TheChessboard>
+
+         <button @click="resetGame" class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600">
+            Reset
+         </button>
+      </div>
 
    </div>
 
@@ -17,7 +23,7 @@ import { ref, onMounted } from 'vue'
 import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
-import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, moveResultingChess } from "/asscript/build/release.js"
+import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, moveResultingChess, chessEvaluate } from "/asscript/build/release.js"
 
 let chess
 let boardAPI
@@ -76,10 +82,17 @@ const onMove = (moveEvent) => {
 
    // look for computer moves
    const computerMoves = chessPossibleMoves(chess, isWhite.value)
+   let bestComputerMove;
+   let bestScore = Infinity
    for (let i = 0; i < computerMoves.length; i++) {
-      console.log(i, moveToString(computerMoves[i]))
+      // console.log(i, moveToString(computerMoves[i]))
+      const move = computerMoves[i]
+      const moveScore = chessEvaluate(moveResultingChess(move))
+      if (moveScore < bestScore) {
+         bestComputerMove = move
+         bestScore = moveScore
+      }
    }
-   const bestComputerMove = computerMoves[0]
    console.log('bestComputerMove', moveToString(bestComputerMove), moveToString(bestComputerMove).substring(2))
 
    // play move on model
@@ -94,6 +107,13 @@ const onMove = (moveEvent) => {
 
    // now it is human's turn again
    isWhite.value = true
+}
+
+function resetGame() {
+   chess = createInitialBoard()
+   isWhite.value = true
+   boardAPI.resetBoard()
+   console.log(chessToAscii(chess))
 }
 
 function handleCheckmate(isMated) {
