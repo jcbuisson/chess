@@ -13,20 +13,19 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
-import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, pieceToString, squareToString, moveResultingChess, chessTogglePlayer,
-   minimax, chessBestMove,
-} from "/asscript/build/release.js"
+import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, moveResultingChess } from "/asscript/build/release.js"
 
 let chess
 let boardAPI
-let myColor = 'w'
 const boardConfig = {
    coordinates: true,
 }
+
+const isWhite = ref(true)
 
 onMounted(() => {
    chess = createInitialBoard()
@@ -48,11 +47,14 @@ function moveEventToString(moveEvent) {
 }
 
 const onMove = (moveEvent) => {
-   if (moveEvent.color !== myColor) return
+   if (!isWhite.value) return; // ignore black move events
 
    const moveNotation = moveEventToString(moveEvent)
-   console.log('moveEvent', moveNotation, moveEvent)
-   const myMoves = chessPossibleMoves(chess)
+   console.log('moveEvent', moveNotation, moveEvent, isWhite.value)
+   const myMoves = chessPossibleMoves(chess, isWhite.value)
+   for (const move of myMoves) {
+      console.log(moveToString(move))
+   }
    // get my move from possible moves
    const myMove = myMoves.find(move => moveNotation === moveToString(move))
    console.log('myMove', moveToString(myMove))
@@ -66,14 +68,14 @@ const onMove = (moveEvent) => {
    }
 
    // now it is computer's turn
-   chessTogglePlayer(chess)
+   isWhite.value = false
 
    // const score = minimax(chess, 2, true)
    // console.log(`score ${score}`)
    // const bestComputerMove = chessBestMove(chess)
 
    // look for computer moves
-   const computerMoves = chessPossibleMoves(chess)
+   const computerMoves = chessPossibleMoves(chess, isWhite.value)
    for (let i = 0; i < computerMoves.length; i++) {
       console.log(i, moveToString(computerMoves[i]))
    }
@@ -91,7 +93,7 @@ const onMove = (moveEvent) => {
    console.log(chessToAscii(chess))
 
    // now it is human's turn again
-   chessTogglePlayer(chess)
+   isWhite.value = true
 }
 
 function handleCheckmate(isMated) {

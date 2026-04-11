@@ -52,7 +52,7 @@ export class Piece {
    }
 
    toString(): string {
-      return this.toTypeString() + this.square.toString()
+      return this.isNull() ? "none" : this.toTypeString() + this.square.toString()
    }
 
    toTypeString(): string {
