@@ -11,9 +11,10 @@ type int = i32 // or i64
 type Nullable<T> = T | null
 
 
-// compute the best score for position `chess`, and put the associated move in `chess.bestMove`
-export function minimax(chess: Chess, depth: int, isWhite: bool): number {
-   // console.log(`*** call depth=${depth}, isWhite=${isWhite ? 't' : 'f'}`)
+// Compute the best score for position `chess`, and put the associated move in `chess.bestMove`
+// alpha tracks the best score the maximizer is guaranteed, beta tracks the best score the minimizer is guaranteed.
+// When alpha >= beta, the branch is pruned
+export function alphabeta(chess: Chess, depth: int, isWhite: bool, alpha: number = -Infinity, beta: number = Infinity): number {
    if (chess.isCheckmate(isWhite)) {
       return isWhite ? Infinity : -Infinity
    }
@@ -26,28 +27,28 @@ export function minimax(chess: Chess, depth: int, isWhite: bool): number {
       const moves = chess.possibleMoves(isWhite)
       for (let i = 0; i < moves.length; i++) {
          const move = moves[i]
-         // move.resultingChess.togglePlayer()
-         const childEval = minimax(move.resultingChess, depth - 1, !isWhite)
+         const childEval = alphabeta(move.resultingChess, depth - 1, !isWhite, alpha, beta)
          if (childEval > maxEval) {
             maxEval = childEval
             chess.bestMove = move
          }
+         if (maxEval > alpha) alpha = maxEval
+         if (alpha >= beta) break
       }
-      // console.log(`*** depth=${depth}, isWhite=${isWhite ? 't' : 'f'}, maxEval=${maxEval}`)
       return maxEval
    } else {
       let minEval: number = Infinity
       const moves = chess.possibleMoves(isWhite)
       for (let i = 0; i < moves.length; i++) {
          const move = moves[i]
-         // move.resultingChess.togglePlayer()
-         const childEval = minimax(move.resultingChess, depth - 1, !isWhite)
+         const childEval = alphabeta(move.resultingChess, depth - 1, !isWhite, alpha, beta)
          if (childEval < minEval) {
             minEval = childEval
             chess.bestMove = move
          }
+         if (minEval < beta) beta = minEval
+         if (alpha >= beta) break
       }
-      // console.log(`*** depth=${depth}, isWhite=${isWhite ? 't' : 'f'}, minEval=${minEval}`)
       return minEval
    }
 }

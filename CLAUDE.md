@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A chess engine built in **AssemblyScript** (compiled to WebAssembly), with a **Vue 3** frontend. The engine implements move generation and a minimax AI. The frontend uses [vue3-chessboard](https://github.com/qwerty084/vue3-chessboard) for board rendering.
+A chess engine built in **AssemblyScript** (compiled to WebAssembly), with a **Vue 3** frontend. The engine implements move generation and a alphabeta AI. The frontend uses [vue3-chessboard](https://github.com/qwerty084/vue3-chessboard) for board rendering.
 
 ## Commands
 
@@ -49,14 +49,14 @@ The engine is written in AssemblyScript (TypeScript-like syntax that compiles to
 
 ### AI
 
-`minimax()` in `asscript/assembly/index.ts` is a recursive minimax (no alpha-beta yet). `Chess.evaluate()` scores by material only (Q=9, R=5, B=N=3, P=1). `alphaBeta()` is implemented but operates on a static scores array (not yet wired to the actual board search).
+`alphabeta()` in `asscript/assembly/index.ts` is a recursive alphabeta (no alpha-beta yet). `Chess.evaluate()` scores by material only (Q=9, R=5, B=N=3, P=1). `alphaBeta()` is implemented but operates on a static scores array (not yet wired to the actual board search).
 
 ### Frontend (`src/`)
 
 `App.vue` is the sole component. It:
 1. Imports all engine functions directly from `/asscript/build/release.js` (the WASM glue module).
 2. Manages a `chess: Chess` reference (a WASM object handle) in JS.
-3. On each player move, looks up the matching move in `chessPossibleMoves()`, executes it via `moveResultingChess()`, then calls `chessBestMove()` after `minimax()` to get and play the AI response.
+3. On each player move, looks up the matching move in `chessPossibleMoves()`, executes it via `moveResultingChess()`, then calls `chessBestMove()` after `alphabeta()` to get and play the AI response.
 
 Move string format: `"<PIECE> <from><sep><to>"` e.g. `"P e2-e4"`, `"p d7xe5"`, `"K O-O"`. The frontend strips the first 3 characters (`substring(2)` → `"e4"`, `"d5"`) when passing moves to the vue3-chessboard API.
 

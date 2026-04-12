@@ -35,7 +35,7 @@ import { ref, onMounted } from 'vue'
 import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
-import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, moveResultingChess, chessEvaluate, minimax, chessBestMove } from "/asscript/build/release.js"
+import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, moveResultingChess, chessEvaluate, alphabeta, chessBestMove } from "/asscript/build/release.js"
 
 let chess
 let boardAPI
@@ -64,7 +64,7 @@ function moveEventToString(moveEvent) {
    return `${piece} ${moveEvent.from}-${moveEvent.to}`
 }
 
-const onMove = (moveEvent) => {
+const onMove = async (moveEvent) => {
    if (!isWhite.value) return; // ignore black move events
 
    const moveNotation = moveEventToString(moveEvent)
@@ -84,24 +84,31 @@ const onMove = (moveEvent) => {
    // now it is computer's turn
    isWhite.value = false
 
-   // // defer AI computation so the browser can render the player's move first
-   // setTimeout(() => {
-      const score = minimax(chess, 2, isWhite.value)
+   // const score = alphabeta(chess, 3, isWhite.value)
+   // console.log(`best computer score ${score}`)
+   // const bestComputerMove = chessBestMove(chess)
+   const bestComputerMove = await computerMove(chess, 2)
+
+   // play move on model
+   chess = moveResultingChess(bestComputerMove)
+   // play move on boardAPI
+   const legal = boardAPI.move(moveToString(bestComputerMove).substring(2))
+   if (!legal) {
+      console.log("ILLEGAL MOVE - SHOULD NOT HAPPEN", moveToString(bestComputerMove).substring(2))
+   }
+   console.log(chessToAscii(chess))
+
+   // now it is human's turn again
+   isWhite.value = true
+}
+
+function computerMove(chess, depth) {
+   return new Promise((resolve, reject) => {
+      const score = alphabeta(chess, depth, false)
       console.log(`best computer score ${score}`)
       const bestComputerMove = chessBestMove(chess)
-
-      // play move on model
-      chess = moveResultingChess(bestComputerMove)
-      // play move on boardAPI
-      const legal = boardAPI.move(moveToString(bestComputerMove).substring(2))
-      if (!legal) {
-         console.log("ILLEGAL MOVE - SHOULD NOT HAPPEN", moveToString(bestComputerMove).substring(2))
-      }
-      console.log(chessToAscii(chess))
-
-      // now it is human's turn again
-      isWhite.value = true
-   // }, 0)
+      resolve(bestComputerMove)
+   })
 }
 
 function resetGame() {
