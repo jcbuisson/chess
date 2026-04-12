@@ -72,7 +72,6 @@ const onMove = (moveEvent) => {
    const myMoves = chessPossibleMoves(chess, isWhite.value)
    // get my move from possible moves
    const myMove = myMoves.find(move => moveNotation === moveToString(move))
-   // console.log('myMove', moveToString(myMove))
    // execute myMove on `chess`
    chess = moveResultingChess(myMove)
    console.log(chessToAscii(chess))
@@ -85,36 +84,24 @@ const onMove = (moveEvent) => {
    // now it is computer's turn
    isWhite.value = false
 
-   const score = minimax(chess, 3, isWhite.value)
-   console.log(`best computer score ${score}`)
-   const bestComputerMove = chessBestMove(chess)
+   // // defer AI computation so the browser can render the player's move first
+   // setTimeout(() => {
+      const score = minimax(chess, 2, isWhite.value)
+      console.log(`best computer score ${score}`)
+      const bestComputerMove = chessBestMove(chess)
 
-   // const computerMoves = chessPossibleMoves(chess, isWhite.value)
-   // let bestComputerMove;
-   // let bestScore = Infinity
-   // for (let i = 0; i < computerMoves.length; i++) {
-   //    // console.log(i, moveToString(computerMoves[i]))
-   //    const move = computerMoves[i]
-   //    const moveScore = chessEvaluate(moveResultingChess(move))
-   //    if (moveScore < bestScore) {
-   //       bestComputerMove = move
-   //       bestScore = moveScore
-   //    }
-   // }
-   // console.log('bestComputerMove', moveToString(bestComputerMove), moveToString(bestComputerMove).substring(2))
+      // play move on model
+      chess = moveResultingChess(bestComputerMove)
+      // play move on boardAPI
+      const legal = boardAPI.move(moveToString(bestComputerMove).substring(2))
+      if (!legal) {
+         console.log("ILLEGAL MOVE - SHOULD NOT HAPPEN", moveToString(bestComputerMove).substring(2))
+      }
+      console.log(chessToAscii(chess))
 
-   // play move on model
-   chess = moveResultingChess(bestComputerMove)
-   // play move on boardAPI
-   const legal = boardAPI.move(moveToString(bestComputerMove).substring(2))
-   if (!legal) {
-      console.log("ILLEGAL MOVE - SHOULD NOT HAPPEN", moveToString(bestComputerMove).substring(2))
-   }
-   // display resulting board
-   console.log(chessToAscii(chess))
-
-   // now it is human's turn again
-   isWhite.value = true
+      // now it is human's turn again
+      isWhite.value = true
+   // }, 0)
 }
 
 function resetGame() {
