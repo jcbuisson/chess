@@ -27,6 +27,8 @@
       </div>
 
    </div>
+   
+   <VersionUpdater></VersionUpdater>
 
 </template>
 
