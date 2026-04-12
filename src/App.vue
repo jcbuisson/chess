@@ -35,7 +35,7 @@ import { ref, onMounted } from 'vue'
 import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
-import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, moveResultingChess, chessEvaluate } from "/asscript/build/release.js"
+import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, moveResultingChess, chessEvaluate, minimax, chessBestMove } from "/asscript/build/release.js"
 
 let chess
 let boardAPI
@@ -68,14 +68,11 @@ const onMove = (moveEvent) => {
    if (!isWhite.value) return; // ignore black move events
 
    const moveNotation = moveEventToString(moveEvent)
-   console.log('moveEvent', moveNotation, moveEvent, isWhite.value)
+   // console.log('moveEvent', moveNotation, moveEvent, isWhite.value)
    const myMoves = chessPossibleMoves(chess, isWhite.value)
-   for (const move of myMoves) {
-      console.log(moveToString(move))
-   }
    // get my move from possible moves
    const myMove = myMoves.find(move => moveNotation === moveToString(move))
-   console.log('myMove', moveToString(myMove))
+   // console.log('myMove', moveToString(myMove))
    // execute myMove on `chess`
    chess = moveResultingChess(myMove)
    console.log(chessToAscii(chess))
@@ -88,24 +85,23 @@ const onMove = (moveEvent) => {
    // now it is computer's turn
    isWhite.value = false
 
-   // const score = minimax(chess, 2, true)
-   // console.log(`score ${score}`)
-   // const bestComputerMove = chessBestMove(chess)
+   const score = minimax(chess, 3, isWhite.value)
+   console.log(`best computer score ${score}`)
+   const bestComputerMove = chessBestMove(chess)
 
-   // look for computer moves
-   const computerMoves = chessPossibleMoves(chess, isWhite.value)
-   let bestComputerMove;
-   let bestScore = Infinity
-   for (let i = 0; i < computerMoves.length; i++) {
-      // console.log(i, moveToString(computerMoves[i]))
-      const move = computerMoves[i]
-      const moveScore = chessEvaluate(moveResultingChess(move))
-      if (moveScore < bestScore) {
-         bestComputerMove = move
-         bestScore = moveScore
-      }
-   }
-   console.log('bestComputerMove', moveToString(bestComputerMove), moveToString(bestComputerMove).substring(2))
+   // const computerMoves = chessPossibleMoves(chess, isWhite.value)
+   // let bestComputerMove;
+   // let bestScore = Infinity
+   // for (let i = 0; i < computerMoves.length; i++) {
+   //    // console.log(i, moveToString(computerMoves[i]))
+   //    const move = computerMoves[i]
+   //    const moveScore = chessEvaluate(moveResultingChess(move))
+   //    if (moveScore < bestScore) {
+   //       bestComputerMove = move
+   //       bestScore = moveScore
+   //    }
+   // }
+   // console.log('bestComputerMove', moveToString(bestComputerMove), moveToString(bestComputerMove).substring(2))
 
    // play move on model
    chess = moveResultingChess(bestComputerMove)

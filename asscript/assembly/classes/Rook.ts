@@ -28,7 +28,6 @@ export class Rook extends Piece {
             square = square.move(rowIncr, colIncr)
             if (!square.isValid()) break
             const piece = chess.pieceAtSquare(square)
-            console.log(`rook possibleMoves ${this.toString()} square=${square.toString()}, piece=${piece.toString()}`)
             if (piece.isNull()) {
                const resultingChess = chess.cloneWithMovedPiece(this, square)
                if (!resultingChess.inCheck(this.isWhite)) {

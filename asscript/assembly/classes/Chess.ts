@@ -182,7 +182,7 @@ export class Chess {
          }
       }
       // console.log(`${whitePieces}, ${blackPieces}, ${this.possibleMoves(true).length}, ${this.possibleMoves(false).length}`)
-      return whitePieces + this.possibleMoves(true).length - blackPieces - this.possibleMoves(false).length
+      return 100*whitePieces + this.possibleMoves(true).length - 100*blackPieces - this.possibleMoves(false).length
    }
 
    possibleMoves(isWhite: bool): Move[] {
