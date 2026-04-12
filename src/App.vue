@@ -36,6 +36,7 @@ import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
 import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, moveResultingChess, chessEvaluate, alphabeta, chessBestMove } from "/asscript/build/release.js"
+import VersionUpdater from "/src/components/VersionUpdater.vue";
 
 let chess
 let boardAPI
@@ -84,10 +85,10 @@ const onMove = async (moveEvent) => {
    // now it is computer's turn
    isWhite.value = false
 
-   // const score = alphabeta(chess, 3, isWhite.value)
-   // console.log(`best computer score ${score}`)
-   // const bestComputerMove = chessBestMove(chess)
-   const bestComputerMove = await computerMove(chess, 2)
+   const score = alphabeta(chess, 2, isWhite.value)
+   console.log(`best computer score ${score}`)
+   const bestComputerMove = chessBestMove(chess)
+   // const bestComputerMove = await computerMove(chess, 2)
 
    // play move on model
    chess = moveResultingChess(bestComputerMove)
@@ -102,14 +103,14 @@ const onMove = async (moveEvent) => {
    isWhite.value = true
 }
 
-function computerMove(chess, depth) {
-   return new Promise((resolve, reject) => {
-      const score = alphabeta(chess, depth, false)
-      console.log(`best computer score ${score}`)
-      const bestComputerMove = chessBestMove(chess)
-      resolve(bestComputerMove)
-   })
-}
+// function computerMove(chess, depth) {
+//    return new Promise((resolve, reject) => {
+//       const score = alphabeta(chess, depth, false)
+//       console.log(`best computer score ${score}`)
+//       const bestComputerMove = chessBestMove(chess)
+//       resolve(bestComputerMove)
+//    })
+// }
 
 function resetGame() {
    chess = createInitialBoard()
