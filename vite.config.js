@@ -22,7 +22,7 @@ export default defineConfig({
          },
 
          manifest: {
-            name: "JCB Chess",
+            name: "Chess",
             short_name: "Chess",
             theme_color: "#ffffff",
             start_url: "/",
@@ -30,17 +30,17 @@ export default defineConfig({
             background_color: "#ffffff",
             icons: [
                {
-                  src: "icons/logo-lambey-192x192.jpg",
+                  src: "icons/logo-chess-192x192.jpg",
                   sizes: "192x192",
                   type: "image/jpeg",
                },
                {
-                  src: "icons/logo-lambey-512x512.jpg",
+                  src: "icons/logo-chess-512x512.jpg",
                   sizes: "512x512",
                   type: "image/jpeg",
                },
                {
-                  src: "icons/logo-lambey-512x512.jpg",
+                  src: "icons/logo-chess-512x512.jpg",
                   sizes: "512x512",
                   type: "image/jpeg",
                   purpose: "any maskable",
