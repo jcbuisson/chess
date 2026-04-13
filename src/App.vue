@@ -2,13 +2,20 @@
    <div class="flex items-center justify-center w-screen h-screen">
 
       <div class="flex flex-col w-[min(100vw,100vh)]">
-         <div class="flex gap-2 px-2 py-1 bg-gray-800">
+         <div class="flex gap-2 px-2 py-1 bg-gray-800 items-center">
             <button @click="resetGame" class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
                Reset
             </button>
             <button @click="revertGame" class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
                Revert
             </button>
+            <div class="flex items-center gap-1 ml-auto">
+               <span class="text-gray-400 text-sm">Depth</span>
+               <button v-for="d in [2, 3, 4]" :key="d" @click="depth = d"
+                  :class="['px-2 py-1 text-sm rounded', depth === d ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600']">
+                  {{ d }}
+               </button>
+            </div>
          </div>
          <TheChessboard
             :boardConfig="boardConfig"
