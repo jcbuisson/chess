@@ -47,6 +47,11 @@ cliquer sur le fichier .wasm et constater qu'il est servi par nginx (server: ngi
 node tests/index.js
 ```
 
+## Blocking
+
+Synchronous WASM computation blocks the entire main thread — CSS animations, DOM paints, everything.
+The only proper fix is a Web Worker.
+
 
 # Front VueJS
 
