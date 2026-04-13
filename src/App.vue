@@ -1,29 +1,21 @@
 <template>
    <div class="flex items-center justify-center w-screen h-screen">
 
-      <div class="relative">
-         <div class="w-[min(100vw,100vh)]">
-            <TheChessboard
-               :boardConfig="boardConfig"
-               @board-created="(api) => (boardAPI = api)"
-               @move="onMove"
-               @checkmate="handleCheckmate"
-            ></TheChessboard>
+      <div class="flex flex-col w-[min(100vw,100vh)]">
+         <div class="flex gap-2 px-2 py-1 bg-gray-800">
+            <button @click="resetGame" class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
+               Reset
+            </button>
+            <button class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
+               Revert
+            </button>
          </div>
-
-         <div class="group absolute top-0 left-0 z-10">
-            <!-- collapsed: thick vertical line -->
-            <div class="w-2 h-16 bg-gray-700 rounded-br group-hover:hidden"></div>
-            <!-- expanded: buttons panel -->
-            <div class="hidden group-hover:flex flex-col gap-2 bg-gray-800 p-2 rounded-br shadow-lg">
-               <button @click="resetGame" class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 whitespace-nowrap">
-                  Reset
-               </button>
-               <button class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 whitespace-nowrap">
-                  Revert
-               </button>
-            </div>
-         </div>
+         <TheChessboard
+            :boardConfig="boardConfig"
+            @board-created="(api) => (boardAPI = api)"
+            @move="onMove"
+            @checkmate="handleCheckmate"
+         ></TheChessboard>
       </div>
 
    </div>
