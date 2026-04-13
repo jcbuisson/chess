@@ -28,6 +28,7 @@
             @board-created="(api) => (boardAPI = api)"
             @move="onMove"
             @checkmate="handleCheckmate"
+            @stalemate="handleStalemate"
          ></TheChessboard>
       </div>
 
@@ -110,11 +111,14 @@ const onMove = async (moveEvent) => {
    chess = moveResultingChess(bestComputerMove)
    moveHistory.push(bestMoveStr)
 
-   const legal = boardAPI.move(bestMoveStr.substring(2))
-   if (!legal) console.log("ILLEGAL MOVE - SHOULD NOT HAPPEN", bestMoveStr)
+   boardAPI.move(bestMoveStr.substring(2))
    console.log(chessToAscii(chess))
 
    isWhite.value = !isWhite.value
+}
+
+function playBestComputerMove() {
+   
 }
 
 function resetGame() {
@@ -153,5 +157,9 @@ function handleCheckmate(isMated) {
    } else {
       alert('White wins!');
    }
+}
+
+function handleStalemate() {
+  alert('Stalemate');
 }
 </script>
