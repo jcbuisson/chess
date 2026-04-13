@@ -29,6 +29,18 @@ npm run asbuild
 - les fichiers build/release.wasm  et build/release.js sont produits
 - le fichier à importer depuis Vue est build/release.js, qui fetch release.wasm, le compile et exporte les fonctions pour JS
 
+## Déploiement
+
+En production, le fichier .wasm est téléchargé comme une ressouorce avant d'être compilé dynamiquement, puis exécuté.
+Lors du fetch du fichier .wasm, il a le mime-type application/octet-stream au lieu de application/wasm (aller dans les devtools
+cliquer sur le fichier .wasm et constater qu'il est servi par nginx (server: nginx) et que son mime-type est application/octer-stream)
+--> adapter la config nginx:
+```
+    location ~ \.wasm$ {
+        default_type application/wasm;
+        try_files $uri =404;
+    }
+```
 
 ## Test
 ```

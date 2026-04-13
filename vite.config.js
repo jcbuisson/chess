@@ -5,18 +5,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 // https://vitejs.dev/config/
 export default defineConfig({
    plugins: [
-      {
-         name: 'wasm-mime',
-         configureServer(server) {
-            server.middlewares.use((req, res, next) => {
-               if (req.url?.endsWith('.wasm')) {
-                  res.setHeader('Content-Type', 'application/wasm')
-               }
-               next()
-            })
-         },
-      },
       vue(),
+      
       VitePWA({
          strategies: "injectManifest",
          injectRegister: false,
