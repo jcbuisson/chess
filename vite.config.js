@@ -57,6 +57,10 @@ export default defineConfig({
       target: 'es2022',
    },
 
+   worker: {
+      format: 'es',
+   },
+
    server: {
       port: 8000,
       open: true,
