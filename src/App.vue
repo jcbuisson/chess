@@ -6,7 +6,7 @@
             <button @click="resetGame" class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
                Reset
             </button>
-            <button class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
+            <button @click="revertGame" class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
                Revert
             </button>
          </div>
@@ -39,6 +39,8 @@ const boardConfig = {
 }
 
 const isWhite = ref(true)
+const isHumanWhite = ref(true)
+const depth = ref(2)
 
 onMounted(() => {
    chess = createInitialBoard()
@@ -60,7 +62,7 @@ function moveEventToString(moveEvent) {
 }
 
 const onMove = async (moveEvent) => {
-   if (!isWhite.value) return; // ignore black move events
+   if (isWhite.value !== isHumanWhite.value) return; // ignore opponent move events
 
    const moveNotation = moveEventToString(moveEvent)
    // console.log('moveEvent', moveNotation, moveEvent, isWhite.value)
@@ -77,12 +79,11 @@ const onMove = async (moveEvent) => {
    }
 
    // now it is computer's turn
-   isWhite.value = false
+   isWhite.value = !isWhite.value
 
-   const score = alphabeta(chess, 2, isWhite.value)
+   const score = alphabeta(chess, depth.value, isWhite.value)
    console.log(`best computer score ${score}`)
    const bestComputerMove = chessBestMove(chess)
-   // const bestComputerMove = await computerMove(chess, 2)
 
    // play move on model
    chess = moveResultingChess(bestComputerMove)
@@ -94,23 +95,37 @@ const onMove = async (moveEvent) => {
    console.log(chessToAscii(chess))
 
    // now it is human's turn again
-   isWhite.value = true
+   isWhite.value = !isWhite.value
 }
-
-// function computerMove(chess, depth) {
-//    return new Promise((resolve, reject) => {
-//       const score = alphabeta(chess, depth, false)
-//       console.log(`best computer score ${score}`)
-//       const bestComputerMove = chessBestMove(chess)
-//       resolve(bestComputerMove)
-//    })
-// }
 
 function resetGame() {
    chess = createInitialBoard()
+   isHumanWhite.value = true
    isWhite.value = true
    boardAPI.resetBoard()
+}
+
+function revertGame() {
+   chess = createInitialBoard()
+   boardAPI.resetBoard()
+   boardAPI.toggleOrientation()
+
+   isHumanWhite.value = false
+   isWhite.value = true
+   const score = alphabeta(chess, depth.value, isWhite.value)
+   console.log(`best computer score ${score}`)
+   const bestComputerMove = chessBestMove(chess)
+
+   // play move on model
+   chess = moveResultingChess(bestComputerMove)
+   // play move on boardAPI
+   const legal = boardAPI.move(moveToString(bestComputerMove).substring(2))
+   if (!legal) {
+      console.log("ILLEGAL MOVE - SHOULD NOT HAPPEN", moveToString(bestComputerMove).substring(2))
+   }
    console.log(chessToAscii(chess))
+   // now it is human's turn
+   isWhite.value = false
 }
 
 function handleCheckmate(isMated) {
