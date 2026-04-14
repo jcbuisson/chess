@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
@@ -67,9 +67,50 @@ function runAlphabeta(history) {
    })
 }
 
+const STORAGE_KEY = 'chess_game_state'
+
+function saveState() {
+   localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      moveHistory,
+      isHumanWhite: isHumanWhite.value,
+      depth: depth.value,
+      isWhite: isWhite.value,
+   }))
+}
+
+watch(depth, saveState)
+
 onMounted(() => {
    chess = createInitialBoard()
-   console.log(chessToAscii(chess))
+
+   const saved = localStorage.getItem(STORAGE_KEY)
+   if (saved) {
+      try {
+         const state = JSON.parse(saved)
+         depth.value = state.depth ?? 2
+         isHumanWhite.value = state.isHumanWhite ?? true
+         isWhite.value = state.isWhite ?? true
+
+         if (!isHumanWhite.value) boardAPI.toggleOrientation()
+
+         let replayChess = createInitialBoard()
+         let replayIsWhite = true
+         for (const moveStr of (state.moveHistory ?? [])) {
+            const moves = chessPossibleMoves(replayChess, replayIsWhite)
+            const move = moves.find(m => moveToString(m) === moveStr)
+            if (!move) throw new Error(`move not found: ${moveStr}`)
+            replayChess = moveResultingChess(move)
+            boardAPI.move(moveStr.substring(2))
+            replayIsWhite = !replayIsWhite
+         }
+         chess = replayChess
+         moveHistory = state.moveHistory ?? []
+      } catch (e) {
+         console.error('Failed to restore game state, starting fresh', e)
+         localStorage.removeItem(STORAGE_KEY)
+         chess = createInitialBoard()
+      }
+   }
 })
 
 function moveEventToString(moveEvent) {
@@ -115,6 +156,7 @@ const onMove = async (moveEvent) => {
    console.log(chessToAscii(chess))
 
    isWhite.value = !isWhite.value
+   saveState()
 }
 
 function resetGame() {
@@ -123,6 +165,7 @@ function resetGame() {
    isHumanWhite.value = true
    isWhite.value = true
    boardAPI.resetBoard()
+   saveState()
 }
 
 async function revertGame() {
@@ -145,6 +188,7 @@ async function revertGame() {
    boardAPI.move(bestMoveStr.substring(2))
 
    isWhite.value = false
+   saveState()
 }
 
 function handleCheckmate(isMated) {

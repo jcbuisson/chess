@@ -47,14 +47,21 @@ cliquer sur le fichier .wasm et constater qu'il est servi par nginx (server: ngi
 node tests/index.js
 ```
 
-## Blocking
-
-Synchronous WASM computation blocks the entire main thread — CSS animations, DOM paints, everything.
-The only proper fix is a Web Worker.
-
-
 # Front VueJS
 
 frontend/
 VueJS frontend, calling AssemblyScript functions
 Utilise https://github.com/qwerty084/vue3-chessboard
+
+
+# Important issues
+
+## Blocking
+
+Synchronous WASM computation blocks the entire main thread — CSS animations, DOM paints, everything --> use a web worker for alphabeta computation
+
+## Game restart on mobile
+
+Mobile browsers often unload pages from memory when backgrounded --> persist game state to localStorage
+and restore it on mount by replaying the move history.    
+
