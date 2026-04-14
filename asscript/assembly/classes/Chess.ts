@@ -11,7 +11,7 @@ import { Move, MoveType } from './Move'
 
 type Nullable<T> = T | null
 
-// alternative de représentation des pieces d'une position 
+// alternative de représentation des pieces d'une position : chaine de 64 caractères
 // rnbqkbnrpppppppp........................PPPPPPPPRNBQKBNR
 // - facile de trouver les voisins (+8, +9 etc.)
 // - facile de cloner
@@ -104,6 +104,32 @@ export class Chess {
       const clonedChess = this.clone()
       // replace `fromPiece` by a new one
       const movedPiece = fromPiece.clone() // clone preserve subtype
+      movedPiece.square = toPiece.square
+      
+      clonedChess.deletePieceAt(fromPiece.square)
+      clonedChess.deletePieceAt(toPiece.square)
+      clonedChess.pieces.push(movedPiece)
+      return clonedChess
+   }
+
+   cloneWithMovedPieceWithPromotion(piece: Piece, to: Square, promotionPieceType: PieceType) : Chess {
+      // create a new board situation
+      const clonedChess = this.clone()
+      // replace piece by a new one
+      const movedPiece = piece.clone()
+      movedPiece.type = promotionPieceType
+      movedPiece.square = to
+      clonedChess.deletePieceAt(piece.square)
+      clonedChess.pieces.push(movedPiece)
+      return clonedChess
+   }
+
+   cloneWithEatenPieceWithPromotion(fromPiece: Piece, toPiece: Piece, promotionPieceType: PieceType) : Chess {
+      // create a new board situation
+      const clonedChess = this.clone()
+      // replace `fromPiece` by a new one
+      const movedPiece = fromPiece.clone()
+      movedPiece.type = promotionPieceType
       movedPiece.square = toPiece.square
       
       clonedChess.deletePieceAt(fromPiece.square)

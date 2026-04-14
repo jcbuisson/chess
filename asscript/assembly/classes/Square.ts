@@ -26,6 +26,10 @@ export class Square {
       return isWhite ? 1 : 6
    }
 
+   static promotionRow(isWhite: bool): u8 {
+      return isWhite ? 7 : 0
+   }
+
    isValid(): bool {
       if (this.rowIndex < 0 || this.rowIndex > 7) return false
       if (this.colIndex < 0 || this.colIndex > 7) return false

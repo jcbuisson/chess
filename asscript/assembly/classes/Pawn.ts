@@ -20,10 +20,21 @@ export class Pawn extends Piece {
       let incrRow: i8 = this.isWhite ? 1 : -1
       let targetSquare = this.square.move(incrRow, 0)
       if (chess.isSquareEmpty(targetSquare)) {
-         const resultingChess = chess.cloneWithMovedPiece(this, targetSquare)
-         if (!resultingChess.inCheck(this.isWhite)) {
-            const move = new Move(MoveType.MOVE, this, targetSquare, PieceType.NONE, resultingChess)
-            accu.push(move)
+         if (targetSquare.rowIndex === Square.promotionRow(this.isWhite)) {
+            // promotion
+            const promotionPieceType = PieceType.QUEEN
+            const resultingChess = chess.cloneWithMovedPieceWithPromotion(this, targetSquare, promotionPieceType)
+            if (!resultingChess.inCheck(this.isWhite)) {
+               const move = new Move(MoveType.MOVE, this, targetSquare, promotionPieceType, resultingChess)
+               accu.push(move)
+            }
+         } else {
+            // simple 1-square move
+            const resultingChess = chess.cloneWithMovedPiece(this, targetSquare)
+            if (!resultingChess.inCheck(this.isWhite)) {
+               const move = new Move(MoveType.MOVE, this, targetSquare, PieceType.NONE, resultingChess)
+               accu.push(move)
+            }
          }
          if (this.square.rowIndex === Square.pawnRow(this.isWhite)) {
             // pawn is still on its starting row: try 2-square move
@@ -43,10 +54,21 @@ export class Pawn extends Piece {
       targetSquare = this.square.move(incrRow, -1)
       let attackedPiece = chess.pieceAtSquare(targetSquare)
       if (!attackedPiece.isNull()) {
-         const resultingChess = chess.cloneWithEatenPiece(this, attackedPiece)
-         if (!resultingChess.inCheck(this.isWhite)) {
-            const move = new Move(MoveType.EAT, this, targetSquare, PieceType.NONE, resultingChess)
-            accu.push(move)
+         if (targetSquare.rowIndex === Square.promotionRow(this.isWhite)) {
+            // eat & promotion
+            const promotionPieceType = PieceType.QUEEN
+            const resultingChess = chess.cloneWithEatenPieceWithPromotion(this, attackedPiece, promotionPieceType)
+            if (!resultingChess.inCheck(this.isWhite)) {
+               const move = new Move(MoveType.EAT, this, targetSquare, promotionPieceType, resultingChess)
+               accu.push(move)
+            }
+         } else {
+            // simple eat
+            const resultingChess = chess.cloneWithEatenPiece(this, attackedPiece)
+            if (!resultingChess.inCheck(this.isWhite)) {
+               const move = new Move(MoveType.EAT, this, targetSquare, PieceType.NONE, resultingChess)
+               accu.push(move)
+            }
          }
       }
       // try eat right
@@ -54,10 +76,21 @@ export class Pawn extends Piece {
       targetSquare = this.square.move(incrRow, 1)
       attackedPiece = chess.pieceAtSquare(targetSquare)
       if (!attackedPiece.isNull()) {
-         const resultingChess = chess.cloneWithEatenPiece(this, attackedPiece)
-         if (!resultingChess.inCheck(this.isWhite)) {
-            const move = new Move(MoveType.EAT, this, targetSquare, PieceType.NONE, resultingChess)
-            accu.push(move)
+         if (targetSquare.rowIndex === Square.promotionRow(this.isWhite)) {
+            // eat & promotion
+            const promotionPieceType = PieceType.QUEEN
+            const resultingChess = chess.cloneWithEatenPieceWithPromotion(this, attackedPiece, promotionPieceType)
+            if (!resultingChess.inCheck(this.isWhite)) {
+               const move = new Move(MoveType.EAT, this, targetSquare, promotionPieceType, resultingChess)
+               accu.push(move)
+            }
+         } else {
+            // simple eat
+            const resultingChess = chess.cloneWithEatenPiece(this, attackedPiece)
+            if (!resultingChess.inCheck(this.isWhite)) {
+               const move = new Move(MoveType.EAT, this, targetSquare, PieceType.NONE, resultingChess)
+               accu.push(move)
+            }
          }
       }
       return accu
