@@ -117,10 +117,6 @@ const onMove = async (moveEvent) => {
    isWhite.value = !isWhite.value
 }
 
-function playBestComputerMove() {
-   
-}
-
 function resetGame() {
    chess = createInitialBoard()
    moveHistory = []
