@@ -12,7 +12,7 @@ import { Move, MoveType } from './Move'
 type Nullable<T> = T | null
 
 // alternative de représentation des pieces d'une position : chaine de 64 caractères
-// rnbqkbnrpppppppp........................PPPPPPPPRNBQKBNR
+// rnbqkbnrpppppppp................................PPPPPPPPRNBQKBNR
 // - facile de trouver les voisins (+8, +9 etc.)
 // - facile de cloner
 // - une case est représentée par un indice 0..63
@@ -50,6 +50,7 @@ export class Chess {
       return result
    }
 
+   // Initial position: rnbqkbnrpppppppp................................PPPPPPPPRNBQKBNRYYYY
    print(): string {
       let result = ''
       for (let row: u8 = 7; row < 255; row--) {
@@ -86,6 +87,7 @@ export class Chess {
          else if (c === 'K') pieces.push(new King(true, new Square(rowIndex, colIndex)))
          else if (c === 'P') pieces.push(new Pawn(true, new Square(rowIndex, colIndex)))
       }
+   console.log(`str=${str}, 0: ${str.charAt(0)}, 64: ${str.charAt(64)}, eq=${str.charAt(64) === 'Y'}`)
       const isWhiteKingCastlingPossible = (str.charAt(64) === 'Y')
       const isWhiteQueenCastlingPossible = (str.charAt(65) === 'Y')
       const isBlackKingCastlingPossible = (str.charAt(66) === 'Y')
@@ -94,21 +96,7 @@ export class Chess {
    }
 
    static createInitialBoard(): Chess {
-      return new Chess(
-         // Chess.piecesParse('rnbqkbnrpppppppp........................PPPPPPPPRNBQKBNR'),
-         [
-            new Rook(false, new Square(7, 0)), new Knight(false, new Square(7, 1)), new Bishop(false, new Square(7, 2)), new Queen(false, new Square(7, 3)), new King(false, new Square(7, 4)), new Bishop(false, new Square(7, 5)), new Knight(false, new Square(7, 6)), new Rook(false, new Square(7, 7)),
-            new Pawn(false, new Square(6, 0)), new Pawn(false, new Square(6, 1)), new Pawn(false, new Square(6, 2)), new Pawn(false, new Square(6, 3)), new Pawn(false, new Square(6, 4)), new Pawn(false, new Square(6, 5)), new Pawn(false, new Square(6, 6)), new Pawn(false, new Square(6, 7)),
-
-            new Pawn(true, new Square(1, 0)), new Pawn(true, new Square(1, 1)), new Pawn(true, new Square(1, 2)), new Pawn(true, new Square(1, 3)), new Pawn(true, new Square(1, 4)), new Pawn(true, new Square(1, 5)), new Pawn(true, new Square(1, 6)), new Pawn(true, new Square(1, 7)),
-            new Rook(true, new Square(0, 0)), new Knight(true, new Square(0, 1)), new Bishop(true, new Square(0, 2)), new Queen(true, new Square(0, 3)), new King(true, new Square(0, 4)), new Bishop(true, new Square(0, 5)), new Knight(true, new Square(0, 6)), new Rook(true, new Square(0, 7)),
-         ],
-         true, // white king castling possible
-         true, // white queen castling possible
-         true, // black king castling possible
-         true, // black queen castling possible
-         null,
-      )
+      return Chess.parse('rnbqkbnrpppppppp................................PPPPPPPPRNBQKBNRYYYY')
    }
 
    clone(): Chess {
