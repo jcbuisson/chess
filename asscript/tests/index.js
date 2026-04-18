@@ -1,5 +1,7 @@
 // import assert from "assert"
-import { createInitialBoard, chessToAscii, chessInCheck, chessPossibleMoves, moveToString, moveResultingChess, chessEvaluate } from "../build/debug.js"
+import { Chess } from "chess.js"
+import { createInitialBoard, chessToAscii, chessInCheck, chessPossibleMoves, moveToString, moveResultingChess, chessEvaluate,
+   chessPrint, chessParse } from "../build/debug.js"
 
 // let chess = createInitialBoard()
 
@@ -28,6 +30,7 @@ import { createInitialBoard, chessToAscii, chessInCheck, chessPossibleMoves, mov
 // }
 
 const c0 = createInitialBoard()
+console.log(chessPrint(c0))
 
 // WHITE TO MOVE
 let isWhite = true
@@ -42,6 +45,7 @@ const c1 = moveResultingChess(M0) // each move contains the resultingChess (good
 if (chessInCheck(c1, !isWhite)) console.log("Check!")
 console.log('score', chessEvaluate(c1))
 console.log(chessToAscii(c1))
+console.log(chessPrint(c1))
 
 // BLACK TO MOVE
 isWhite = false
@@ -55,6 +59,7 @@ const c2 = moveResultingChess(m1)
 if (chessInCheck(c2, !isWhite)) console.log("Check!")
 console.log('score', chessEvaluate(c2))
 console.log(chessToAscii(c2))
+console.log(chessPrint(c2))
 
 // WHITE TO MOVE
 isWhite = true
@@ -68,6 +73,7 @@ const c3 = moveResultingChess(M2)
 if (chessInCheck(c3, !isWhite)) console.log("Check!")
 console.log('score', chessEvaluate(c3))
 console.log(chessToAscii(c3))
+console.log(chessPrint(c3))
 
 // BLACK TO MOVE
 isWhite = false
@@ -81,6 +87,7 @@ const c4 = moveResultingChess(m3)
 if (chessInCheck(c4, !isWhite)) console.log("Check!")
 console.log('score', chessEvaluate(c4))
 console.log(chessToAscii(c4))
+console.log(chessPrint(c4))
 
 // WHITE TO MOVE
 isWhite = true
@@ -94,6 +101,7 @@ const c5 = moveResultingChess(M4)
 if (chessInCheck(c5, !isWhite)) console.log("Check!")
 console.log('score', chessEvaluate(c5))
 console.log(chessToAscii(c5))
+console.log(chessPrint(c5))
 
 // BLACK TO MOVE
 isWhite = false
@@ -107,6 +115,7 @@ const c6 = moveResultingChess(m5)
 if (chessInCheck(c6, !isWhite)) console.log("Check!")
 console.log('score', chessEvaluate(c6))
 console.log(chessToAscii(c6))
+console.log(chessPrint(c6))
 
 // WHITE TO MOVE
 isWhite = true
@@ -120,6 +129,7 @@ const c7 = moveResultingChess(m6)
 if (chessInCheck(c7, !isWhite)) console.log("Check!")
 console.log('score', chessEvaluate(c7))
 console.log(chessToAscii(c7))
+console.log(chessPrint(c7))
 
 // BLACK TO MOVE
 isWhite = false
@@ -133,6 +143,7 @@ const c8 = moveResultingChess(m7)
 if (chessInCheck(c8, !isWhite)) console.log("Check!")
 console.log('score', chessEvaluate(c8))
 console.log(chessToAscii(c8))
+console.log(chessPrint(c8))
 
 // WHITE TO MOVE
 isWhite = true
@@ -146,6 +157,7 @@ const c9 = moveResultingChess(M8)
 if (chessInCheck(c9, !isWhite)) console.log("Check!")
 console.log('score', chessEvaluate(c9))
 console.log(chessToAscii(c9))
+console.log(chessPrint(c9))
 
 // BLACK TO MOVE
 isWhite = false
@@ -159,3 +171,10 @@ const c10 = moveResultingChess(m9)
 if (chessInCheck(c10, !isWhite)) console.log("Check!")
 console.log('score', chessEvaluate(c10))
 console.log(chessToAscii(c10))
+
+console.log('----')
+const p = chessPrint(c10)
+console.log(p)
+const c = chessParse(p)
+console.log(chessToAscii(c))
+

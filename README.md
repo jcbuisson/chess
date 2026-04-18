@@ -30,6 +30,12 @@ npm run asbuild
 - le fichier à importer depuis Vue est build/release.js, qui fetch release.wasm, le compile et exporte les fonctions pour JS
 
 ## Déploiement
+```
+cd asscript
+npm run build
+cd ..
+npm run build
+```
 
 En production, le fichier .wasm est téléchargé comme une ressouorce avant d'être compilé dynamiquement, puis exécuté.
 Lors du fetch du fichier .wasm, il a le mime-type application/octet-stream au lieu de application/wasm (aller dans les devtools
@@ -60,7 +66,7 @@ Utilise https://github.com/qwerty084/vue3-chessboard
 
 Synchronous WASM computation blocks the entire main thread — CSS animations, DOM paints, everything --> use a web worker for alphabeta computation
 
-## Game restart on mobile
+## Game persistence on mobile
 
 Mobile browsers often unload pages from memory when backgrounded --> persist game state to localStorage
 and restore it on mount by replaying the move history.    

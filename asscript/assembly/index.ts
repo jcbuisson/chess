@@ -97,6 +97,14 @@ export function chessToAscii(chess: Chess): string {
    return chess.toAscii()
 }
 
+export function chessPrint(chess: Chess): string {
+   return chess.print()
+}
+
+export function chessParse(str: string): Chess {
+   return Chess.parse(str)
+}
+
 export function chessInCheck(chess: Chess, isWhite: bool): bool {
    return chess.inCheck(isWhite)
 }

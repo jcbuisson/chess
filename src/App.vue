@@ -48,11 +48,11 @@ import VersionUpdater from "/src/components/VersionUpdater.vue";
 
 let chess
 let boardAPI
-let moveHistory = []
 const boardConfig = {
    coordinates: true,
 }
 
+let moveHistory = []
 const isWhite = ref(true)
 const isHumanWhite = ref(true)
 const depth = ref(2)

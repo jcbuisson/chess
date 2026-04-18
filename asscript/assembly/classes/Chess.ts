@@ -50,8 +50,52 @@ export class Chess {
       return result
    }
 
+   print(): string {
+      let result = ''
+      for (let row: u8 = 7; row < 255; row--) {
+         for (let col: u8 = 0; col < 8; col++) {
+            const p = this.pieceAtSquare(new Square(row, col))
+            const x = p.isNull() ? '.' : p.toTypeString()
+            result += x
+         }
+      }
+      return result
+               + (this.isWhiteKingCastlingPossible ? 'Y': 'N')
+               + (this.isWhiteQueenCastlingPossible ? 'Y': 'N')
+               + (this.isBlackKingCastlingPossible ? 'Y': 'N')
+               + (this.isBlackQueenCastlingPossible ? 'Y': 'N')
+   }
+
+   static parse(str: string): Chess {
+      const pieces: Piece[] = []
+      for (let i: u8 = 0; i < 64; i++) {
+         const c = str.charAt(i)
+         if (c === '.') continue
+         const rowIndex: u8 = 7 - i/8
+         const colIndex: u8 = i%8
+         if (c === 'r') pieces.push(new Rook(false, new Square(rowIndex, colIndex)))
+         else if (c === 'n') pieces.push(new Knight(false, new Square(rowIndex, colIndex)))
+         else if (c === 'b') pieces.push(new Bishop(false, new Square(rowIndex, colIndex)))
+         else if (c === 'q') pieces.push(new Queen(false, new Square(rowIndex, colIndex)))
+         else if (c === 'k') pieces.push(new King(false, new Square(rowIndex, colIndex)))
+         else if (c === 'p') pieces.push(new Pawn(false, new Square(rowIndex, colIndex)))
+         else if (c === 'R') pieces.push(new Rook(true, new Square(rowIndex, colIndex)))
+         else if (c === 'N') pieces.push(new Knight(true, new Square(rowIndex, colIndex)))
+         else if (c === 'B') pieces.push(new Bishop(true, new Square(rowIndex, colIndex)))
+         else if (c === 'Q') pieces.push(new Queen(true, new Square(rowIndex, colIndex)))
+         else if (c === 'K') pieces.push(new King(true, new Square(rowIndex, colIndex)))
+         else if (c === 'P') pieces.push(new Pawn(true, new Square(rowIndex, colIndex)))
+      }
+      const isWhiteKingCastlingPossible = (str.charAt(64) === 'Y')
+      const isWhiteQueenCastlingPossible = (str.charAt(65) === 'Y')
+      const isBlackKingCastlingPossible = (str.charAt(66) === 'Y')
+      const isBlackQueenCastlingPossible = (str.charAt(67) === 'Y')
+      return new Chess(pieces, isWhiteKingCastlingPossible, isWhiteQueenCastlingPossible, isBlackKingCastlingPossible, isBlackQueenCastlingPossible, null)
+   }
+
    static createInitialBoard(): Chess {
       return new Chess(
+         // Chess.piecesParse('rnbqkbnrpppppppp........................PPPPPPPPRNBQKBNR'),
          [
             new Rook(false, new Square(7, 0)), new Knight(false, new Square(7, 1)), new Bishop(false, new Square(7, 2)), new Queen(false, new Square(7, 3)), new King(false, new Square(7, 4)), new Bishop(false, new Square(7, 5)), new Knight(false, new Square(7, 6)), new Rook(false, new Square(7, 7)),
             new Pawn(false, new Square(6, 0)), new Pawn(false, new Square(6, 1)), new Pawn(false, new Square(6, 2)), new Pawn(false, new Square(6, 3)), new Pawn(false, new Square(6, 4)), new Pawn(false, new Square(6, 5)), new Pawn(false, new Square(6, 6)), new Pawn(false, new Square(6, 7)),
