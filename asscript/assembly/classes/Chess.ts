@@ -72,7 +72,7 @@ export class Chess {
             result += `${spaceCount}`
             spaceCount = 0
          }
-         if (row < 1) result += '/'
+         if (row > 0) result += '/'
       }
       return `${result} w ${this.isWhiteKingCastlingPossible ? 'K': '-'}${this.isWhiteQueenCastlingPossible ? 'Q': '-'}${this.isBlackKingCastlingPossible ? 'k': '-'}${this.isBlackQueenCastlingPossible ? 'q': '-'} - 0 1`
    }
@@ -324,6 +324,7 @@ export class Chess {
             if (notAttacked(this, isWhite, [sq04, sq05, sq06, sq07]) && empty(this, [sq05, sq06])) {
                const resultingChess = performCastling(accu, this, isWhite, MoveType.KING_CASTLING, sq07, sq05, sq04, sq06)
                resultingChess.isWhiteKingCastlingPossible = false
+               resultingChess.isWhiteQueenCastlingPossible = false
             }
          }
          if (this.isWhiteQueenCastlingPossible) {
@@ -335,6 +336,7 @@ export class Chess {
             if (notAttacked(this, isWhite, [sq00, sq01, sq02, sq03, sq04]) && empty(this, [sq01, sq02, sq03])) {
                const resultingChess = performCastling(accu, this, isWhite, MoveType.QUEEN_CASTLING, sq00, sq03, sq04, sq02)
                resultingChess.isWhiteQueenCastlingPossible = false
+               resultingChess.isWhiteKingCastlingPossible = false
             }
          }
       } else {
@@ -346,6 +348,7 @@ export class Chess {
             if (notAttacked(this, isWhite, [sq74, sq75, sq76, sq77]) && empty(this, [sq75, sq76])) {
                const resultingChess = performCastling(accu, this, isWhite, MoveType.KING_CASTLING, sq77, sq75, sq74, sq76)
                resultingChess.isBlackKingCastlingPossible = false
+               resultingChess.isBlackQueenCastlingPossible = false
             }
          }
          if (this.isBlackQueenCastlingPossible) {
@@ -357,6 +360,7 @@ export class Chess {
             if (notAttacked(this, isWhite, [sq70, sq71, sq72, sq73, sq74]) && empty(this, [sq71, sq72, sq73])) {
                const resultingChess = performCastling(accu, this, isWhite, MoveType.QUEEN_CASTLING, sq70, sq73, sq74, sq72)
                resultingChess.isBlackQueenCastlingPossible = false
+               resultingChess.isBlackKingCastlingPossible = false
             }
          }
       }
