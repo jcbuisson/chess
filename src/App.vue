@@ -51,6 +51,7 @@ let chess
 let boardAPI
 
 const boardConfig = {
+   // fen: '4k3/8/8/8/8/8/PPPPPPPP/RNBQKBNRYYYY w KQkq - 0 1',
    fen: '4k3/8/8/8/8/8/PPPPPPPP/4K3 w KQkq - 0 1',
    coordinates: true,
 }

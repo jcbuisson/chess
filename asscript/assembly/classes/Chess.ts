@@ -126,7 +126,8 @@ export class Chess {
    }
 
    static createInitialBoard(): Chess {
-      return Chess.parse('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNRYYYY w KQkq - 0 1')
+      // return Chess.parse('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNRYYYY w KQkq - 0 1')
+      return Chess.parse('4k3/8/8/8/8/8/PPPPPPPP/RNBQKBNRYYYY w KQkq - 0 1')
    }
 
    clone(): Chess {
