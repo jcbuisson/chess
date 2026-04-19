@@ -135,6 +135,7 @@ const c8 = moveResultingChess(m7)
 if (chessInCheck(c8, !isWhite)) console.log("Check!")
 console.log('score', chessEvaluate(c8))
 console.log(chessToAscii(c8))
+console.log(chessPrint(c8))
 
 // WHITE TO MOVE
 isWhite = true

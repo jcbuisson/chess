@@ -86,7 +86,6 @@ export class Chess {
       let i: u8 = 0
       for (; ; i++) {
          const c = str.charAt(i);
-         console.log(`i=${i}, c=${c}`)
          if (c === ' ') break
 
          else if (c === '/') { colIndex = 0; rowIndex -= 1 }
@@ -112,10 +111,17 @@ export class Chess {
          else if (c === 'K') pieces.push(new King(true, new Square(rowIndex, colIndex++)))
          else if (c === 'P') pieces.push(new Pawn(true, new Square(rowIndex, colIndex++)))
       }
+      i += 1
+      const whiteToPlay = (str.charAt(i++) === 'w')
+      i += 1
       const isWhiteKingCastlingPossible = (str.charAt(i++) === 'K')
       const isWhiteQueenCastlingPossible = (str.charAt(i++) === 'Q')
       const isBlackKingCastlingPossible = (str.charAt(i++) === 'k')
       const isBlackQueenCastlingPossible = (str.charAt(i++) === 'q')
+      i += 1
+      const halfMove = str.charAt(i++)
+      i += 1
+      const fullMove = str.charAt(i++)
       return new Chess(pieces, isWhiteKingCastlingPossible, isWhiteQueenCastlingPossible, isBlackKingCastlingPossible, isBlackQueenCastlingPossible, null)
    }
 
