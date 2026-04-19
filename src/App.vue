@@ -43,7 +43,7 @@ import { ref, onMounted, watch } from 'vue'
 import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
-import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, moveResultingChess } from "/asscript/build/release.js"
+import { createInitialBoard, chessToAscii, chessPrint, chessPossibleMoves, moveToString, moveResultingChess } from "/asscript/build/release.js"
 
 import VersionUpdater from "/src/components/VersionUpdater.vue";
 
@@ -67,7 +67,7 @@ const worker = new Worker(new URL('./chess.worker.js', import.meta.url), { type:
 function runAlphabeta(history) {
    return new Promise(resolve => {
       worker.onmessage = ({ data }) => resolve(data.bestMoveStr)
-      worker.postMessage({ moveHistory: history, depth: depth.value })
+      worker.postMessage({ chess: chessPrint(chess), moveHistory: history, depth: depth.value })
    })
 }
 
@@ -75,6 +75,7 @@ const STORAGE_KEY = 'chess_game_state'
 
 function saveState() {
    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      chess: chessPrint(chess),
       moveHistory,
       isHumanWhite: isHumanWhite.value,
       depth: depth.value,

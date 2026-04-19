@@ -1,7 +1,7 @@
 // import assert from "assert"
 import { Chess } from "chess.js"
 import { createInitialBoard, chessToAscii, chessInCheck, chessPossibleMoves, moveToString, moveResultingChess, chessEvaluate,
-   chessPrint } from "../build/debug.js"
+   chessPrint, chessParse } from "../build/debug.js"
 
 // let chess = createInitialBoard()
 
@@ -29,7 +29,8 @@ import { createInitialBoard, chessToAscii, chessInCheck, chessPossibleMoves, mov
 //    if (count > 40) break
 // }
 
-const c0 = createInitialBoard()
+// const c0 = createInitialBoard()
+const c0 = chessParse('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNRYYYY w KQkq - 0 1')
 
 // WHITE TO MOVE
 let isWhite = true
@@ -162,3 +163,4 @@ const c10 = moveResultingChess(m9)
 if (chessInCheck(c10, !isWhite)) console.log("Check!")
 console.log('score', chessEvaluate(c10))
 console.log(chessToAscii(c10))
+console.log(chessPrint(c10))
