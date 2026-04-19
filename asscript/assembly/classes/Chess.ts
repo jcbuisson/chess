@@ -50,53 +50,77 @@ export class Chess {
       return result
    }
 
-   // Initial position: rnbqkbnrpppppppp................................PPPPPPPPRNBQKBNRYYYY
+   // Print in FEN notation
+   // Initial position: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNRYYYY w KQkq - 0 1
    print(): string {
       let result = ''
+      let spaceCount = 0
       for (let row: u8 = 7; row < 255; row--) {
          for (let col: u8 = 0; col < 8; col++) {
             const p = this.pieceAtSquare(new Square(row, col))
-            const x = p.isNull() ? '.' : p.toTypeString()
-            result += x
+            if (p.isNull()) {
+               spaceCount += 1
+            } else {
+               if (spaceCount > 0) {
+                  result += `${spaceCount}`
+                  spaceCount = 0
+               }
+               result += p.toTypeString()
+            }
          }
+         if (spaceCount > 0) {
+            result += `${spaceCount}`
+            spaceCount = 0
+         }
+         if (row < 1) result += '/'
       }
-      return result
-               + (this.isWhiteKingCastlingPossible ? 'Y': 'N')
-               + (this.isWhiteQueenCastlingPossible ? 'Y': 'N')
-               + (this.isBlackKingCastlingPossible ? 'Y': 'N')
-               + (this.isBlackQueenCastlingPossible ? 'Y': 'N')
+      return `${result} w ${this.isWhiteKingCastlingPossible ? 'K': '-'}${this.isWhiteQueenCastlingPossible ? 'Q': '-'}${this.isBlackKingCastlingPossible ? 'k': '-'}${this.isBlackQueenCastlingPossible ? 'q': '-'} - 0 1`
    }
 
+   // Parse from FEN notation
+   // Initial position: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNRYYYY w KQkq - 0 1
    static parse(str: string): Chess {
       const pieces: Piece[] = []
-      for (let i: u8 = 0; i < 64; i++) {
-         const c = str.charAt(i)
-         if (c === '.') continue
-         const rowIndex: u8 = 7 - i/8
-         const colIndex: u8 = i%8
-         if (c === 'r') pieces.push(new Rook(false, new Square(rowIndex, colIndex)))
-         else if (c === 'n') pieces.push(new Knight(false, new Square(rowIndex, colIndex)))
-         else if (c === 'b') pieces.push(new Bishop(false, new Square(rowIndex, colIndex)))
-         else if (c === 'q') pieces.push(new Queen(false, new Square(rowIndex, colIndex)))
-         else if (c === 'k') pieces.push(new King(false, new Square(rowIndex, colIndex)))
-         else if (c === 'p') pieces.push(new Pawn(false, new Square(rowIndex, colIndex)))
-         else if (c === 'R') pieces.push(new Rook(true, new Square(rowIndex, colIndex)))
-         else if (c === 'N') pieces.push(new Knight(true, new Square(rowIndex, colIndex)))
-         else if (c === 'B') pieces.push(new Bishop(true, new Square(rowIndex, colIndex)))
-         else if (c === 'Q') pieces.push(new Queen(true, new Square(rowIndex, colIndex)))
-         else if (c === 'K') pieces.push(new King(true, new Square(rowIndex, colIndex)))
-         else if (c === 'P') pieces.push(new Pawn(true, new Square(rowIndex, colIndex)))
+      let rowIndex: u8 = 7
+      let colIndex: u8 = 0
+      let i: u8 = 0
+      for (; ; i++) {
+         const c = str.charAt(i);
+         console.log(`i=${i}, c=${c}`)
+         if (c === ' ') break
+
+         else if (c === '/') { colIndex = 0; rowIndex -= 1 }
+         else if (c === '1') colIndex += 1
+         else if (c === '2') colIndex += 2
+         else if (c === '3') colIndex += 3
+         else if (c === '4') colIndex += 4
+         else if (c === '5') colIndex += 5
+         else if (c === '6') colIndex += 6
+         else if (c === '7') colIndex += 7
+         else if (c === '8') colIndex += 8
+         else if (c === '9') colIndex += 9
+         else if (c === 'r') pieces.push(new Rook(false, new Square(rowIndex, colIndex++)))
+         else if (c === 'n') pieces.push(new Knight(false, new Square(rowIndex, colIndex++)))
+         else if (c === 'b') pieces.push(new Bishop(false, new Square(rowIndex, colIndex++)))
+         else if (c === 'q') pieces.push(new Queen(false, new Square(rowIndex, colIndex++)))
+         else if (c === 'k') pieces.push(new King(false, new Square(rowIndex, colIndex++)))
+         else if (c === 'p') pieces.push(new Pawn(false, new Square(rowIndex, colIndex++)))
+         else if (c === 'R') pieces.push(new Rook(true, new Square(rowIndex, colIndex++)))
+         else if (c === 'N') pieces.push(new Knight(true, new Square(rowIndex, colIndex++)))
+         else if (c === 'B') pieces.push(new Bishop(true, new Square(rowIndex, colIndex++)))
+         else if (c === 'Q') pieces.push(new Queen(true, new Square(rowIndex, colIndex++)))
+         else if (c === 'K') pieces.push(new King(true, new Square(rowIndex, colIndex++)))
+         else if (c === 'P') pieces.push(new Pawn(true, new Square(rowIndex, colIndex++)))
       }
-   console.log(`str=${str}, 0: ${str.charAt(0)}, 64: ${str.charAt(64)}, eq=${str.charAt(64) === 'Y'}`)
-      const isWhiteKingCastlingPossible = (str.charAt(64) === 'Y')
-      const isWhiteQueenCastlingPossible = (str.charAt(65) === 'Y')
-      const isBlackKingCastlingPossible = (str.charAt(66) === 'Y')
-      const isBlackQueenCastlingPossible = (str.charAt(67) === 'Y')
+      const isWhiteKingCastlingPossible = (str.charAt(i++) === 'K')
+      const isWhiteQueenCastlingPossible = (str.charAt(i++) === 'Q')
+      const isBlackKingCastlingPossible = (str.charAt(i++) === 'k')
+      const isBlackQueenCastlingPossible = (str.charAt(i++) === 'q')
       return new Chess(pieces, isWhiteKingCastlingPossible, isWhiteQueenCastlingPossible, isBlackKingCastlingPossible, isBlackQueenCastlingPossible, null)
    }
 
    static createInitialBoard(): Chess {
-      return Chess.parse('rnbqkbnrpppppppp................................PPPPPPPPRNBQKBNRYYYY')
+      return Chess.parse('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNRYYYY w KQkq - 0 1')
    }
 
    clone(): Chess {

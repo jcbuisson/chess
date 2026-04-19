@@ -44,11 +44,14 @@ import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
 import { createInitialBoard, chessToAscii, chessPossibleMoves, moveToString, moveResultingChess } from "/asscript/build/release.js"
+
 import VersionUpdater from "/src/components/VersionUpdater.vue";
 
 let chess
 let boardAPI
+
 const boardConfig = {
+   fen: '4k3/8/8/8/8/8/PPPPPPPP/4K3 w KQkq - 0 1',
    coordinates: true,
 }
 
@@ -133,6 +136,9 @@ const onMove = async (moveEvent) => {
    const moveNotation = moveEventToString(moveEvent)
    // console.log('moveEvent', moveNotation, moveEvent, isWhite.value)
    const myMoves = chessPossibleMoves(chess, isWhite.value)
+   for (let i = 0; i < myMoves.length; i++) {
+      console.log(i, moveToString(myMoves[i]))
+   }
    // get my move from possible moves
    const myMove = myMoves.find(move => moveNotation === moveToString(move))
    chess = moveResultingChess(myMove)
