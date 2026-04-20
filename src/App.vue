@@ -43,7 +43,7 @@ import { ref, onMounted, watch } from 'vue'
 import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
-import { createInitialBoard, chessToAscii, chessPrint, chessPossibleMoves, moveToString, moveResultingChess } from "/asscript/build/release.js"
+import { createInitialBoard, chessToAscii, chessPrint, chessParse, chessPossibleMoves, moveToString, moveResultingChess } from "/asscript/build/release.js"
 
 import VersionUpdater from "/src/components/VersionUpdater.vue";
 
@@ -69,7 +69,6 @@ function runAlphabeta(chess) {
       worker.onmessage = ({ data }) => resolve(data.bestMoveStr)
       worker.postMessage({
          fen: chessPrint(chess),
-         // moveHistory: history,
          depth: depth.value,
       })
    })
@@ -79,7 +78,7 @@ const STORAGE_KEY = 'chess_game_state'
 
 function saveState() {
    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      chess: chessPrint(chess),
+      fen: chessPrint(chess),
       moveHistory,
       isHumanWhite: isHumanWhite.value,
       depth: depth.value,
@@ -102,17 +101,18 @@ onMounted(() => {
 
          if (!isHumanWhite.value) boardAPI.toggleOrientation()
 
-         let replayChess = createInitialBoard()
-         let replayIsWhite = true
-         for (const moveStr of (state.moveHistory ?? [])) {
-            const moves = chessPossibleMoves(replayChess, replayIsWhite)
-            const move = moves.find(m => moveToString(m) === moveStr)
-            if (!move) throw new Error(`move not found: ${moveStr}`)
-            replayChess = moveResultingChess(move)
-            boardAPI.move(moveStr.substring(2))
-            replayIsWhite = !replayIsWhite
-         }
-         chess = replayChess
+         // let replayChess = createInitialBoard()
+         // let replayIsWhite = true
+         // for (const moveStr of (state.moveHistory ?? [])) {
+         //    const moves = chessPossibleMoves(replayChess, replayIsWhite)
+         //    const move = moves.find(m => moveToString(m) === moveStr)
+         //    if (!move) throw new Error(`move not found: ${moveStr}`)
+         //    replayChess = moveResultingChess(move)
+         //    boardAPI.move(moveStr.substring(2))
+         //    replayIsWhite = !replayIsWhite
+         // }
+         // chess = replayChess
+         chess = chessParse(state.fen)
          moveHistory = state.moveHistory ?? []
       } catch (e) {
          console.error('Failed to restore game state, starting fresh', e)
@@ -193,7 +193,7 @@ async function revertGame() {
    isWhite.value = true
    isComputing.value = true
 
-   const bestMoveStr = await runAlphabeta([])
+   const bestMoveStr = await runAlphabeta(chess)
    isComputing.value = false
 
    const moves = chessPossibleMoves(chess, true)
