@@ -51,8 +51,8 @@ let chess
 let boardAPI
 
 const boardConfig = {
-   // fen: '4k3/8/8/8/8/8/PPPPPPPP/RNBQKBNRYYYY w KQkq - 0 1',
-   fen: '4k3/8/8/8/8/8/PPPPPPPP/4K3 w KQkq - 0 1',
+   // fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+   fen: '4k3/8/8/8/8/8/PPPPPPPP/4K3 w ---- - 0 1',
    coordinates: true,
 }
 
@@ -67,7 +67,11 @@ const worker = new Worker(new URL('./chess.worker.js', import.meta.url), { type:
 function runAlphabeta(history) {
    return new Promise(resolve => {
       worker.onmessage = ({ data }) => resolve(data.bestMoveStr)
-      worker.postMessage({ chess: chessPrint(chess), moveHistory: history, depth: depth.value })
+      worker.postMessage({
+         fen: chessPrint(chess),
+         moveHistory: history,
+         depth: depth.value,
+      })
    })
 }
 
@@ -133,13 +137,15 @@ function moveEventToString(moveEvent) {
 }
 
 const onMove = async (moveEvent) => {
-   if (isWhite.value !== isHumanWhite.value) return; // ignore opponent move events
+   console.log('moveEvent', moveEvent)
+   // if (isWhite.value !== isHumanWhite.value) return; // ignore opponent move events
+   if (moveEvent.color === 'w' && !isHumanWhite.value || moveEvent.color === 'b' && isHumanWhite.value) return; // ignore opponent move events
 
    const moveNotation = moveEventToString(moveEvent)
-   // console.log('moveEvent', moveNotation, moveEvent, isWhite.value)
+   console.log('moveNotation', moveNotation, 'isWhite', isWhite.value)
    const myMoves = chessPossibleMoves(chess, isWhite.value)
    for (let i = 0; i < myMoves.length; i++) {
-      console.log(i, moveToString(myMoves[i]))
+      // console.log(i, moveToString(myMoves[i]))
    }
    // get my move from possible moves
    const myMove = myMoves.find(move => moveNotation === moveToString(move))

@@ -49,7 +49,7 @@ The engine is written in AssemblyScript (TypeScript-like syntax that compiles to
 
 ### AI
 
-`alphabeta()` in `asscript/assembly/index.ts` is a recursive alphabeta (no alpha-beta yet). `Chess.evaluate()` scores by material only (Q=9, R=5, B=N=3, P=1). `alphaBeta()` is implemented but operates on a static scores array (not yet wired to the actual board search).
+`alphabeta()` in `asscript/assembly/index.ts` is a full alpha-beta search with pruning. `Chess.evaluate()` scores by material (Q=9, R=5, B=N=3, P=1, weighted ×100) plus mobility (number of legal moves for each side). The AI runs in a Web Worker (`src/chess.worker.js`) to avoid blocking the UI — the frontend sends a FEN string + move history + depth, and the worker responds with the best move string.
 
 ### Frontend (`src/`)
 

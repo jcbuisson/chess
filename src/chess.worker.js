@@ -1,6 +1,11 @@
-import { createInitialBoard, chessPossibleMoves, moveToString, moveResultingChess, alphabeta, chessBestMove } from '/asscript/build/release.js'
+import { createInitialBoard, chessPossibleMoves, moveToString, moveResultingChess, alphabeta, chessBestMove, chessToAscii, chessPrint, chessParse } from '/asscript/build/release.js'
 
-self.onmessage = ({ data: { moveHistory, depth } }) => {
+self.onmessage = ({ data: { fen, moveHistory, depth } }) => {
+   console.log('fen', fen)
+   const cfen = chessParse(fen)
+   console.log('fen')
+   chessPrint(cfen)
+
    let chess = createInitialBoard()
    let isWhite = true
 

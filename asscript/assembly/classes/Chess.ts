@@ -17,6 +17,9 @@ type Nullable<T> = T | null
 // - facile de cloner
 // - une case est représentée par un indice 0..63
 
+// mieux : un tableau de 64 bits pour chaque type de piece
+// des masques permettent de faire les tests rapidement
+
 
 export class Chess {
    constructor(
@@ -51,7 +54,7 @@ export class Chess {
    }
 
    // Print in FEN notation
-   // Initial position: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNRYYYY w KQkq - 0 1
+   // Initial position: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
    print(): string {
       let result = ''
       let spaceCount = 0
@@ -78,7 +81,7 @@ export class Chess {
    }
 
    // Parse from FEN notation
-   // Initial position: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNRYYYY w KQkq - 0 1
+   // Initial position: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
    static parse(str: string): Chess {
       const pieces: Piece[] = []
       let rowIndex: u8 = 7
@@ -119,6 +122,8 @@ export class Chess {
       const isBlackKingCastlingPossible = (str.charAt(i++) === 'k')
       const isBlackQueenCastlingPossible = (str.charAt(i++) === 'q')
       i += 1
+      const enPassant = str.charAt(i++)
+      i += 1
       const halfMove = str.charAt(i++)
       i += 1
       const fullMove = str.charAt(i++)
@@ -126,8 +131,8 @@ export class Chess {
    }
 
    static createInitialBoard(): Chess {
-      // return Chess.parse('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNRYYYY w KQkq - 0 1')
-      return Chess.parse('4k3/8/8/8/8/8/PPPPPPPP/RNBQKBNRYYYY w KQkq - 0 1')
+      // return Chess.parse('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+      return Chess.parse('4k3/8/8/8/8/8/PPPPPPPP/4K3 w ---- - 0 1')
    }
 
    clone(): Chess {
@@ -252,6 +257,8 @@ export class Chess {
       return this.inCheck(isWhite) && this.possibleMoves(isWhite).length === 0
    }
 
+   // Evaluates the position from the white perspective
+   // A positive score means a better position for white
    evaluate(): number {
       let whitePieces = 0
       let blackPieces = 0
@@ -286,35 +293,6 @@ export class Chess {
          }
       }
       // CASTLING MOVES
-      function notAttacked(chess: Chess, isWhite: bool, squares: Square[]): bool {
-         for (let i = 0; i < squares.length; i++) {
-            if (chess.isSquareAttacked(isWhite, squares[i])) return false
-         }
-         return true
-      }
-
-      function empty(chess: Chess, squares: Square[]): bool {
-         for (let i = 0; i < squares.length; i++) {
-            if (!chess.isSquareEmpty(squares[i])) return false
-         }
-         return true
-      }
-
-      function performCastling(accu: Move[], chess: Chess, isWhite: bool, moveType: MoveType, rookStart: Square, rookEnd: Square, kingStart: Square, kingEnd: Square): Chess {
-         const resultingChess = chess.clone()
-         resultingChess.deletePieceAt(kingStart)
-         resultingChess.deletePieceAt(rookStart)
-         const movedKing = new King(isWhite, kingEnd)
-         resultingChess.pieces.push(movedKing)
-         const rook = chess.pieceAtSquare(rookStart) // sure to be not null
-         const movedRook = rook.clone()
-         movedRook.square = rookEnd
-         resultingChess.pieces.push(movedRook)
-         const move = new Move(moveType, movedKing, Square.dummy, PieceType.NONE, resultingChess)
-         accu.push(move)
-         return resultingChess
-      }
-
       if (isWhite) {
          if (this.isWhiteKingCastlingPossible) {
             const sq04 = new Square(0, 4)
@@ -366,4 +344,36 @@ export class Chess {
       }
       return accu
    }
+}
+
+// helper function
+function notAttacked(chess: Chess, isWhite: bool, squares: Square[]): bool {
+   for (let i = 0; i < squares.length; i++) {
+      if (chess.isSquareAttacked(isWhite, squares[i])) return false
+   }
+   return true
+}
+
+// helper function
+function empty(chess: Chess, squares: Square[]): bool {
+   for (let i = 0; i < squares.length; i++) {
+      if (!chess.isSquareEmpty(squares[i])) return false
+   }
+   return true
+}
+
+// helper function
+function performCastling(accu: Move[], chess: Chess, isWhite: bool, moveType: MoveType, rookStart: Square, rookEnd: Square, kingStart: Square, kingEnd: Square): Chess {
+   const resultingChess = chess.clone()
+   resultingChess.deletePieceAt(kingStart)
+   resultingChess.deletePieceAt(rookStart)
+   const movedKing = new King(isWhite, kingEnd)
+   resultingChess.pieces.push(movedKing)
+   const rook = chess.pieceAtSquare(rookStart) // sure to be not null
+   const movedRook = rook.clone()
+   movedRook.square = rookEnd
+   resultingChess.pieces.push(movedRook)
+   const move = new Move(moveType, movedKing, Square.dummy, PieceType.NONE, resultingChess)
+   accu.push(move)
+   return resultingChess
 }

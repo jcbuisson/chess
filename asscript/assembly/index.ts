@@ -53,41 +53,42 @@ export function alphabeta(chess: Chess, depth: int, isWhite: bool, alpha: number
    }
 }
 
-// // Compute the best score for position `chess`, and put the associated move in `chess.bestMove`
-// export function minimax(chess: Chess, depth: int, isWhite: bool): number {
-//    if (chess.isCheckmate(isWhite)) {
-//       return isWhite ? Infinity : -Infinity
-//    }
-//    if (depth === 0) {
-//       return chess.evaluate()
-//    }
+// NOT USED
+// Compute the best score for position `chess`, and put the associated move in `chess.bestMove`
+export function minimax(chess: Chess, depth: int, isWhite: bool): number {
+   if (chess.isCheckmate(isWhite)) {
+      return isWhite ? Infinity : -Infinity
+   }
+   if (depth === 0) {
+      return chess.evaluate()
+   }
 
-//    if (isWhite) {
-//       let maxEval: number = -Infinity
-//       const moves = chess.possibleMoves(isWhite)
-//       for (let i = 0; i < moves.length; i++) {
-//          const move = moves[i]
-//          const childEval = minimax(move.resultingChess, depth - 1, !isWhite)
-//          if (childEval > maxEval) {
-//             maxEval = childEval
-//             chess.bestMove = move
-//          }
-//       }
-//       return maxEval
-//    } else {
-//       let minEval: number = Infinity
-//       const moves = chess.possibleMoves(isWhite)
-//       for (let i = 0; i < moves.length; i++) {
-//          const move = moves[i]
-//          const childEval = minimax(move.resultingChess, depth - 1, !isWhite)
-//          if (childEval < minEval) {
-//             minEval = childEval
-//             chess.bestMove = move
-//          }
-//       }
-//       return minEval
-//    }
-// }
+   if (isWhite) {
+      let maxEval: number = -Infinity
+      const moves = chess.possibleMoves(isWhite)
+      for (let i = 0; i < moves.length; i++) {
+         const move = moves[i]
+         const childEval = minimax(move.resultingChess, depth - 1, !isWhite)
+         if (childEval > maxEval) {
+            maxEval = childEval
+            chess.bestMove = move
+         }
+      }
+      return maxEval
+   } else {
+      let minEval: number = Infinity
+      const moves = chess.possibleMoves(isWhite)
+      for (let i = 0; i < moves.length; i++) {
+         const move = moves[i]
+         const childEval = minimax(move.resultingChess, depth - 1, !isWhite)
+         if (childEval < minEval) {
+            minEval = childEval
+            chess.bestMove = move
+         }
+      }
+      return minEval
+   }
+}
 
 export function createInitialBoard(): Chess {
    return Chess.createInitialBoard()
