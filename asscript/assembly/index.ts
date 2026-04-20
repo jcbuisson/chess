@@ -106,6 +106,10 @@ export function chessParse(str: string): Chess {
    return Chess.parse(str)
 }
 
+export function chessIsWhiteToPlay(chess: Chess): bool {
+   return chess.isWhiteToPlay
+}
+
 export function chessInCheck(chess: Chess, isWhite: bool): bool {
    return chess.inCheck(isWhite)
 }

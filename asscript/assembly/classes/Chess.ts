@@ -80,7 +80,7 @@ export class Chess {
          }
          if (row > 0) result += '/'
       }
-      return `${result} w ${this.isWhiteKingCastlingPossible ? 'K': '-'}${this.isWhiteQueenCastlingPossible ? 'Q': '-'}${this.isBlackKingCastlingPossible ? 'k': '-'}${this.isBlackQueenCastlingPossible ? 'q': '-'} - 0 1`
+      return `${result} ${this.isWhiteToPlay ? 'w': 'b'} ${this.isWhiteKingCastlingPossible ? 'K': '-'}${this.isWhiteQueenCastlingPossible ? 'Q': '-'}${this.isBlackKingCastlingPossible ? 'k': '-'}${this.isBlackQueenCastlingPossible ? 'q': '-'} - 0 1`
    }
 
    // Parse from FEN notation

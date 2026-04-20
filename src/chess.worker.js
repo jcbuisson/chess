@@ -1,4 +1,5 @@
-import { createInitialBoard, chessPossibleMoves, moveToString, moveResultingChess, alphabeta, chessBestMove, chessToAscii, chessPrint, chessParse } from '/asscript/build/release.js'
+import { createInitialBoard, chessPossibleMoves, moveToString, moveResultingChess, alphabeta, chessBestMove, chessToAscii,
+   chessPrint, chessParse, chessIsWhiteToPlay } from '/asscript/build/release.js'
 
 self.onmessage = ({ data: { fen, moveHistory, depth } }) => {
    // let chess = createInitialBoard()
@@ -12,7 +13,7 @@ self.onmessage = ({ data: { fen, moveHistory, depth } }) => {
    // }
 
    const chess = chessParse(fen)
-   const isWhite = false
+   const isWhite = !chessIsWhiteToPlay(chess)
 
    // isWhite is now the computer's color
    alphabeta(chess, depth, isWhite)

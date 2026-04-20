@@ -27,8 +27,8 @@
             :boardConfig="boardConfig"
             @board-created="(api) => (boardAPI = api)"
             @move="onMove"
-            @checkmate="handleCheckmate"
-            @stalemate="handleStalemate"
+            @checkmate="onCheckmate"
+            @stalemate="onStalemate"
          ></TheChessboard>
       </div>
 
@@ -64,12 +64,12 @@ const isComputing = ref(false)
 
 const worker = new Worker(new URL('./chess.worker.js', import.meta.url), { type: 'module' })
 
-function runAlphabeta(history) {
+function runAlphabeta(chess) {
    return new Promise(resolve => {
       worker.onmessage = ({ data }) => resolve(data.bestMoveStr)
       worker.postMessage({
          fen: chessPrint(chess),
-         moveHistory: history,
+         // moveHistory: history,
          depth: depth.value,
       })
    })
@@ -158,7 +158,8 @@ const onMove = async (moveEvent) => {
    isWhite.value = !isWhite.value
    isComputing.value = true
 
-   const bestMoveStr = await runAlphabeta([...moveHistory])
+   // const bestMoveStr = await runAlphabeta([...moveHistory])
+   const bestMoveStr = await runAlphabeta(chess)
    isComputing.value = false
 
    const computerMoves = chessPossibleMoves(chess, isWhite.value)
@@ -205,7 +206,7 @@ async function revertGame() {
    saveState()
 }
 
-function handleCheckmate(isMated) {
+function onCheckmate(isMated) {
    if (isMated === 'w') {
       alert('Black wins!');
    } else {
@@ -213,7 +214,7 @@ function handleCheckmate(isMated) {
    }
 }
 
-function handleStalemate() {
+function onStalemate() {
   alert('Stalemate');
 }
 </script>
