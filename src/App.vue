@@ -127,6 +127,7 @@ function moveEventToString(moveEvent) {
 
 const onMove = async (moveEvent) => {
    console.log('moveEvent', moveEvent)
+   moveHistory.push(moveEvent.san)
    // if (isWhite.value !== isHumanWhite.value) return; // ignore opponent move events
    if (moveEvent.color === 'w' && !isHumanWhite.value || moveEvent.color === 'b' && isHumanWhite.value) return; // ignore opponent move events
 
@@ -139,7 +140,6 @@ const onMove = async (moveEvent) => {
    // get my move from possible moves
    const myMove = myMoves.find(move => moveNotation === moveToString(move))
    chess = moveResultingChess(myMove)
-   moveHistory.push(moveNotation)
    console.log(chessToAscii(chess))
 
    if (boardAPI.getIsGameOver()) return
@@ -153,7 +153,6 @@ const onMove = async (moveEvent) => {
    const computerMoves = chessPossibleMoves(chess, isWhite.value)
    const bestComputerMove = computerMoves.find(m => moveToString(m) === bestMoveStr)
    chess = moveResultingChess(bestComputerMove)
-   moveHistory.push(bestMoveStr)
 
    boardAPI.move(bestMoveStr.substring(2))
    console.log(chessToAscii(chess))
@@ -187,7 +186,6 @@ async function revertGame() {
    const moves = chessPossibleMoves(chess, true)
    const bestMove = moves.find(m => moveToString(m) === bestMoveStr)
    chess = moveResultingChess(bestMove)
-   moveHistory.push(bestMoveStr)
    boardAPI.move(bestMoveStr.substring(2))
 
    isWhite.value = false
