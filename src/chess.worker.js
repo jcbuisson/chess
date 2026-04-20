@@ -1,7 +1,7 @@
 import { createInitialBoard, chessPossibleMoves, moveToString, moveResultingChess, alphabeta, chessBestMove, chessToAscii,
    chessPrint, chessParse, chessIsWhiteToPlay } from '/asscript/build/release.js'
 
-self.onmessage = ({ data: { fen, moveHistory, depth } }) => {
+self.onmessage = ({ data: { fen, depth } }) => {
    const chess = chessParse(fen)
    const isWhite = !chessIsWhiteToPlay(chess)
 

@@ -101,17 +101,6 @@ onMounted(() => {
 
          if (!isHumanWhite.value) boardAPI.toggleOrientation()
 
-         // let replayChess = createInitialBoard()
-         // let replayIsWhite = true
-         // for (const moveStr of (state.moveHistory ?? [])) {
-         //    const moves = chessPossibleMoves(replayChess, replayIsWhite)
-         //    const move = moves.find(m => moveToString(m) === moveStr)
-         //    if (!move) throw new Error(`move not found: ${moveStr}`)
-         //    replayChess = moveResultingChess(move)
-         //    boardAPI.move(moveStr.substring(2))
-         //    replayIsWhite = !replayIsWhite
-         // }
-         // chess = replayChess
          chess = chessParse(state.fen)
          moveHistory = state.moveHistory ?? []
       } catch (e) {
@@ -158,7 +147,6 @@ const onMove = async (moveEvent) => {
    isWhite.value = !isWhite.value
    isComputing.value = true
 
-   // const bestMoveStr = await runAlphabeta([...moveHistory])
    const bestMoveStr = await runAlphabeta(chess)
    isComputing.value = false
 
