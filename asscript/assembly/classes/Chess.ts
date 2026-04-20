@@ -24,6 +24,9 @@ type Nullable<T> = T | null
 export class Chess {
    constructor(
       public pieces: Piece[],
+
+      public isWhiteToPlay: bool,
+
       public isWhiteKingCastlingPossible: boolean,
       public isWhiteQueenCastlingPossible: boolean,
       public isBlackKingCastlingPossible: boolean,
@@ -115,7 +118,7 @@ export class Chess {
          else if (c === 'P') pieces.push(new Pawn(true, new Square(rowIndex, colIndex++)))
       }
       i += 1
-      const whiteToPlay = (str.charAt(i++) === 'w')
+      const isWhiteToPlay = (str.charAt(i++) === 'w')
       i += 1
       const isWhiteKingCastlingPossible = (str.charAt(i++) === 'K')
       const isWhiteQueenCastlingPossible = (str.charAt(i++) === 'Q')
@@ -127,7 +130,7 @@ export class Chess {
       const halfMove = str.charAt(i++)
       i += 1
       const fullMove = str.charAt(i++)
-      return new Chess(pieces, isWhiteKingCastlingPossible, isWhiteQueenCastlingPossible, isBlackKingCastlingPossible, isBlackQueenCastlingPossible, null)
+      return new Chess(pieces, isWhiteToPlay, isWhiteKingCastlingPossible, isWhiteQueenCastlingPossible, isBlackKingCastlingPossible, isBlackQueenCastlingPossible, null)
    }
 
    static createInitialBoard(): Chess {
@@ -138,6 +141,7 @@ export class Chess {
    clone(): Chess {
       return new Chess(
          this.pieces.map<Piece>(piece => piece),
+         this.isWhiteToPlay,
          this.isWhiteKingCastlingPossible,
          this.isWhiteQueenCastlingPossible,
          this.isBlackKingCastlingPossible,
