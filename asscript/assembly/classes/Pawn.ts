@@ -97,10 +97,15 @@ export class Pawn extends Piece {
    }
 
    // return true if current pawn piece attacks opponent's `square`
+   // do not use Math.abs since u8 cannot be negative
    attacks(chess: Chess, square: Square): bool {
-      const incrRow = this.isWhite ? 1 : -1
-      if (square.rowIndex - this.square.rowIndex !== incrRow) return false
-      return Math.abs(square.colIndex - this.square.colIndex) === 1
+      const dcol = square.colIndex > this.square.colIndex ? square.colIndex-this.square.colIndex : this.square.colIndex-square.colIndex
+      if (dcol !== 1) return false
+      if (this.isWhite) {
+         return ((this.square.rowIndex + 1) === square.rowIndex)
+      } else {
+         return ((this.square.rowIndex - 1) === square.rowIndex)
+      }
    }
 
 }

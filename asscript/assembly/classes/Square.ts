@@ -7,6 +7,7 @@
 
 export class Square {
    constructor(
+      // warning: do not use Math.abs(diff), u8 cannot be negative
       public rowIndex: u8,  // ex: 0=1,.. , 7=8
       public colIndex: u8,  // ex: 0=a,.. , 7=h
    ) {
