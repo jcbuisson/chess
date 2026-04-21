@@ -246,8 +246,8 @@ export class Chess {
       return Square.dummy // should never happen
    }
 
-   isSquareAttacked(isWhite: bool, square: Square): bool {
-      const opponentPieces = this.piecesOf(!isWhite);
+   isSquareAttackedBy(square: Square, isWhite: bool): bool {
+      const opponentPieces = this.piecesOf(isWhite);
       for (let i = 0; i < opponentPieces.length; i++) {
          const piece = opponentPieces[i]
          if (piece.attacks(this, square)) return true
@@ -258,7 +258,7 @@ export class Chess {
    // indicates if the side `isWhite` is in check
    inCheck(isWhite: bool): bool {
       const kingSquare = this.kingSquare(isWhite);
-      return this.isSquareAttacked(isWhite, kingSquare)
+      return this.isSquareAttackedBy(kingSquare, !isWhite)
    }
 
    isCheckmate(isWhite: bool): bool {
@@ -358,7 +358,7 @@ export class Chess {
 function notAttacked(chess: Chess, squares: Square[]): bool {
    const isWhite = chess.isWhiteToPlay
    for (let i = 0; i < squares.length; i++) {
-      if (chess.isSquareAttacked(isWhite, squares[i])) return false
+      if (chess.isSquareAttackedBy(squares[i], !isWhite)) return false
    }
    return true
 }
