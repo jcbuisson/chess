@@ -37,9 +37,13 @@ export class King extends Piece {
             } else {
                if (piece.isWhite !== this.isWhite) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
-                  if (!this.isWhite) console.log(`king ${this.toString()} eat piece=${piece.toString()}, chess=${chess.print()}, result=${resultingChess.print()}, inCheck=${resultingChess.inCheck(this.isWhite)}`)
-
                   if (!resultingChess.inCheck(this.isWhite)) {
+                  // if (!resultingChess.inCheck(resultingChess.isWhiteToPlay)) {
+                     const kingSquare = resultingChess.kingSquare(false)
+                     console.log(`${this.toString()} eats at ${square.toString()}, kingSquare=${kingSquare}, attacked=${resultingChess.isSquareAttackedBy(kingSquare, true)}`)
+                     console.log(`${resultingChess.piecesOf(true).map((p: Piece) => p.toString()).join(', ')}`)
+                     const pf4: Piece = resultingChess.piecesOf(true)[7]
+                     console.log(`pf4 attacks ke5 ${pf4.attacks(resultingChess, kingSquare)}`)
                      const move = new Move(MoveType.EAT, this, square, PieceType.NONE, resultingChess)
                      accu.push(move)
                      if (this.isWhite) resultingChess.isWhiteKingCastlingPossible = false; else resultingChess.isBlackKingCastlingPossible = false

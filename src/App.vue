@@ -10,7 +10,7 @@
                <svg viewBox="0 0 24 24" class="h-4 w-4"><path fill="currentColor" :d="mdiRestore" /></svg>
             </button>
             <button @click="" class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
-               960
+               <span class="text-gray-100 text-sm">960</span>
             </button>
             <div class="ml-auto flex items-center gap-3">
             <svg v-if="isComputing" class="animate-spin h-4 w-4 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

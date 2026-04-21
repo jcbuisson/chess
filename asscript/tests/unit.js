@@ -70,17 +70,15 @@ test('not in check at start', () => {
    assert.strictEqual(chessInCheck(chess), false)
 })
 
-test('detects check (active player)', () => {
+test('detects check1', () => {
    // white to play, queen on e2 attacks white king on e1
    const chess = chessParse('4k3/8/8/8/8/8/4q3/4K3 w ---- - 0 1')
    assert.strictEqual(chessInCheck(chess), true)
 })
 
-// 8/8/4k3/4P3/5P2/8/PPPP2PP/4K3 b ---- - 0 1
-
 test('detects check2', () => {
-   // ke5 is attacked by Pf4
-   const chess = chessParse('8/8/8/4k3/5P2/8/PPPP2PP/4K3 w ---- - 0 1')
+   // black ke5 is attacked by Pf4
+   const chess = chessParse('8/8/8/4k3/5P2/8/PPPP2PP/4K3 b ---- - 0 1')
    assert.strictEqual(chessInCheck(chess), true)
 })
 
