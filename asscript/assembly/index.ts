@@ -14,7 +14,8 @@ type Nullable<T> = T | null
 // Compute the best score for position `chess`, and put the associated move in `chess.bestMove`
 // alpha tracks the best score the maximizer is guaranteed, beta tracks the best score the minimizer is guaranteed.
 // When alpha >= beta, the branch is pruned
-export function alphabeta(chess: Chess, depth: int, isWhite: bool, alpha: number = -Infinity, beta: number = Infinity): number {
+export function alphabeta(chess: Chess, depth: int, alpha: number = -Infinity, beta: number = Infinity): number {
+   const isWhite = chess.isWhiteToPlay
    if (chess.isCheckmate(isWhite)) {
       return isWhite ? Infinity : -Infinity
    }
@@ -27,7 +28,7 @@ export function alphabeta(chess: Chess, depth: int, isWhite: bool, alpha: number
       const moves = chess.possibleMoves(isWhite)
       for (let i = 0; i < moves.length; i++) {
          const move = moves[i]
-         const childEval = alphabeta(move.resultingChess, depth - 1, !isWhite, alpha, beta)
+         const childEval = alphabeta(move.resultingChess, depth - 1, alpha, beta)
          if (childEval > maxEval) {
             maxEval = childEval
             chess.bestMove = move
@@ -41,7 +42,7 @@ export function alphabeta(chess: Chess, depth: int, isWhite: bool, alpha: number
       const moves = chess.possibleMoves(isWhite)
       for (let i = 0; i < moves.length; i++) {
          const move = moves[i]
-         const childEval = alphabeta(move.resultingChess, depth - 1, !isWhite, alpha, beta)
+         const childEval = alphabeta(move.resultingChess, depth - 1, alpha, beta)
          if (childEval < minEval) {
             minEval = childEval
             chess.bestMove = move
@@ -55,7 +56,8 @@ export function alphabeta(chess: Chess, depth: int, isWhite: bool, alpha: number
 
 // NOT USED
 // Compute the best score for position `chess`, and put the associated move in `chess.bestMove`
-export function minimax(chess: Chess, depth: int, isWhite: bool): number {
+export function minimax(chess: Chess, depth: int): number {
+   const isWhite = chess.isWhiteToPlay
    if (chess.isCheckmate(isWhite)) {
       return isWhite ? Infinity : -Infinity
    }
@@ -68,7 +70,7 @@ export function minimax(chess: Chess, depth: int, isWhite: bool): number {
       const moves = chess.possibleMoves(isWhite)
       for (let i = 0; i < moves.length; i++) {
          const move = moves[i]
-         const childEval = minimax(move.resultingChess, depth - 1, !isWhite)
+         const childEval = minimax(move.resultingChess, depth - 1)
          if (childEval > maxEval) {
             maxEval = childEval
             chess.bestMove = move
@@ -80,7 +82,7 @@ export function minimax(chess: Chess, depth: int, isWhite: bool): number {
       const moves = chess.possibleMoves(isWhite)
       for (let i = 0; i < moves.length; i++) {
          const move = moves[i]
-         const childEval = minimax(move.resultingChess, depth - 1, !isWhite)
+         const childEval = minimax(move.resultingChess, depth - 1)
          if (childEval < minEval) {
             minEval = childEval
             chess.bestMove = move
@@ -134,8 +136,8 @@ export function moveResultingChess(move: Move): Chess {
    return move.resultingChess
 }
 
-export function chessPossibleMoves(chess: Chess, isWhite: bool): Move[] {
-   return chess.possibleMoves(isWhite)
+export function chessPossibleMoves(chess: Chess): Move[] {
+   return chess.possibleMoves(chess.isWhiteToPlay)
 }
 
 export function chessEvaluate(chess: Chess): number {

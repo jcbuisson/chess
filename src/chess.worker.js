@@ -3,10 +3,7 @@ import { createInitialBoard, chessPossibleMoves, moveToString, moveResultingChes
 
 self.onmessage = ({ data: { fen, depth } }) => {
    const chess = chessParse(fen)
-   const isWhite = !chessIsWhiteToPlay(chess)
-
-   // isWhite is now the computer's color
-   alphabeta(chess, depth, isWhite)
+   alphabeta(chess, depth)
    const bestMove = chessBestMove(chess)
    self.postMessage({ bestMoveStr: moveToString(bestMove) })
 }

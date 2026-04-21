@@ -57,7 +57,6 @@ const boardConfig = {
 }
 
 let moveHistory = []
-const isWhite = ref(true)
 const isHumanWhite = ref(true)
 const depth = ref(2)
 const isComputing = ref(false)
@@ -82,7 +81,6 @@ function saveState() {
       moveHistory,
       isHumanWhite: isHumanWhite.value,
       depth: depth.value,
-      isWhite: isWhite.value,
    }))
 }
 
@@ -97,7 +95,6 @@ onMounted(() => {
          const state = JSON.parse(saved)
          depth.value = state.depth ?? 2
          isHumanWhite.value = state.isHumanWhite ?? true
-         isWhite.value = state.isWhite ?? true
 
          if (!isHumanWhite.value) boardAPI.toggleOrientation()
 
@@ -128,14 +125,13 @@ function moveEventToString(moveEvent) {
 const onMove = async (moveEvent) => {
    console.log('moveEvent', moveEvent)
    moveHistory.push(moveEvent.san)
-   // if (isWhite.value !== isHumanWhite.value) return; // ignore opponent move events
    if (moveEvent.color === 'w' && !isHumanWhite.value || moveEvent.color === 'b' && isHumanWhite.value) return; // ignore opponent move events
 
    const moveNotation = moveEventToString(moveEvent)
-   console.log('moveNotation', moveNotation, 'isWhite', isWhite.value)
-   const myMoves = chessPossibleMoves(chess, isWhite.value)
+   console.log('moveNotation', moveNotation, 'chess', chessPrint(chess))
+   const myMoves = chessPossibleMoves(chess)
    for (let i = 0; i < myMoves.length; i++) {
-      // console.log(i, moveToString(myMoves[i]))
+      console.log(i, moveToString(myMoves[i]))
    }
    // get my move from possible moves
    const myMove = myMoves.find(move => moveNotation === moveToString(move))
@@ -144,20 +140,18 @@ const onMove = async (moveEvent) => {
 
    if (boardAPI.getIsGameOver()) return
 
-   isWhite.value = !isWhite.value
    isComputing.value = true
 
    const bestMoveStr = await runAlphabeta(chess)
    isComputing.value = false
 
-   const computerMoves = chessPossibleMoves(chess, isWhite.value)
+   const computerMoves = chessPossibleMoves(chess)
    const bestComputerMove = computerMoves.find(m => moveToString(m) === bestMoveStr)
    chess = moveResultingChess(bestComputerMove)
 
    boardAPI.move(bestMoveStr.substring(2))
    console.log(chessToAscii(chess))
 
-   isWhite.value = !isWhite.value
    saveState()
 }
 
@@ -165,7 +159,6 @@ function resetGame() {
    chess = createInitialBoard()
    moveHistory = []
    isHumanWhite.value = true
-   isWhite.value = true
    boardAPI.resetBoard()
    saveState()
 }
@@ -177,7 +170,6 @@ async function revertGame() {
    boardAPI.toggleOrientation()
 
    isHumanWhite.value = false
-   isWhite.value = true
    isComputing.value = true
 
    const bestMoveStr = await runAlphabeta(chess)
@@ -188,7 +180,6 @@ async function revertGame() {
    chess = moveResultingChess(bestMove)
    boardAPI.move(bestMoveStr.substring(2))
 
-   isWhite.value = false
    saveState()
 }
 

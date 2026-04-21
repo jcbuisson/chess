@@ -163,6 +163,7 @@ export class Chess {
    cloneWithMovedPiece(piece: Piece, to: Square) : Chess {
       // create a new board situation
       const clonedChess = this.clone()
+      clonedChess.isWhiteToPlay = !this.isWhiteToPlay
       // replace piece by a new one
       const movedPiece = piece.clone() // clone preserve subtype
       movedPiece.square = to
@@ -174,6 +175,7 @@ export class Chess {
    cloneWithEatenPiece(fromPiece: Piece, toPiece: Piece) : Chess {
       // create a new board situation
       const clonedChess = this.clone()
+      clonedChess.isWhiteToPlay = !this.isWhiteToPlay
       // replace `fromPiece` by a new one
       const movedPiece = fromPiece.clone() // clone preserve subtype
       movedPiece.square = toPiece.square
@@ -187,6 +189,7 @@ export class Chess {
    cloneWithMovedPieceWithPromotion(piece: Piece, to: Square, promotionPieceType: PieceType) : Chess {
       // create a new board situation
       const clonedChess = this.clone()
+      clonedChess.isWhiteToPlay = !this.isWhiteToPlay
       // replace piece by a new one
       const movedPiece = piece.clone()
       movedPiece.type = promotionPieceType
@@ -199,6 +202,7 @@ export class Chess {
    cloneWithEatenPieceWithPromotion(fromPiece: Piece, toPiece: Piece, promotionPieceType: PieceType) : Chess {
       // create a new board situation
       const clonedChess = this.clone()
+      clonedChess.isWhiteToPlay = !this.isWhiteToPlay
       // replace `fromPiece` by a new one
       const movedPiece = fromPiece.clone()
       movedPiece.type = promotionPieceType
@@ -303,8 +307,8 @@ export class Chess {
             const sq05 = new Square(0, 5)
             const sq06 = new Square(0, 6)
             const sq07 = new Square(0, 7)
-            if (notAttacked(this, isWhite, [sq04, sq05, sq06, sq07]) && empty(this, [sq05, sq06])) {
-               const resultingChess = performCastling(accu, this, isWhite, MoveType.KING_CASTLING, sq07, sq05, sq04, sq06)
+            if (notAttacked(this, [sq04, sq05, sq06, sq07]) && empty(this, [sq05, sq06])) {
+               const resultingChess = performCastling(accu, this, MoveType.KING_CASTLING, sq07, sq05, sq04, sq06)
                resultingChess.isWhiteKingCastlingPossible = false
                resultingChess.isWhiteQueenCastlingPossible = false
             }
@@ -315,8 +319,8 @@ export class Chess {
             const sq02 = new Square(0, 2)
             const sq03 = new Square(0, 3)
             const sq04 = new Square(0, 4)
-            if (notAttacked(this, isWhite, [sq00, sq01, sq02, sq03, sq04]) && empty(this, [sq01, sq02, sq03])) {
-               const resultingChess = performCastling(accu, this, isWhite, MoveType.QUEEN_CASTLING, sq00, sq03, sq04, sq02)
+            if (notAttacked(this, [sq00, sq01, sq02, sq03, sq04]) && empty(this, [sq01, sq02, sq03])) {
+               const resultingChess = performCastling(accu, this, MoveType.QUEEN_CASTLING, sq00, sq03, sq04, sq02)
                resultingChess.isWhiteQueenCastlingPossible = false
                resultingChess.isWhiteKingCastlingPossible = false
             }
@@ -327,8 +331,8 @@ export class Chess {
             const sq75 = new Square(7, 5)
             const sq76 = new Square(7, 6)
             const sq77 = new Square(7, 7)
-            if (notAttacked(this, isWhite, [sq74, sq75, sq76, sq77]) && empty(this, [sq75, sq76])) {
-               const resultingChess = performCastling(accu, this, isWhite, MoveType.KING_CASTLING, sq77, sq75, sq74, sq76)
+            if (notAttacked(this, [sq74, sq75, sq76, sq77]) && empty(this, [sq75, sq76])) {
+               const resultingChess = performCastling(accu, this, MoveType.KING_CASTLING, sq77, sq75, sq74, sq76)
                resultingChess.isBlackKingCastlingPossible = false
                resultingChess.isBlackQueenCastlingPossible = false
             }
@@ -339,8 +343,8 @@ export class Chess {
             const sq72 = new Square(7, 2)
             const sq73 = new Square(7, 3)
             const sq74 = new Square(7, 4)
-            if (notAttacked(this, isWhite, [sq70, sq71, sq72, sq73, sq74]) && empty(this, [sq71, sq72, sq73])) {
-               const resultingChess = performCastling(accu, this, isWhite, MoveType.QUEEN_CASTLING, sq70, sq73, sq74, sq72)
+            if (notAttacked(this, [sq70, sq71, sq72, sq73, sq74]) && empty(this, [sq71, sq72, sq73])) {
+               const resultingChess = performCastling(accu, this, MoveType.QUEEN_CASTLING, sq70, sq73, sq74, sq72)
                resultingChess.isBlackQueenCastlingPossible = false
                resultingChess.isBlackKingCastlingPossible = false
             }
@@ -351,7 +355,8 @@ export class Chess {
 }
 
 // helper function
-function notAttacked(chess: Chess, isWhite: bool, squares: Square[]): bool {
+function notAttacked(chess: Chess, squares: Square[]): bool {
+   const isWhite = chess.isWhiteToPlay
    for (let i = 0; i < squares.length; i++) {
       if (chess.isSquareAttacked(isWhite, squares[i])) return false
    }
@@ -367,7 +372,8 @@ function empty(chess: Chess, squares: Square[]): bool {
 }
 
 // helper function
-function performCastling(accu: Move[], chess: Chess, isWhite: bool, moveType: MoveType, rookStart: Square, rookEnd: Square, kingStart: Square, kingEnd: Square): Chess {
+function performCastling(accu: Move[], chess: Chess, moveType: MoveType, rookStart: Square, rookEnd: Square, kingStart: Square, kingEnd: Square): Chess {
+   const isWhite = chess.isWhiteToPlay
    const resultingChess = chess.clone()
    resultingChess.deletePieceAt(kingStart)
    resultingChess.deletePieceAt(rookStart)
