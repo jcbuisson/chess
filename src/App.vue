@@ -3,11 +3,14 @@
 
       <div class="flex flex-col w-[min(100vw,100vh)]">
          <div class="flex gap-2 px-2 py-1 bg-gray-800 items-center">
-            <button @click="resetGame" class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
-               Reset
+            <button @click="resetGame" class="px-4 py-1 bg-gray-300 text-gray-800 rounded hover:bg-gray-100">
+               <svg viewBox="0 0 24 24" class="h-4 w-4"><path fill="currentColor" :d="mdiReload" /></svg>
             </button>
             <button @click="revertGame" class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
-               Revert
+               <svg viewBox="0 0 24 24" class="h-4 w-4"><path fill="currentColor" :d="mdiRestore" /></svg>
+            </button>
+            <button @click="" class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
+               960
             </button>
             <div class="ml-auto flex items-center gap-3">
             <svg v-if="isComputing" class="animate-spin h-4 w-4 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -40,6 +43,7 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
+import { mdiReload, mdiRestore } from '@mdi/js'
 import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
