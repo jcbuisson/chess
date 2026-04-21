@@ -37,6 +37,8 @@ export class King extends Piece {
             } else {
                if (piece.isWhite !== this.isWhite) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
+                  if (!this.isWhite) console.log(`king ${this.toString()} eat piece=${piece.toString()}, chess=${chess.print()}, result=${resultingChess.print()}, inCheck=${resultingChess.inCheck(this.isWhite)}`)
+
                   if (!resultingChess.inCheck(this.isWhite)) {
                      const move = new Move(MoveType.EAT, this, square, PieceType.NONE, resultingChess)
                      accu.push(move)
