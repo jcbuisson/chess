@@ -112,8 +112,8 @@ export function chessIsWhiteToPlay(chess: Chess): bool {
    return chess.isWhiteToPlay
 }
 
-export function chessInCheck(chess: Chess, isWhite: bool): bool {
-   return chess.inCheck(isWhite)
+export function chessInCheck(chess: Chess): bool {
+   return chess.inCheck(chess.isWhiteToPlay)
 }
 
 export function chessBestMove(chess: Chess): Nullable<Move> {
