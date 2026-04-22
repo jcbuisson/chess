@@ -56,7 +56,9 @@ let boardAPI
 
 const boardConfig = {
    // fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-   fen: '4k3/8/8/8/8/8/PPPPPPPP/4K3 w ---- - 0 1',
+   // fen: '4k3/8/8/8/8/8/PPPPPPPP/4K3 w ---- - 0 1',
+   // fen: '4k3/8/8/8/8/8/PPPPPPPP/3QK3 w ---- - 0 1',
+   fen: '4k3/8/8/8/8/8/3P4/3QK3 w ---- - 0 1',
    coordinates: true,
 }
 
@@ -135,7 +137,7 @@ const onMove = async (moveEvent) => {
    console.log('moveNotation', moveNotation, 'chess', chessPrint(chess))
    const myMoves = chessPossibleMoves(chess)
    for (let i = 0; i < myMoves.length; i++) {
-      console.log(i, moveToString(myMoves[i]))
+      // console.log(i, moveToString(myMoves[i]))
    }
    // get my move from possible moves
    const myMove = myMoves.find(move => moveNotation === moveToString(move))

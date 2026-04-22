@@ -135,7 +135,9 @@ export class Chess {
 
    static createInitialBoard(): Chess {
       // return Chess.parse('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
-      return Chess.parse('4k3/8/8/8/8/8/PPPPPPPP/4K3 w ---- - 0 1')
+      // return Chess.parse('4k3/8/8/8/8/8/PPPPPPPP/4K3 w ---- - 0 1')
+      // return Chess.parse('4k3/8/8/8/8/8/PPPPPPPP/3QK3 w ---- - 0 1')
+      return Chess.parse('4k3/8/8/8/8/8/3P4/3QK3 w ---- - 0 1')
    }
 
    clone(): Chess {
@@ -190,10 +192,8 @@ export class Chess {
       // create a new board situation
       const clonedChess = this.clone()
       clonedChess.isWhiteToPlay = !this.isWhiteToPlay
-      // replace piece by a new one
-      const movedPiece = piece.clone()
-      movedPiece.type = promotionPieceType
-      movedPiece.square = to
+      // replace piece by a new one (change class)
+      const movedPiece = promotionPieceType === PieceType.QUEEN ? new Queen(piece.isWhite, to) : PieceType.ROOK ? new Rook(piece.isWhite, to) : promotionPieceType === PieceType.KNIGHT ? new Knight(piece.isWhite, to) : new Bishop(piece.isWhite, to)
       clonedChess.deletePieceAt(piece.square)
       clonedChess.pieces.push(movedPiece)
       return clonedChess
