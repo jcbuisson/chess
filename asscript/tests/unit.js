@@ -118,6 +118,15 @@ test('resulting chess after move differs from original', () => {
    assert.notStrictEqual(chessPrint(chess), chessPrint(after))
 })
 
+test('alphabeta bug #2', () => {
+   // black to move
+   const chess = chessParse('rnbq1bnr/ppp2Qpp/3k4/3Bp3/4P3/8/PPPP1PPP/RNB1K1NR b KQ-- - 0 1')
+   alphabeta(chess, 2)
+   const best = chessBestMove(chess)
+   const resultingChess = chessPrint(moveResultingChess(best))
+   assert.ok(resultingChess.includes('k'), 'resulting chess board contains a black king')
+})
+
 // ── Summary ───────────────────────────────────────────────────────────────────
 console.log(`\n${passed} passed, ${failed} failed`)
 if (failed > 0) process.exit(1)

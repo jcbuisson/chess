@@ -32,14 +32,14 @@ npm run asbuild
 ## Déploiement
 ```
 cd asscript
-npm run build
+npm run asbuild
 cd ..
 npm run build
 ```
 
 En production, le fichier .wasm est téléchargé comme une ressouorce avant d'être compilé dynamiquement, puis exécuté.
-Lors du fetch du fichier .wasm, il a le mime-type application/octet-stream au lieu de application/wasm (aller dans les devtools
-cliquer sur le fichier .wasm et constater qu'il est servi par nginx (server: nginx) et que son mime-type est application/octer-stream)
+Lors du fetch du fichier .wasm, il a le mime-type application/octet-stream au lieu de application/wasm :
+aller dans les devtools et cliquer sur le fichier .wasm et constater qu'il est servi par nginx (server: nginx) et que son mime-type est application/octer-stream)
 --> adapter la config nginx:
 ```
     location ~ \.wasm$ {
@@ -48,9 +48,10 @@ cliquer sur le fichier .wasm et constater qu'il est servi par nginx (server: ngi
     }
 ```
 
-## Test
+## Test unitaires
+Dans unit.js
 ```
-node tests/index.js
+npm run test
 ```
 
 # Front VueJS
@@ -68,6 +69,5 @@ Synchronous WASM computation blocks the entire main thread — CSS animations, D
 
 ## Game persistence on mobile
 
-Mobile browsers often unload pages from memory when backgrounded --> persist game state to localStorage
-and restore it on mount by replaying the move history.    
+Mobile browsers often unload pages from memory when backgrounded --> persist game state to localStorage and restore it on mount
 

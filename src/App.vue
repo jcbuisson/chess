@@ -66,7 +66,7 @@ let boardAPI
 
 const boardConfig = {
    fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-   // fen: 'rnb2rk1/ppppnppp/7q/3Np3/1b2P3/1P3PP1/P1PP3P/R1BQKBNR w KQ-- - 0 1',
+   // fen: 'rnbq1bnr/pp3Qpp/3p4/3Bp3/4P3/8/PPPP1PPP/RNB1K1NR w KQ-- - 0 1',
    coordinates: true,
 }
 
@@ -138,21 +138,19 @@ function moveEventToString(moveEvent) {
 }
 
 const onMove = async (moveEvent) => {
-   console.log('moveEvent', moveEvent)
+   // console.log('moveEvent', moveEvent)
    moveHistory.push(moveEvent.san)
    if (moveEvent.color === 'w' && !isHumanWhite.value || moveEvent.color === 'b' && isHumanWhite.value) return; // ignore opponent move events
 
    const moveNotation = moveEventToString(moveEvent)
-   console.log('moveNotation', moveNotation, 'chess', chessPrint(chess))
    const myMoves = chessPossibleMoves(chess)
    for (let i = 0; i < myMoves.length; i++) {
-      console.log(i, moveToString(myMoves[i]))
+      // console.log(i, moveToString(myMoves[i]))
    }
    // get my move from possible moves
    const myMove = myMoves.find(move => moveNotation === moveToString(move))
    chess = moveResultingChess(myMove)
-   console.log(chessToAscii(chess))
-   console.log(chessPrint(chess))
+   console.log('my move', moveNotation, 'chess', chessPrint(chess))
 
    if (boardAPI.getIsGameOver()) return
 
@@ -166,6 +164,7 @@ const onMove = async (moveEvent) => {
    chess = moveResultingChess(bestComputerMove)
 
    boardAPI.move(bestMoveStr.substring(2))
+   console.log('opponent move', bestMoveStr, 'chess', chessPrint(chess))
    console.log(chessToAscii(chess))
 
    saveState()
