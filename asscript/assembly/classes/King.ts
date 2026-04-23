@@ -38,11 +38,6 @@ export class King extends Piece {
                if (piece.isWhite !== this.isWhite) {
                   const resultingChess = chess.cloneWithEatenPiece(this, piece)
                   if (!resultingChess.inCheck(this.isWhite)) {
-                     // const blackKingSquare = resultingChess.kingSquare(false)
-                     // console.log(`${resultingChess.print()} ${this.toString()} eats at ${square.toString()}, kingSquare=${blackKingSquare}, attacked=${resultingChess.isSquareAttackedBy(blackKingSquare, true)}`)
-                     // // console.log(`${resultingChess.piecesOf(true).map((p: Piece) => p.toString()).join(', ')}`)
-                     // // const pf4: Piece = resultingChess.piecesOf(true)[7]
-                     // // console.log(`pf4 attacks ke5 ${pf4.attacks(resultingChess, kingSquare)}`)
                      const move = new Move(MoveType.EAT, this, square, PieceType.NONE, resultingChess)
                      accu.push(move)
                      if (this.isWhite) resultingChess.isWhiteKingCastlingPossible = false; else resultingChess.isBlackKingCastlingPossible = false
@@ -55,12 +50,14 @@ export class King extends Piece {
       return accu
    }
 
-   // return true if current piece (knight) attacks opponent `square`
+   // return true if current piece (king) attacks opponent `square`
    // do not use Math.abs since u8 cannot be negative
    attacks(chess: Chess, square: Square): bool {
       const drow = this.square.rowIndex > square.rowIndex ? this.square.rowIndex-square.rowIndex : square.rowIndex-this.square.rowIndex
       const dcol = this.square.colIndex > square.colIndex ? this.square.colIndex-square.colIndex : square.colIndex-this.square.colIndex
-      return ((drow + dcol) === 1)
+      if (drow > 1) return false
+      if (dcol > 1) return false
+      return true
    }
 
 }

@@ -134,10 +134,8 @@ export class Chess {
    }
 
    static createInitialBoard(): Chess {
-      // return Chess.parse('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
-      // return Chess.parse('4k3/8/8/8/8/8/PPPPPPPP/4K3 w ---- - 0 1')
-      // return Chess.parse('4k3/8/8/8/8/8/PPPPPPPP/3QK3 w ---- - 0 1')
-      return Chess.parse('4k3/8/8/8/8/8/3P4/3QK3 w ---- - 0 1')
+      return Chess.parse('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+      // return Chess.parse('rnb2rk1/ppppnppp/7q/3Np3/1b2P3/1P3PP1/P1PP3P/R1BQKBNR w KQ-- - 0 1')
    }
 
    clone(): Chess {
@@ -203,11 +201,8 @@ export class Chess {
       // create a new board situation
       const clonedChess = this.clone()
       clonedChess.isWhiteToPlay = !this.isWhiteToPlay
-      // replace `fromPiece` by a new one
-      const movedPiece = fromPiece.clone()
-      movedPiece.type = promotionPieceType
-      movedPiece.square = toPiece.square
-      
+      // replace `fromPiece` by a new one (change class)
+      const movedPiece = promotionPieceType === PieceType.QUEEN ? new Queen(fromPiece.isWhite, toPiece.square) : PieceType.ROOK ? new Rook(fromPiece.isWhite, toPiece.square) : promotionPieceType === PieceType.KNIGHT ? new Knight(fromPiece.isWhite, toPiece.square) : new Bishop(fromPiece.isWhite, toPiece.square)
       clonedChess.deletePieceAt(fromPiece.square)
       clonedChess.deletePieceAt(toPiece.square)
       clonedChess.pieces.push(movedPiece)
@@ -250,6 +245,7 @@ export class Chess {
       const opponentPieces = this.piecesOf(isWhite);
       for (let i = 0; i < opponentPieces.length; i++) {
          const piece = opponentPieces[i]
+         // console.log(`isSquareAttackedBy square=${square} piece=${piece}, result=${piece.attacks(this, square)}`)
          if (piece.attacks(this, square)) return true
       }
       return false

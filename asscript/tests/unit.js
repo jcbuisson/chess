@@ -2,7 +2,7 @@ import assert from 'assert'
 import {
    chessParse, chessPrint, chessPossibleMoves, moveToString,
    moveResultingChess, chessInCheck, chessIsWhiteToPlay, chessEvaluate,
-   alphabeta, chessBestMove,
+   alphabeta, chessBestMove, chessToAscii
 } from '../build/debug.js'
 
 let passed = 0
@@ -79,6 +79,12 @@ test('detects check1', () => {
 test('detects check2', () => {
    // black ke5 is attacked by Pf4
    const chess = chessParse('8/8/8/4k3/5P2/8/PPPP2PP/4K3 b ---- - 0 1')
+   assert.strictEqual(chessInCheck(chess, false), true)
+})
+
+test('detects check3', () => {
+   // black kc5 is attacked by Kd6
+   const chess = chessParse('8/8/3K4/2k5/8/8/8/8 w ---- - 0 1')
    assert.strictEqual(chessInCheck(chess, false), true)
 })
 

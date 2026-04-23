@@ -36,7 +36,17 @@
       </div>
 
    </div>
-   
+
+   <Transition name="modal">
+      <div v-if="modalMessage" class="fixed inset-0 flex items-center justify-center z-50">
+         <div class="absolute inset-0 bg-black/60" @click="modalMessage = null"></div>
+         <div class="relative bg-gray-800 text-white rounded-xl shadow-2xl px-10 py-8 flex flex-col items-center gap-5 min-w-[220px]">
+            <span class="text-2xl font-semibold">{{ modalMessage }}</span>
+            <button @click="modalMessage = null" class="px-6 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-medium">OK</button>
+         </div>
+      </div>
+   </Transition>
+
    <VersionUpdater></VersionUpdater>
 
 </template>
@@ -55,10 +65,8 @@ let chess
 let boardAPI
 
 const boardConfig = {
-   // fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-   // fen: '4k3/8/8/8/8/8/PPPPPPPP/4K3 w ---- - 0 1',
-   // fen: '4k3/8/8/8/8/8/PPPPPPPP/3QK3 w ---- - 0 1',
-   fen: '4k3/8/8/8/8/8/3P4/3QK3 w ---- - 0 1',
+   fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+   // fen: 'rnb2rk1/ppppnppp/7q/3Np3/1b2P3/1P3PP1/P1PP3P/R1BQKBNR w KQ-- - 0 1',
    coordinates: true,
 }
 
@@ -66,6 +74,7 @@ let moveHistory = []
 const isHumanWhite = ref(true)
 const depth = ref(2)
 const isComputing = ref(false)
+const modalMessage = ref(null)
 
 const worker = new Worker(new URL('./chess.worker.js', import.meta.url), { type: 'module' })
 
@@ -137,12 +146,13 @@ const onMove = async (moveEvent) => {
    console.log('moveNotation', moveNotation, 'chess', chessPrint(chess))
    const myMoves = chessPossibleMoves(chess)
    for (let i = 0; i < myMoves.length; i++) {
-      // console.log(i, moveToString(myMoves[i]))
+      console.log(i, moveToString(myMoves[i]))
    }
    // get my move from possible moves
    const myMove = myMoves.find(move => moveNotation === moveToString(move))
    chess = moveResultingChess(myMove)
    console.log(chessToAscii(chess))
+   console.log(chessPrint(chess))
 
    if (boardAPI.getIsGameOver()) return
 
@@ -190,14 +200,15 @@ async function revertGame() {
 }
 
 function onCheckmate(isMated) {
-   if (isMated === 'w') {
-      alert('Black wins!');
-   } else {
-      alert('White wins!');
-   }
+   modalMessage.value = isMated === 'w' ? 'Black wins!' : 'White wins!'
 }
 
 function onStalemate() {
-  alert('Stalemate');
+   modalMessage.value = 'Stalemate'
 }
 </script>
+
+<style scoped>
+.modal-enter-active, .modal-leave-active { transition: opacity 0.2s; }
+.modal-enter-from, .modal-leave-to { opacity: 0; }
+</style>
