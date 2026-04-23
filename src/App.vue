@@ -9,8 +9,8 @@
             <button @click="revertGame" class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
                <svg viewBox="0 0 24 24" class="h-4 w-4"><path fill="currentColor" :d="mdiRestore" /></svg>
             </button>
-            <button @click="" class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
-               <span class="text-gray-100 text-sm">963</span>
+            <button @click="resetGame960" class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
+               <span class="text-gray-100 text-sm">960</span>
             </button>
             <div class="ml-auto flex items-center gap-3">
             <svg v-if="isComputing" class="animate-spin h-4 w-4 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -57,7 +57,7 @@ import { mdiReload, mdiRestore } from '@mdi/js'
 import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
-import { createInitialBoard, chessToAscii, chessPrint, chessParse, chessPossibleMoves, moveToString, moveResultingChess } from "/asscript/build/release.js"
+import { createInitialBoard, createInitial960Board, chessToAscii, chessPrint, chessParse, chessPossibleMoves, moveToString, moveResultingChess } from "/asscript/build/release.js"
 
 import VersionUpdater from "/src/components/VersionUpdater.vue";
 
@@ -152,7 +152,10 @@ const onMove = async (moveEvent) => {
    chess = moveResultingChess(myMove)
    console.log('my move', moveNotation, 'chess', chessPrint(chess))
 
-   if (boardAPI.getIsGameOver()) return
+   if (boardAPI.getIsGameOver()) {
+      console.log("GAME IS OVER")
+      return
+   }
 
    isComputing.value = true
 
@@ -175,6 +178,14 @@ function resetGame() {
    moveHistory = []
    isHumanWhite.value = true
    boardAPI.resetBoard()
+   saveState()
+}
+
+function resetGame960() {
+   chess = createInitial960Board()
+   moveHistory = []
+   isHumanWhite.value = true
+   boardAPI.setPosition(chessPrint(chess))
    saveState()
 }
 

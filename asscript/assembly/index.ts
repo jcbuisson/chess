@@ -96,6 +96,10 @@ export function createInitialBoard(): Chess {
    return Chess.createInitialBoard()
 }
 
+export function createInitial960Board(): Chess {
+   return Chess.createInitial960Board()
+}
+
 export function chessToAscii(chess: Chess): string {
    return chess.toAscii()
 }

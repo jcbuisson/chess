@@ -134,9 +134,28 @@ export class Chess {
    }
 
    static createInitialBoard(): Chess {
-      console.log('963')
       return Chess.parse('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
       // return Chess.parse('rnbq1bnr/pp3Qpp/3p4/3Bp3/4P3/8/PPPP1PPP/RNB1K1NR w KQ-- - 0 1')
+   }
+
+   static createInitial960Board(): Chess {
+      // Convert string to array of characters
+      const chars = 'rnbqkbnr'.split("");
+      while (true) {
+         // Fisher-Yates shuffle
+         for (let i = chars.length - 1; i > 0; i--) {
+            const j = <i32>(Math.random() * (i + 1));
+            const temp = chars[i];
+            chars[i] = chars[j];
+            chars[j] = temp;
+         }
+         const shuffled = chars.join("")
+         console.log(`shuffled=${shuffled}`)
+         if (check960(shuffled)) break;
+      }
+      const shuffled = chars.join("");
+      const fen = `${shuffled}/pppppppp/8/8/8/8/PPPPPPPP/${shuffled.toUpperCase()} w KQkq - 0 1`
+      return Chess.parse(fen)
    }
 
    clone(): Chess {
@@ -383,4 +402,22 @@ function performCastling(accu: Move[], chess: Chess, moveType: MoveType, rookSta
    const move = new Move(moveType, movedKing, Square.dummy, PieceType.NONE, resultingChess)
    accu.push(move)
    return resultingChess
+}
+
+// helper function
+// str ex: 'rbnqknbr'
+function check960(str: string): bool {
+   // check that king 'k' is between rooks 'r'
+   const rookIndexes: u32[] = [];
+   for (let i = 0; i < str.length; i++) {
+      if (str.charCodeAt(i) == 114) { // 'r'
+         rookIndexes.push(i as u32);
+      }
+   }
+   const kingIndex: u32 = str.indexOf('k') as u32
+   if (kingIndex < rookIndexes[0]) return false
+   if (kingIndex > rookIndexes[1]) return false
+   // check that bishops are on different colors
+   
+   return true
 }
