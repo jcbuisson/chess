@@ -245,7 +245,6 @@ export class Chess {
       const opponentPieces = this.piecesOf(isWhite);
       for (let i = 0; i < opponentPieces.length; i++) {
          const piece = opponentPieces[i]
-         // console.log(`isSquareAttackedBy square=${square} piece=${piece}, result=${piece.attacks(this, square)}`)
          if (piece.attacks(this, square)) return true
       }
       return false
@@ -371,6 +370,7 @@ function empty(chess: Chess, squares: Square[]): bool {
 function performCastling(accu: Move[], chess: Chess, moveType: MoveType, rookStart: Square, rookEnd: Square, kingStart: Square, kingEnd: Square): Chess {
    const isWhite = chess.isWhiteToPlay
    const resultingChess = chess.clone()
+   resultingChess.isWhiteToPlay = !chess.isWhiteToPlay
    resultingChess.deletePieceAt(kingStart)
    resultingChess.deletePieceAt(rookStart)
    const movedKing = new King(isWhite, kingEnd)

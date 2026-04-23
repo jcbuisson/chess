@@ -18,8 +18,7 @@ export default defineConfig({
          filename: "sw.ts",
          includeAssets: ["/favicon.png"],
          injectManifest: {
-            globPatterns: ['**/*.{js,css,html,ico,png,jpg,jpeg,svg,woff,woff2,ttf,eot}'],
-            globIgnores: ['**/*.wasm'],
+            globPatterns: ['**/*.{js,css,html,ico,png,jpg,jpeg,svg,woff,woff2,ttf,eot,wasm}'],
             maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 4M max for build chunks
          },
 
