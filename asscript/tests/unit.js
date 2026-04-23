@@ -118,7 +118,7 @@ test('resulting chess after move differs from original', () => {
    assert.notStrictEqual(chessPrint(chess), chessPrint(after))
 })
 
-test('alphabeta bug #2', () => {
+test('alphabeta bug #1', () => {
    // black to move
    const chess = chessParse('rnbq1bnr/ppp2Qpp/3k4/3Bp3/4P3/8/PPPP1PPP/RNB1K1NR b KQ-- - 0 1')
    alphabeta(chess, 2)
