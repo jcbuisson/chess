@@ -134,7 +134,7 @@ export class Chess {
    }
 
    static createInitialBoard(): Chess {
-      console.log('962')
+      console.log('963')
       return Chess.parse('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
       // return Chess.parse('rnbq1bnr/pp3Qpp/3p4/3Bp3/4P3/8/PPPP1PPP/RNB1K1NR w KQ-- - 0 1')
    }
