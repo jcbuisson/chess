@@ -178,7 +178,7 @@ const onMove = async (moveEvent) => {
 
 const isWhiteOrientation = ref(true)
 function resetBoardOrientation() {
-   boardAPI.resetBoard()
+   if (!isWhiteOrientation.value) boardAPI.toggleOrientation()
    isWhiteOrientation.value = true
 }
 function setBoardOrientation(isWhite) {
@@ -188,33 +188,21 @@ function setBoardOrientation(isWhite) {
 }
 
 function resetGame() {
+   resetBoardOrientation()
    chess = createInitialBoard()
    moveHistory = []
    isHumanWhite.value = true
-   // boardAPI.resetBoard()
-   resetBoardOrientation()
+   boardAPI.resetBoard()
    saveState()
 }
 
 async function resetGame960() {
+   resetBoardOrientation()
    chess = createInitial960Board()
    moveHistory = []
    isHumanWhite.value = true
    boardAPI.setPosition(chessPrint(chess))
-   // resetBoardOrientation()
    saveState()
-
-   // if (!isHumanWhite.value) {
-   //    isComputing.value = true
-   //    const bestMoveStr = await runAlphabeta(chess)
-   //    isComputing.value = false
-
-   //    const moves = chessPossibleMoves(chess, true)
-   //    const bestMove = moves.find(m => moveToString(m) === bestMoveStr)
-   //    chess = moveResultingChess(bestMove)
-   //    boardAPI.move(bestMoveStr.substring(2))
-   // }
-
 }
 
 async function reverseGame() {
