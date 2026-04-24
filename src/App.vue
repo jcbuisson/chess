@@ -33,6 +33,7 @@
             @move="onMove"
             @checkmate="onCheckmate"
             @stalemate="onStalemate"
+            @draw="onDraw"
          ></TheChessboard>
       </div>
 
@@ -227,7 +228,11 @@ function onCheckmate(isMated) {
 }
 
 function onStalemate() {
-   modalMessage.value = 'Stalemate'
+   modalMessage.value = 'Stalemate!'
+}
+
+function onDraw() {
+   modalMessage.value = 'Draw!'
 }
 </script>
 

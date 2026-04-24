@@ -154,7 +154,8 @@ export class Chess {
          if (check960(shuffled)) break;
       }
       const shuffled = chars.join("");
-      const fen = `${shuffled}/pppppppp/8/8/8/8/PPPPPPPP/${shuffled.toUpperCase()} w KQkq - 0 1`
+      // no castlings
+      const fen = `${shuffled}/pppppppp/8/8/8/8/PPPPPPPP/${shuffled.toUpperCase()} w ---- - 0 1`
       return Chess.parse(fen)
    }
 
