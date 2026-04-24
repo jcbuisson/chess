@@ -58,7 +58,7 @@ import { mdiReload, mdiRestore, mdiToggleSwitch, mdiToggleSwitchOffOutline } fro
 import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
-import { createInitialBoard, createInitial960Board, chessToAscii, chessSetIsWhiteToPlay, chessPrint, chessParse,
+import { createInitialBoard, createInitial960Board, chessToAscii, chessPrint, chessParse,
    chessPossibleMoves, moveToString, moveResultingChess } from "/asscript/build/release.js"
 
 import VersionUpdater from "/src/components/VersionUpdater.vue";
