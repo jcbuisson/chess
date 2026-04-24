@@ -10,7 +10,7 @@
                <span class="text-gray-100 text-sm">960</span>
             </button>
             <button @click="reverseGame" class="px-4 py-1 bg-gray-800 text-gray-100 rounded hover:bg-gray-600">
-               <svg viewBox="0 0 24 24" class="h-6 w-6"><path fill="currentColor" :d="mdiToggleSwitch" /></svg>
+               <svg viewBox="0 0 24 24" class="h-È w-6"><path fill="currentColor" :d="mdiToggleSwitch" /></svg>
             </button>
             
             <div class="ml-auto flex items-center gap-3">
@@ -113,7 +113,8 @@ onMounted(() => {
          depth.value = state.depth ?? 2
          isHumanWhite.value = state.isHumanWhite ?? true
 
-         if (!isHumanWhite.value) boardAPI.toggleOrientation()
+         // if (!isHumanWhite.value) boardAPI.toggleOrientation()
+         setBoardOrientation(isHumanWhite.value)
 
          chess = chessParse(state.fen)
          moveHistory = state.moveHistory ?? []
@@ -175,28 +176,53 @@ const onMove = async (moveEvent) => {
    saveState()
 }
 
+const isWhiteOrientation = ref(true)
+function resetBoardOrientation() {
+   boardAPI.resetBoard()
+   isWhiteOrientation.value = true
+}
+function setBoardOrientation(isWhite) {
+   if (isWhite === isWhiteOrientation.value) return
+   isWhiteOrientation.value = isWhite
+   boardAPI.toggleOrientation()
+}
+
 function resetGame() {
    chess = createInitialBoard()
    moveHistory = []
    isHumanWhite.value = true
-   boardAPI.resetBoard()
+   // boardAPI.resetBoard()
+   resetBoardOrientation()
    saveState()
 }
 
-function resetGame960() {
+async function resetGame960() {
    chess = createInitial960Board()
    moveHistory = []
    isHumanWhite.value = true
    boardAPI.setPosition(chessPrint(chess))
+   resetBoardOrientation()
    saveState()
+
+   // if (!isHumanWhite.value) {
+   //    isComputing.value = true
+   //    const bestMoveStr = await runAlphabeta(chess)
+   //    isComputing.value = false
+
+   //    const moves = chessPossibleMoves(chess, true)
+   //    const bestMove = moves.find(m => moveToString(m) === bestMoveStr)
+   //    chess = moveResultingChess(bestMove)
+   //    boardAPI.move(bestMoveStr.substring(2))
+   // }
+
 }
 
 async function reverseGame() {
    isHumanWhite.value = !isHumanWhite.value
-   boardAPI.toggleOrientation()
+   // boardAPI.toggleOrientation()
+   setBoardOrientation(isHumanWhite.value)
 
    isComputing.value = true
-
    const bestMoveStr = await runAlphabeta(chess)
    isComputing.value = false
 
