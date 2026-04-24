@@ -201,7 +201,7 @@ async function resetGame960() {
    moveHistory = []
    isHumanWhite.value = true
    boardAPI.setPosition(chessPrint(chess))
-   resetBoardOrientation()
+   // resetBoardOrientation()
    saveState()
 
    // if (!isHumanWhite.value) {
