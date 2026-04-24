@@ -7,7 +7,7 @@
                <svg viewBox="0 0 24 24" class="h-5 w-5"><path fill="currentColor" :d="mdiReload" /></svg>
             </button>
             <button @click="resetGame960" class="px-4 py-1 bg-gray-800 text-white rounded hover:bg-gray-600">
-               <span class="text-gray-100 text-sm">960</span>
+               <span class="text-gray-100 text-sm">961</span>
             </button>
             <button @click="reverseGame" class="px-4 py-1 bg-gray-800 text-gray-100 rounded hover:bg-gray-600">
                <svg viewBox="0 0 24 24" class="h-6 w-6"><path fill="currentColor" :d="mdiToggleSwitch" /></svg>
