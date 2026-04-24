@@ -404,8 +404,7 @@ function performCastling(accu: Move[], chess: Chess, moveType: MoveType, rookSta
    return resultingChess
 }
 
-// helper function
-// str ex: 'rbnqknbr'
+// helper function, `str` is a shuffle of 'rbnkqnbr', test if it's legal 960
 function check960(str: string): bool {
    // check that king 'k' is between rooks 'r'
    const rookIndexes: u32[] = [];
@@ -418,6 +417,11 @@ function check960(str: string): bool {
    if (kingIndex < rookIndexes[0]) return false
    if (kingIndex > rookIndexes[1]) return false
    // check that bishops are on different colors
-   
-   return true
+   const bishopIndexes: u32[] = [];
+   for (let i = 0; i < str.length; i++) {
+      if (str.charCodeAt(i) == 98) { // 'b'
+         bishopIndexes.push(i as u32);
+      }
+   }
+   return (bishopIndexes[0] + bishopIndexes[1] % 2 === 1)
 }
