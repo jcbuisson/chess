@@ -16,7 +16,7 @@ export default defineConfig({
          base: "/",
          srcDir: "src",
          filename: "sw.ts",
-         includeAssets: ["/favicon.png"],
+         includeAssets: ["icons/chess-king.svg"],
          injectManifest: {
             globPatterns: ['**/*.{js,css,html,ico,png,jpg,jpeg,svg,woff,woff2,ttf,eot,wasm}'],
             maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 4M max for build chunks
@@ -31,19 +31,9 @@ export default defineConfig({
             background_color: "#ffffff",
             icons: [
                {
-                  src: "icons/logo-chess-192x192.jpg",
-                  sizes: "192x192",
-                  type: "image/jpeg",
-               },
-               {
-                  src: "icons/logo-chess-512x512.jpg",
-                  sizes: "512x512",
-                  type: "image/jpeg",
-               },
-               {
-                  src: "icons/logo-chess-512x512.jpg",
-                  sizes: "512x512",
-                  type: "image/jpeg",
+                  src: "icons/chess-king.svg",
+                  sizes: "any",
+                  type: "image/svg+xml",
                   purpose: "any maskable",
                },
             ],
