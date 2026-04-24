@@ -3,15 +3,16 @@
 
       <div class="flex flex-col w-[min(100vw,100vh)]">
          <div class="flex gap-2 px-2 py-1 bg-gray-800 items-center">
-            <button @click="resetGame" class="px-4 py-1 bg-gray-300 text-gray-800 rounded hover:bg-gray-100">
-               <svg viewBox="0 0 24 24" class="h-4 w-4"><path fill="currentColor" :d="mdiReload" /></svg>
+            <button @click="resetGame" class="px-4 py-1 bg-gray-800 text-gray-100 rounded hover:bg-gray-600">
+               <svg viewBox="0 0 24 24" class="h-5 w-5"><path fill="currentColor" :d="mdiReload" /></svg>
             </button>
-            <button @click="revertGame" class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
-               <svg viewBox="0 0 24 24" class="h-4 w-4"><path fill="currentColor" :d="mdiRestore" /></svg>
-            </button>
-            <button @click="resetGame960" class="px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">
+            <button @click="resetGame960" class="px-4 py-1 bg-gray-800 text-white rounded hover:bg-gray-600">
                <span class="text-gray-100 text-sm">960</span>
             </button>
+            <button @click="reverseGame" class="px-4 py-1 bg-gray-800 text-gray-100 rounded hover:bg-gray-600">
+               <svg viewBox="0 0 24 24" class="h-6 w-6"><path fill="currentColor" :d="mdiToggleSwitch" /></svg>
+            </button>
+            
             <div class="ml-auto flex items-center gap-3">
             <svg v-if="isComputing" class="animate-spin h-4 w-4 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
@@ -53,11 +54,12 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
-import { mdiReload, mdiRestore } from '@mdi/js'
+import { mdiReload, mdiRestore, mdiToggleSwitch, mdiToggleSwitchOffOutline } from '@mdi/js'
 import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
-import { createInitialBoard, createInitial960Board, chessToAscii, chessPrint, chessParse, chessPossibleMoves, moveToString, moveResultingChess } from "/asscript/build/release.js"
+import { createInitialBoard, createInitial960Board, chessToAscii, chessSetIsWhiteToPlay, chessPrint, chessParse,
+   chessPossibleMoves, moveToString, moveResultingChess } from "/asscript/build/release.js"
 
 import VersionUpdater from "/src/components/VersionUpdater.vue";
 
@@ -189,13 +191,10 @@ function resetGame960() {
    saveState()
 }
 
-async function revertGame() {
-   chess = createInitialBoard()
-   moveHistory = []
-   boardAPI.resetBoard()
+async function reverseGame() {
+   isHumanWhite.value = !isHumanWhite.value
    boardAPI.toggleOrientation()
 
-   isHumanWhite.value = false
    isComputing.value = true
 
    const bestMoveStr = await runAlphabeta(chess)
@@ -210,7 +209,7 @@ async function revertGame() {
 }
 
 function onCheckmate(isMated) {
-   modalMessage.value = isMated === 'w' ? 'Black wins!' : 'White wins!'
+   modalMessage.value = isMated === 'b' ? 'Black wins!' : 'White wins!'
 }
 
 function onStalemate() {
