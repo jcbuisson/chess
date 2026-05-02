@@ -20,7 +20,7 @@
             </svg>
             <div class="flex items-center gap-1">
                <span class="text-gray-400 text-sm">Depth</span>
-               <button v-for="d in [2, 3, 4]" :key="d" @click="depth = d"
+               <button v-for="d in [2, 3, 4]" :key="d" @click="depth = d" :disabled="isComputing"
                   :class="['px-2 py-1 text-sm rounded', depth === d ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600']">
                   {{ d }}
                </button>

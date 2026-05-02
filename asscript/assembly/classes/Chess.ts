@@ -150,7 +150,6 @@ export class Chess {
             chars[j] = temp;
          }
          const shuffled = chars.join("")
-         console.log(`shuffled=${shuffled}`)
          if (check960(shuffled)) break;
       }
       const shuffled = chars.join("");
