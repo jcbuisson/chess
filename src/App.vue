@@ -12,9 +12,12 @@
             <button @click="reverseGame" class="px-4 py-1 bg-gray-800 text-gray-100 rounded hover:bg-gray-600">
                <svg viewBox="0 0 24 24" class="h-È w-6"><path fill="currentColor" :d="mdiToggleSwitch" /></svg>
             </button>
+            <a href="https://github.com/jcbuisson/chess" target="_blank" rel="noopener" class="px-2 py-1 text-gray-200 hover:text-white">
+               <svg viewBox="0 0 24 24" class="h-5 w-5"><path fill="currentColor" :d="mdiGithub" /></svg>
+            </a>
             
             <div class="ml-auto flex items-center gap-3">
-            <svg v-if="isComputing" class="animate-spin h-4 w-4 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg v-if="isComputing" class="animate-spin h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
             </svg>
@@ -55,7 +58,7 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
-import { mdiReload, mdiRestore, mdiToggleSwitch, mdiToggleSwitchOffOutline } from '@mdi/js'
+import { mdiReload, mdiRestore, mdiToggleSwitch, mdiToggleSwitchOffOutline, mdiGithub } from '@mdi/js'
 import { TheChessboard } from 'vue3-chessboard'
 import 'vue3-chessboard/style.css'
 
