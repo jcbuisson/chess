@@ -74,27 +74,8 @@ col      0  1  2  3  4  5  6  7
 
 Move string format: `"<PIECE> <from><sep><to>"` e.g. `"P e2-e4"`, `"p d7xe5"`, `"K O-O"`. The frontend strips the first 3 characters (`substring(2)` → `"e4"`, `"d5"`) when passing moves to the vue3-chessboard API.
 
-### Important conventions
 
-- `Chess.clone()` shares piece references (does **not** deep-clone pieces) to minimize memory. Only pieces that actually move are cloned — see `cloneWithMovedPiece` / `cloneWithEatenPiece`.
-- AssemblyScript does not support true polymorphism the same way TypeScript does. The subclass pattern (`Piece` base + concrete subclasses) works, but `Piece.clone()` / `possibleMoves()` / `attacks()` log errors and return defaults if called on the base class directly.
-- The compiled WASM artifacts (`src/release.wasm`, `src/release.js`) in `src/` appear to be copies; the canonical build output is `asscript/build/`.
-
-Une position alternative ne clone pas toutes les pièces, seulement celles qui se déplacent ou qui disparaissent/apparaissent.
-Important pour minimiser l'empreinte mémoire car des très nombreuses positions alternatives sont créée à chaque recherche du meilleur coup
-
-
-# AssemblyScript
-
-## Compilation
-```
-cd asscript/
-npm run asbuild
-```
-- les fichiers build/release.wasm  et build/release.js sont produits
-- le fichier à importer depuis Vue est build/release.js, qui fetch release.wasm, le compile et exporte les fonctions pour JS
-
-## Deployment
+# Deployment
 ```
 cd asscript
 npm run asbuild
@@ -103,6 +84,7 @@ npm run build
 ```
 
 In production, the .wasm file is loaded as a ressource before being dynamically compiled and executed.
+
 Lors du fetch du fichier .wasm, il a le mime-type application/octet-stream au lieu de application/wasm :
 aller dans les devtools et cliquer sur le fichier .wasm et constater qu'il est servi par nginx (server: nginx) et que son mime-type est application/octer-stream)
 --> adapter la config nginx:
@@ -113,8 +95,11 @@ aller dans les devtools et cliquer sur le fichier .wasm et constater qu'il est s
     }
 ```
 
-
 # Important issues
+
+## Memory footprint
+
+`Chess.clone()` shares piece references (does **not** deep-clone pieces) to minimize memory. Only pieces that actually move are cloned — see `cloneWithMovedPiece` / `cloneWithEatenPiece`.
 
 ## Blocking
 
